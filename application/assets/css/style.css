@@ -1,0 +1,39 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+}
+
+.navbar {
+  background-color: #0d6efd; /* biru Bootstrap */
+}
+
+.navbar a {
+  color: white !important;
+}
+
+.hero {
+  background: url('../images/hero.jpg') no-repeat center center;
+  background-size: cover;
+  height: 80vh;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero h1, .hero p {
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+}
+
+.btn-success {
+  background-color: #198754;
+}
+
+/* Footer styles are handled by Tailwind classes in footer.php */
+
+/* Admin styles are in admin.css */

@@ -1,0 +1,17 @@
+# 1. Blokir semua akses ke direktori ini secara default
+<IfModule authz_core_module>
+    Require all denied
+</IfModule>
+<IfModule !authz_core_module>
+    Deny from all
+</IfModule>
+
+# 2. Berikan pengecualian (Izinkan akses) hanya untuk file aset
+<FilesMatch "\.(css|js|jpe?g|png|gif|ico|svg|woff2?|ttf|eot|otf)$">
+    <IfModule authz_core_module>
+        Require all granted
+    </IfModule>
+    <IfModule !authz_core_module>
+        Allow from all
+    </IfModule>
+</FilesMatch>
