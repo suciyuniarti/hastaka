@@ -59,7 +59,7 @@
         </div>
 
         <!-- Info Sidebar -->
-<div class="lg:col-span-2 space-y-6">
+        <div class="lg:col-span-2 space-y-6">
 
             <!-- Status -->
             <div>
@@ -72,26 +72,26 @@
             <h1 class="text-2xl font-extrabold text-gray-900 leading-tight"><?= $paket->nama_paket; ?></h1>
 
             <!-- Quick Stats -->
-                <div class="grid grid-cols-3 gap-2">
-                <div class="bg-blue-50 rounded-xl p-3 text-center border border-blue-100">
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="bg-sky-50 rounded-xl p-4 text-center border border-sky-100">
                     <span class="material-symbols-rounded text-brand-600 text-[20px]">schedule</span>
                     <p class="text-lg font-extrabold text-gray-800 mt-0.5"><?= $paket->durasi_hari; ?></p>
                     <p class="text-[10px] text-gray-400 font-semibold">Hari</p>
                 </div>
-                <div class="bg-blue-50 rounded-xl p-3 text-center border border-blue-100">
-                    <span class="material-symbols-rounded text-brand-600 text-[20px]">place</span>
-                    <p class="text-lg font-extrabold text-gray-800 mt-0.5"><?= $paket->jumlah_destinasi; ?></p>
-                    <p class="text-[10px] text-gray-400 font-semibold">Destinasi</p>
-                </div>
-                <div class="bg-blue-50 rounded-xl p-3 text-center border border-blue-100">
-                    <span class="material-symbols-rounded text-brand-600 text-[20px]">hiking</span>
-                    <p class="text-lg font-extrabold text-gray-800 mt-0.5"><?= $paket->jumlah_aktivitas; ?></p>
-                    <p class="text-[10px] text-gray-400 font-semibold">Aktivitas</p>
-                </div>
+                    <div class="bg-sky-50 rounded-xl p-4 text-center border border-sky-100">
+                        <span class="material-symbols-rounded text-brand-600 text-[20px]">place</span>
+                        <p class="text-lg font-extrabold text-gray-800 mt-0.5"><?= $paket->jumlah_destinasi; ?></p>
+                        <p class="text-[10px] text-gray-400 font-semibold">Destinasi</p>
+                    </div>
+                    <div class="bg-sky-50 rounded-xl p-4 text-center border border-sky-100">
+                        <span class="material-symbols-rounded text-brand-600 text-[20px]">hiking</span>
+                        <p class="text-lg font-extrabold text-gray-800 mt-0.5"><?= $paket->jumlah_aktivitas; ?></p>
+                        <p class="text-[10px] text-gray-400 font-semibold">Aktivitas</p>
+                    </div>
             </div>
 
             <!-- Harga -->
-            <div class="bg-gradient-to-r from-brand-50 to-blue-50 rounded-2xl p-5 border border-brand-100">
+            <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-6 border border-sky-200">
                 <p class="text-xs text-brand-500 font-bold uppercase tracking-wider mb-1">Harga per Orang</p>
                 <p class="text-3xl font-extrabold gradient-text">Rp <?= number_format($paket->harga, 0, ',', '.'); ?></p>
                 <p class="text-[11px] text-amber-600 mt-2 flex items-center gap-1">
@@ -101,7 +101,7 @@
             </div>
 
             <!-- Minimum Peserta -->
-            <div class="bg-brand-50 rounded-2xl p-4 border border-brand-200 flex items-start gap-3">
+            <div class="bg-sky-50 rounded-2xl p-5 border border-sky-200 flex items-start gap-3">
                 <span class="material-symbols-rounded text-brand-600 text-[20px] mt-0.5">group</span>
                 <div>
                     <p class="font-bold text-brand-800 text-sm">Minimum <?= $paket->min_peserta ?? 1; ?> Peserta</p>
@@ -123,12 +123,20 @@
                     <div class="w-full bg-gray-100 text-gray-500 py-3.5 rounded-2xl font-semibold text-center text-sm border border-gray-200">
                         <span class="material-symbols-rounded text-[18px] align-middle">info</span> Admin tidak dapat memesan
                     </div>
+                <?php elseif (!$this->session->userdata('id_user')): ?>
+                    <button onclick="alert('Silakan login terlebih dahulu untuk melakukan pemesanan.'); window.location.href='<?= base_url('auth/login'); ?>'" class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-500 to-sky-600 text-white py-4 rounded-2xl font-semibold text-sm hover:from-sky-600 hover:to-sky-700 transition shadow-lg shadow-sky-500/25">
+                        <span class="material-symbols-rounded text-[20px]">shopping_cart</span> Pesan Sekarang
+                    </button>
+                    <a href="https://wa.me/6287719646932?text=<?= urlencode('Halo Hastaka Holiday, saya tertarik dengan paket ' . $paket->nama_paket . ' (Rp ' . number_format($paket->harga, 0, ',', '.') . '). Bisa info lebih lanjut?'); ?>" target="_blank"
+                        class="w-full inline-flex items-center justify-center gap-2 bg-emerald-500 text-white py-4 rounded-2xl font-semibold text-sm hover:bg-emerald-600 transition">
+                        <span class="material-symbols-rounded text-[20px]">chat</span> Tanya via WhatsApp
+                    </a>
                 <?php elseif ($paket->status == 'tersedia'): ?>
-                    <div class="w-full inline-flex items-center justify-center gap-2 gradient-bg text-white py-4 rounded-2xl font-semibold text-sm hover:opacity-90 transition shadow-lg shadow-brand-500/25">
+                    <a href="<?= base_url('pemesanan/booking/' . $paket->id_paket); ?>" class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-500 to-sky-600 text-white py-4 rounded-2xl font-semibold text-sm hover:from-sky-600 hover:to-sky-700 transition shadow-lg shadow-sky-500/25">
                         <span class="material-symbols-rounded text-[20px]">shopping_cart</span> Pesan Sekarang
                     </a>
                     <a href="https://wa.me/6287719646932?text=<?= urlencode('Halo Hastaka Holiday, saya tertarik dengan paket ' . $paket->nama_paket . ' (Rp ' . number_format($paket->harga, 0, ',', '.') . '). Bisa info lebih lanjut?'); ?>" target="_blank"
-                        class="w-full inline-flex items-center justify-center gap-2 bg-emerald-500 text-white py-3.5 rounded-2xl font-semibold text-sm hover:bg-emerald-600 transition mt-3">
+                        class="w-full inline-flex items-center justify-center gap-2 bg-emerald-500 text-white py-4 rounded-2xl font-semibold text-sm hover:bg-emerald-600 transition">
                         <span class="material-symbols-rounded text-[20px]">chat</span> Tanya via WhatsApp
                     </a>
                 <?php else: ?>

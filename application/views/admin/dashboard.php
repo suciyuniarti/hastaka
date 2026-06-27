@@ -99,7 +99,7 @@
     </div>
   </a>
 
-  <a href="<?= base_url('admin/transaksi'); ?>" class="stat-card group animate-fade-in-up" style="animation-delay: 0.25s;">
+  <a href="<?= base_url('admin/transaksi'); ?>" class="stat-card group animate-fade-in-up"> 
     <div class="stat-icon relative overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent"></div>
       <span class="material-symbols-rounded relative z-10">pending_actions</span>
@@ -141,7 +141,10 @@
         <p class="text-xs text-slate-500">5 transaksi paling akhir</p>
       </div>
     </div>
-    <a href="<?= base_url('admin/transaksi'); ?>" class="btn btn-secondary btn-icon-sm"><span class="material-symbols-rounded text-sm">visibility</span> Lihat Semua</a>
+    <a href="<?= base_url('admin/transaksi'); ?>" class="btn btn-secondary btn-icon-sm">
+      Lihat Semua
+      <span class="material-symbols-rounded text-sm">arrow_forward</span>
+    </a>
   </div>
 
   <div class="overflow-x-auto">

@@ -214,10 +214,7 @@
    z-index: 1;
  }
 
-.admin-main > * {
-  position: relative;
-  z-index: 1;
-}
+
 
 /* Desktop: add margin for sidebar */
 @media (min-width: 1024px) {
@@ -395,6 +392,7 @@
   background: radial-gradient(circle, rgba(14, 165, 233, 0.05) 0%, transparent 70%);
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .admin-card:hover {
@@ -1691,14 +1689,4 @@ select.form-input {
   animation: fadeInUp 0.5s ease-out;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 

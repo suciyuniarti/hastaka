@@ -49,18 +49,34 @@
             <tbody>
                 <?php if (!empty($paket)): ?>
                 <?php foreach ($paket as $i => $p): ?>
-                <tr class="border-b border-slate-100 hover:bg-sky-50/60 transition whitespace-nowrap <?= ($i % 2 == 0) ? '' : 'bg-slate-50/50'; ?>">
+                <tr class="border-b border-slate-100 hover:bg-sky-50/60 transition whitespace-nowrap <?= ($i % 2 == 0) ? '' : 'bg-slate-50/50'; ?> animate-fade-in-up" style="animation-delay: <?= $i * 0.05; ?>s;">
                             <td class="py-4 px-4 text-slate-400 text-sm font-mono td-no"><?= $i + 1; ?></td>
                             <td class="py-4 px-4">
-                                <img src="<?= base_url('application/assets/images/paket/' . $p->foto . '?v=' . time()); ?>"
-                                    class="w-16 h-12 object-cover rounded-xl shadow-sm border border-slate-100"
-                                    onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e'">
+                                <div class="relative group">
+                                    <img src="<?= base_url('application/assets/images/paket/' . $p->foto . '?v=' . time()); ?>"
+                                        class="w-20 h-16 object-cover rounded-xl shadow-md border-2 border-slate-200 group-hover:border-sky-300 transition"
+                                        onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e'">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition"></div>
+                                </div>
                             </td>
-                            <td class="py-4 px-4 font-semibold text-slate-800 text-sm"><?= $p->nama_paket; ?></td>
-                            <td class="py-4 px-4 font-semibold text-slate-700 text-sm text-right">Rp <?= number_format($p->harga, 0, ',', '.'); ?></td>
-                            <td class="py-4 px-4 text-slate-600 text-sm text-center"><?= $p->durasi_hari; ?> Hari</td>
+                            <td class="py-4 px-4">
+                                <div class="font-semibold text-slate-800 text-sm"><?= $p->nama_paket; ?></div>
+                                <div class="text-xs text-slate-500 mt-0.5"><?= $p->jumlah_destinasi ?? 0; ?> Destinasi &bull; <?= $p->jumlah_aktivitas ?? 0; ?> Aktivitas</div>
+                            </td>
+                            <td class="py-4 px-4">
+                                <div class="font-bold text-slate-800 text-sm text-right">Rp <?= number_format($p->harga, 0, ',', '.'); ?></div>
+                                <div class="text-xs text-slate-500 text-right mt-0.5">/orang</div>
+                            </td>
+                            <td class="py-4 px-4 text-slate-700 text-sm text-center">
+                                <div class="inline-flex items-center gap-1 px-2.5 py-1 bg-sky-50 rounded-lg border border-sky-100">
+                                    <span class="material-symbols-rounded text-sky-600 text-[16px]">schedule</span>
+                                    <span class="font-semibold"><?= $p->durasi_hari; ?></span>
+                                </div>
+                                <div class="text-xs text-slate-500 mt-1">Hari</div>
+                            </td>
                             <td class="py-4 px-4 text-center">
-                                <span class="badge <?= $p->status == 'tersedia' ? 'badge-tersedia' : 'badge-habis'; ?>">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold <?= $p->status == 'tersedia' ? 'badge-tersedia' : 'badge-habis'; ?>">
+                                    <span class="w-2 h-2 rounded-full <?= $p->status == 'tersedia' ? 'bg-emerald-500' : 'bg-red-500'; ?>"></span>
                                     <?= ucfirst($p->status); ?>
                                 </span>
                             </td>

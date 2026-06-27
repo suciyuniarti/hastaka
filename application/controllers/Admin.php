@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * @property Paket_model $Paket_model
@@ -12,7 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property Klien_model $Klien_model
  * @property Aktivitas_model $Aktivitas_model
  */
-class Admin extends CI_Controller {
+class Admin extends CI_Controller
+{
 
     public function __construct()
     {
@@ -196,10 +197,16 @@ class Admin extends CI_Controller {
             $data['kategori_list'] = $this->Kategori_model->get_all_kategori();
             $data['destinasi_list'] = $this->Destinasi_model->get_all_destinasi();
             $data['fasilitas_list'] = $this->Fasilitas_model->get_all_fasilitas();
-            $data['selected_destinasi'] = array_map(function($d) { return $d->id_destinasi; }, $this->Destinasi_model->get_by_paket($id));
-            $data['selected_fasilitas'] = array_map(function($f) { return $f->id_fasilitas; }, $this->Fasilitas_model->get_by_paket($id));
+            $data['selected_destinasi'] = array_map(function ($d) {
+                return $d->id_destinasi;
+            }, $this->Destinasi_model->get_by_paket($id));
+            $data['selected_fasilitas'] = array_map(function ($f) {
+                return $f->id_fasilitas;
+            }, $this->Fasilitas_model->get_by_paket($id));
             $data['aktivitas_list'] = $this->Aktivitas_model->get_all_aktivitas();
-            $data['selected_aktivitas'] = array_map(function($a) { return $a->id_aktivitas; }, $this->Aktivitas_model->get_by_paket($id));
+            $data['selected_aktivitas'] = array_map(function ($a) {
+                return $a->id_aktivitas;
+            }, $this->Aktivitas_model->get_by_paket($id));
             $data['content_view'] = 'admin/paket_form';
             $this->load->view('admin', $data);
         } else {
@@ -310,9 +317,9 @@ class Admin extends CI_Controller {
         $this->form_validation->set_rules('sifat', 'Sifat', 'required|in_list[benefit,cost]');
 
         if ($this->form_validation->run() == FALSE) {
-        $data['content_view'] = 'admin/kriteria_edit';
-        $this->load->view('admin', $data);
-    } else {
+            $data['content_view'] = 'admin/kriteria_edit';
+            $this->load->view('admin', $data);
+        } else {
             $update = [
                 'nama_kriteria' => $this->input->post('nama_kriteria', TRUE),
                 'bobot' => $this->input->post('bobot', TRUE),
@@ -383,6 +390,27 @@ class Admin extends CI_Controller {
         $this->load->view('admin', $data);
     }
 
+    // ========== CETAK LAPORAN ==========
+    public function print_laporan()
+    {
+        $data['title'] = 'Cetak Laporan';
+
+        $data['tgl_mulai'] = $this->input->get('tgl_mulai') ?: date('Y-m-01');
+        $data['tgl_selesai'] = $this->input->get('tgl_selesai') ?: date('Y-m-d');
+
+        $data['laporan'] = $this->Transaksi_model->get_laporan_periode(
+            $data['tgl_mulai'],
+            $data['tgl_selesai']
+        );
+
+        // Pastikan selalu berupa array
+        if (!is_array($data['laporan'])) {
+            $data['laporan'] = [];
+        }
+
+        $this->load->view('admin/print_laporan', $data);
+    }
+
     // ========== KATEGORI PROGRAM ==========
     public function kategori($page = 0)
     {
@@ -423,7 +451,9 @@ class Admin extends CI_Controller {
     {
         $data['title'] = 'Edit Kategori - Admin';
         $data['kategori'] = $this->Kategori_model->get_kategori_by_id($id);
-        if (!$data['kategori']) { redirect('admin/kategori'); }
+        if (!$data['kategori']) {
+            redirect('admin/kategori');
+        }
 
         $this->form_validation->set_rules('nama_kategori', 'Nama Kategori', 'required|trim');
         $this->form_validation->set_rules('sasaran', 'Sasaran', 'required|trim');
@@ -507,7 +537,9 @@ class Admin extends CI_Controller {
     {
         $data['title'] = 'Edit Destinasi - Admin';
         $data['destinasi'] = $this->Destinasi_model->get_destinasi_by_id($id);
-        if (!$data['destinasi']) { redirect('admin/destinasi'); }
+        if (!$data['destinasi']) {
+            redirect('admin/destinasi');
+        }
         $data['kota_list'] = $this->Destinasi_model->get_kota_list();
 
         $this->form_validation->set_rules('nama_destinasi', 'Nama Destinasi', 'required|trim');
@@ -575,7 +607,9 @@ class Admin extends CI_Controller {
     {
         $data['title'] = 'Edit Fasilitas - Admin';
         $data['fasilitas'] = $this->Fasilitas_model->get_fasilitas_by_id($id);
-        if (!$data['fasilitas']) { redirect('admin/fasilitas'); }
+        if (!$data['fasilitas']) {
+            redirect('admin/fasilitas');
+        }
 
         $this->form_validation->set_rules('nama_fasilitas', 'Nama Fasilitas', 'required|trim');
 
@@ -639,7 +673,9 @@ class Admin extends CI_Controller {
     {
         $data['title'] = 'Edit Aktivitas - Admin';
         $data['aktivitas'] = $this->Aktivitas_model->get_aktivitas_by_id($id);
-        if (!$data['aktivitas']) { redirect('admin/aktivitas'); }
+        if (!$data['aktivitas']) {
+            redirect('admin/aktivitas');
+        }
 
         $this->form_validation->set_rules('nama_aktivitas', 'Nama Aktivitas', 'required|trim');
 
