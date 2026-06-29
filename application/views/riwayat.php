@@ -1,13 +1,18 @@
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<main class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50 px-4 sm:px-6 lg:px-8 py-10">
     <div class="mb-8 animate-fade-in-up">
         <h1 class="text-3xl font-extrabold text-slate-900">Riwayat <span class="gradient-text">Pemesanan</span></h1>
         <p class="text-slate-500 mt-1">Daftar semua pemesanan yang pernah Anda lakukan</p>
     </div>
 
     <?php if ($this->session->flashdata('success')): ?>
-    <div class="bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 px-5 py-3 rounded-xl mb-6 flex items-center gap-2 animate-fade-in-up">
-        <span class="material-symbols-rounded text-emerald-500">check_circle</span>
-        <?= $this->session->flashdata('success'); ?>
+    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl mb-6 flex items-start gap-3 animate-slide-down shadow-lg shadow-emerald-500/10">
+        <div class="w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-rounded text-white text-lg">check_circle</span>
+        </div>
+        <div class="flex-1">
+            <p class="font-bold text-sm mb-0.5">Berhasil</p>
+            <p class="text-sm text-emerald-700"><?= $this->session->flashdata('success'); ?></p>
+        </div>
     </div>
     <?php endif; ?>
 
@@ -31,7 +36,8 @@
                         <?php endif; ?>
                         <p class="text-slate-500 text-sm font-mono mt-1"><?= $p->kode_booking; ?></p>
                     </div>
-                    <span class="status-badge <?= 'status-' . $p->status_pemesanan; ?> flex-shrink-0">
+                    <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold flex-shrink-0 <?= $p->status_pemesanan == 'pending' ? 'bg-amber-100 text-amber-700 border-2 border-amber-200' : ($p->status_pemesanan == 'dikonfirmasi' ? 'bg-emerald-100 text-emerald-700 border-2 border-emerald-200' : ($p->status_pemesanan == 'selesai' ? 'bg-brand-100 text-brand-700 border-2 border-brand-200' : 'bg-red-100 text-red-700 border-2 border-red-200')); ?>">
+                        <span class="w-1.5 h-1.5 rounded-full <?= $p->status_pemesanan == 'pending' ? 'bg-amber-500' : ($p->status_pemesanan == 'dikonfirmasi' ? 'bg-emerald-500' : ($p->status_pemesanan == 'selesai' ? 'bg-brand-500' : 'bg-red-500')); ?>"></span>
                         <?= ucfirst($p->status_pemesanan); ?>
                     </span>
                 </div>

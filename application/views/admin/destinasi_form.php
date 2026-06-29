@@ -1,21 +1,22 @@
 <?php $is_edit = isset($destinasi) && $destinasi; ?>
 
-<div class="page-header animate-fade-in-up">
-    <div class="page-header-icon">
-        <span class="material-symbols-rounded"><?= $is_edit ? 'edit' : 'add'; ?></span>
-    </div>
-    <div class="page-header-content">
-        <h1><?= $is_edit ? 'Edit' : 'Tambah'; ?> Destinasi</h1>
-        <p><?= $is_edit ? 'Perbarui informasi destinasi' : 'Tambahkan destinasi baru'; ?></p>
-    </div>
-</div>
+<div class="space-y-6">
+    <div class="admin-form-wrap max-w-2xl">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 bg-sky-50 border border-sky-100 rounded-xl flex items-center justify-center">
+                <span class="material-symbols-rounded text-sky-600 text-xl"><?= $is_edit ? 'edit' : 'add'; ?></span>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-slate-900"><?= $is_edit ? 'Edit' : 'Tambah'; ?> Destinasi</h1>
+                <p class="text-sm text-slate-500"><?= $is_edit ? 'Perbarui informasi destinasi wisata' : 'Tambahkan destinasi baru'; ?></p>
+            </div>
+        </div>
 
-<div class="admin-form-wrap">
-    <?= form_open($is_edit ? 'admin/destinasi/edit/' . $destinasi->id_destinasi : 'admin/destinasi/tambah', ['class' => 'space-y-5']); ?>
+        <?= form_open($is_edit ? 'admin/destinasi/edit/' . $destinasi->id_destinasi : 'admin/destinasi/tambah', ['class' => 'space-y-5']); ?>
 
         <div class="form-group">
             <label class="form-label">
-                <span class="material-symbols-rounded text-sky-500 text-xl">badge</span> Nama Destinasi
+                <span class="material-symbols-rounded text-sky-500">badge</span> Nama Destinasi <span class="required">*</span>
             </label>
             <input type="text" name="nama_destinasi" value="<?= set_value('nama_destinasi', $is_edit ? $destinasi->nama_destinasi : ''); ?>"
                 class="form-input" required>
@@ -24,7 +25,7 @@
 
         <div class="form-group">
             <label class="form-label">
-                <span class="material-symbols-rounded text-sky-500 text-xl">location_city</span> Kota
+                <span class="material-symbols-rounded text-sky-500">location_city</span> Kota <span class="required">*</span>
             </label>
             <select name="kota" class="form-input" required>
                 <option value="" disabled <?= !$is_edit ? 'selected' : ''; ?>>Pilih Kota</option>
@@ -82,21 +83,20 @@
 
         <div class="form-group">
             <label class="form-label">
-                <span class="material-symbols-rounded text-sky-500 text-xl">description</span> Deskripsi
+                <span class="material-symbols-rounded text-sky-500">description</span> Deskripsi
             </label>
-            <textarea name="deskripsi" rows="3" class="form-input"><?= set_value('deskripsi', $is_edit ? $destinasi->deskripsi : ''); ?></textarea>
+            <textarea name="deskripsi" rows="3" class="form-input" placeholder="Deskripsi destinasi wisata..."><?= set_value('deskripsi', $is_edit ? $destinasi->deskripsi : ''); ?></textarea>
         </div>
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">
-                <span class="material-symbols-rounded text-xl">save</span>
+                <span class="material-symbols-rounded text-lg"><?= $is_edit ? 'update' : 'save'; ?></span>
                 <?= $is_edit ? 'Update' : 'Simpan'; ?>
             </button>
             <a href="<?= base_url('admin/destinasi'); ?>" class="btn btn-secondary">
-                <span class="material-symbols-rounded text-xl">close</span> Batal
+                <span class="material-symbols-rounded">close</span> Batal
             </a>
         </div>
-
-    <?= form_close(); ?>
-
+        <?= form_close(); ?>
+    </div>
 </div>

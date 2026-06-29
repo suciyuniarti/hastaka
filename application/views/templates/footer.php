@@ -2,59 +2,65 @@
     <div class="absolute inset-0 opacity-10">
         <svg class="w-full h-full" viewBox="0 0 400 200"><defs><pattern id="footer-dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white"/></pattern></defs><rect width="100%" height="100%" fill="url(#footer-dots)"/></svg>
     </div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
 
             <!-- Brand -->
             <div class="md:col-span-1">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-10 h-10 bg-gradient-to-br from-sky-400 to-sky-500 rounded-xl flex items-center justify-center shadow-lg shadow-sky-500/40">
-                        <span class="material-symbols-rounded text-white text-xl">explore</span>
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-12 h-12 bg-gradient-to-br from-sky-400 to-sky-500 rounded-2xl flex items-center justify-center shadow-xl shadow-sky-500/40 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <span class="material-symbols-rounded text-white text-2xl">explore</span>
                     </div>
-                    <span class="font-extrabold text-xl text-white tracking-tight">Hastaka Holiday</span>
+                    <span class="font-extrabold text-2xl text-white tracking-tight">Hastaka Holiday</span>
                 </div>
                 <p class="text-slate-300 text-sm leading-relaxed">Sistem rekomendasi paket wisata cerdas menggunakan metode SAW untuk membantu Anda menemukan perjalanan sempurna.</p>
             </div>
 
             <!-- Quick Links -->
             <div>
-                <h4 class="font-bold text-white mb-4 flex items-center gap-2">
-                    <span class="material-symbols-rounded text-sky-400 text-[18px]">navigation</span>
+                <h4 class="font-bold text-white mb-5 flex items-center gap-2">
+                    <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-rounded text-sky-400 text-[18px]">navigation</span>
+                    </div>
                     Jelajahi
                 </h4>
-                <ul class="space-y-2.5">
-                    <li><a href="<?= base_url(); ?>" class="text-slate-300 hover:text-sky-400 text-sm transition flex items-center gap-2 group"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">home</span> Home</a></li>
-                    <li><a href="<?= base_url('paket'); ?>" class="text-slate-300 hover:text-sky-400 text-sm transition flex items-center gap-2 group"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">luggage</span> Paket Wisata</a></li>
-                    <li><a href="<?= base_url('program'); ?>" class="text-slate-300 hover:text-sky-400 text-sm transition flex items-center gap-2 group"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">category</span> Program</a></li>
-                    <li><a href="<?= base_url('clients'); ?>" class="text-slate-300 hover:text-sky-400 text-sm transition flex items-center gap-2 group"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">groups</span> Klien</a></li>
-                    <li><a href="<?= base_url('pemesanan'); ?>" class="text-slate-300 hover:text-sky-400 text-sm transition flex items-center gap-2 group"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">search</span> Cek Pesanan</a></li>
+                <ul class="space-y-3">
+                    <li><a href="<?= base_url(); ?>" class="text-slate-300 hover:text-sky-400 text-sm transition-all duration-300 flex items-center gap-2.5 group hover:translate-x-1"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">home</span> Home</a></li>
+                    <li><a href="<?= base_url('paket'); ?>" class="text-slate-300 hover:text-sky-400 text-sm transition-all duration-300 flex items-center gap-2.5 group hover:translate-x-1"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">luggage</span> Paket Wisata</a></li>
+                    <li><a href="<?= base_url('program'); ?>" class="text-slate-300 hover:text-sky-400 text-sm transition-all duration-300 flex items-center gap-2.5 group hover:translate-x-1"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">category</span> Program</a></li>
+                    <li><a href="<?= base_url('clients'); ?>" class="text-slate-300 hover:text-sky-400 text-sm transition-all duration-300 flex items-center gap-2.5 group hover:translate-x-1"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">groups</span> Klien</a></li>
+                    <li><a href="<?= base_url('pemesanan'); ?>" class="text-slate-300 hover:text-sky-400 text-sm transition-all duration-300 flex items-center gap-2.5 group hover:translate-x-1"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">search</span> Cek Pesanan</a></li>
                 </ul>
             </div>
 
             <!-- Features -->
             <div>
-                <h4 class="font-bold text-white mb-4 flex items-center gap-2">
-                    <span class="material-symbols-rounded text-sky-400 text-[18px]">stars</span>
+                <h4 class="font-bold text-white mb-5 flex items-center gap-2">
+                    <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-rounded text-sky-400 text-[18px]">stars</span>
+                    </div>
                     Fitur
                 </h4>
-                <ul class="space-y-2.5">
-                    <li><span class="text-slate-300 text-sm flex items-center gap-2"><span class="material-symbols-rounded text-[16px] text-sky-400">check_circle</span> Metode SAW</span></li>
-                    <li><span class="text-slate-300 text-sm flex items-center gap-2"><span class="material-symbols-rounded text-[16px] text-sky-400">check_circle</span> Rekomendasi Otomatis</span></li>
-                    <li><span class="text-slate-300 text-sm flex items-center gap-2"><span class="material-symbols-rounded text-[16px] text-sky-400">check_circle</span> Booking Online</span></li>
-                    <li><span class="text-slate-300 text-sm flex items-center gap-2"><span class="material-symbols-rounded text-[16px] text-sky-400">check_circle</span> Invoice Digital</span></li>
+                <ul class="space-y-3">
+                    <li><span class="text-slate-300 text-sm flex items-center gap-2.5"><span class="material-symbols-rounded text-[16px] text-sky-400">check_circle</span> Metode SAW</span></li>
+                    <li><span class="text-slate-300 text-sm flex items-center gap-2.5"><span class="material-symbols-rounded text-[16px] text-sky-400">check_circle</span> Rekomendasi Otomatis</span></li>
+                    <li><span class="text-slate-300 text-sm flex items-center gap-2.5"><span class="material-symbols-rounded text-[16px] text-sky-400">check_circle</span> Booking Online</span></li>
+                    <li><span class="text-slate-300 text-sm flex items-center gap-2.5"><span class="material-symbols-rounded text-[16px] text-sky-400">check_circle</span> Invoice Digital</span></li>
                 </ul>
             </div>
 
             <!-- Contact -->
             <div>
-                <h4 class="font-bold text-white mb-4 flex items-center gap-2">
-                    <span class="material-symbols-rounded text-sky-400 text-[18px]">contact_support</span>
+                <h4 class="font-bold text-white mb-5 flex items-center gap-2">
+                    <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-rounded text-sky-400 text-[18px]">contact_support</span>
+                    </div>
                     Kontak
                 </h4>
-                <ul class="space-y-2.5">
-                    <li><a href="mailto:admin@hastaka.com" class="text-slate-300 hover:text-sky-400 text-sm transition flex items-center gap-2 group"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">mail</span> admin@hastaka.com</a></li>
-                    <li><a href="https://wa.me/6287719646932" target="_blank" class="text-slate-300 hover:text-sky-400 text-sm transition flex items-center gap-2 group"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">chat</span> 0877-1964-6932</a></li>
-                    <li><span class="text-slate-300 text-sm flex items-center gap-2"><span class="material-symbols-rounded text-[16px] text-slate-400">location_on</span> Indonesia</span></li>
+                <ul class="space-y-3">
+                    <li><a href="mailto:admin@hastaka.com" class="text-slate-300 hover:text-sky-400 text-sm transition-all duration-300 flex items-center gap-2.5 group hover:translate-x-1"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">mail</span> admin@hastaka.com</a></li>
+                    <li><a href="https://wa.me/6287719646932" target="_blank" class="text-slate-300 hover:text-sky-400 text-sm transition-all duration-300 flex items-center gap-2.5 group hover:translate-x-1"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">chat</span> 0877-1964-6932</a></li>
+                    <li><span class="text-slate-300 text-sm flex items-center gap-2.5"><span class="material-symbols-rounded text-[16px] text-slate-400">location_on</span> Indonesia</span></li>
                 </ul>
             </div>
 
@@ -62,9 +68,15 @@
     </div>
 
     <!-- Bottom Bar -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+    <div class="border-t border-sky-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-3">
             <p class="text-slate-400 text-sm">&copy; <?= date('Y'); ?> Hastaka Holiday. All rights reserved.</p>
+            <div class="flex items-center gap-4">
+                <a href="#" class="text-slate-400 hover:text-sky-400 transition text-sm">Privacy Policy</a>
+                <a href="#" class="text-slate-400 hover:text-sky-400 transition text-sm">Terms of Service</a>
+            </div>
         </div>
+    </div>
     </div>
 </footer>
 </body>

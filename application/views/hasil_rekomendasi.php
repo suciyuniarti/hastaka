@@ -1,4 +1,4 @@
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<main class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50 px-4 sm:px-6 lg:px-8 py-10">
 
     <a href="<?= base_url('rekomendasi'); ?>" class="inline-flex items-center gap-1 text-brand-600 hover:text-brand-700 text-sm font-medium mb-6 transition group">
         <span class="material-symbols-rounded text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span> Ubah Preferensi
@@ -10,28 +10,31 @@
     </div>
 
     <!-- Bobot Summary -->
-    <div class="bg-white rounded-3xl shadow-lg shadow-gray-200/50 p-6 mb-10 animate-fade-in-up stagger-1">
-        <h3 class="font-bold text-sm text-gray-700 mb-4 flex items-center gap-2">
-            <span class="material-symbols-rounded text-brand-500 text-[20px]">tune</span> Bobot Preferensi Anda
-        </h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <?php foreach ($kriteria as $kr): ?>
-            <div class="bg-brand-50 rounded-2xl p-4 text-center border border-brand-100">
-                <p class="text-xs text-brand-500 font-bold"><?= $kr->kode_kriteria; ?></p>
-                <p class="font-semibold text-sm text-gray-800"><?= $kr->nama_kriteria; ?></p>
-                <p class="text-2xl font-extrabold gradient-text mt-1"><?= isset($bobot[$kr->kode_kriteria]) ? $bobot[$kr->kode_kriteria] : '-'; ?></p>
+    <div class="animate-fade-in-up" style="animation-delay: 0.1s;">
+        <div class="bg-white rounded-3xl shadow-lg shadow-slate-200/50 p-6 mb-10 border-2 border-slate-200/80">
+            <h3 class="font-bold text-sm text-gray-700 mb-4 flex items-center gap-2">
+                <div class="w-8 h-8 bg-brand-50 rounded-lg flex items-center justify-center">
+                    <span class="material-symbols-rounded text-brand-600 text-[18px]">tune</span>
+                </div>
+                Bobot Preferensi Anda
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <?php foreach ($kriteria as $kr): ?>
+                <div class="group bg-slate-50 rounded-2xl p-4 text-center border-2 border-slate-200/80 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300">
+                    <p class="text-xs text-brand-500 font-bold mb-1"><?= $kr->kode_kriteria; ?></p>
+                    <p class="font-semibold text-sm text-gray-800"><?= $kr->nama_kriteria; ?></p>
+                    <p class="text-2xl font-extrabold gradient-text mt-2"><?= isset($bobot[$kr->kode_kriteria]) ? $bobot[$kr->kode_kriteria] : '-'; ?></p>
+                </div>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
         </div>
-
-        <!-- Active Filters -->
     </div>
 
     <!-- Ranking Results -->
     <?php if (!empty($hasil)): ?>
     <div class="space-y-4">
         <?php foreach ($hasil as $i => $h): ?>
-        <div class="bg-white rounded-3xl shadow-lg shadow-gray-200/50 p-6 flex flex-col md:flex-row gap-6 animate-fade-in-up hover-lift <?= $i == 0 ? 'ring-2 ring-brand-500 ring-offset-2' : ''; ?>" style="animation-delay: <?= ($i+2)*0.1; ?>s; opacity:0;">
+        <div class="group bg-white rounded-2xl shadow-md shadow-slate-200/50 p-6 flex flex-col md:flex-row gap-6 border-2 border-slate-200/80 hover:shadow-2xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up <?= $i == 0 ? 'ring-2 ring-brand-500 ring-offset-2' : ''; ?>" style="animation-delay: <?= ($i+2)*0.1; ?>s; opacity:0;">
 
             <!-- Rank Badge -->
             <div class="flex items-center justify-center">
@@ -46,25 +49,28 @@
 
             <!-- Foto -->
             <div class="w-full md:w-44 flex-shrink-0">
-                <img src="<?= base_url('application/assets/images/paket/' . $h['foto'] . '?v=' . time()); ?>"
-                    class="w-full h-28 object-cover rounded-2xl"
-                    onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e'">
+                <div class="relative overflow-hidden rounded-2xl aspect-video md:aspect-auto md:h-32">
+                    <img src="<?= base_url('application/assets/images/paket/' . $h['foto'] . '?v=' . time()); ?>"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
             </div>
 
             <!-- Info -->
             <div class="flex-1">
                 <div class="flex items-start justify-between gap-4">
-                    <div>
-                        <div class="flex items-center gap-2 flex-wrap mb-1">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 flex-wrap mb-2">
                             <?php if (!empty($h['jumlah_aktivitas'])): ?>
-                            <span class="bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full text-[11px] font-semibold border border-purple-200 flex items-center gap-1">
+                            <span class="inline-flex items-center gap-1 bg-brand-50 text-brand-700 px-2.5 py-1 rounded-lg text-[11px] font-bold border border-brand-200">
                                 <span class="material-symbols-rounded text-[13px]">hiking</span>
                                 <?= $h['jumlah_aktivitas']; ?> Aktivitas
                             </span>
                             <?php endif; ?>
                         </div>
-                        <h3 class="font-bold text-lg text-gray-900"><?= $h['nama_paket']; ?></h3>
-                        <p class="gradient-text font-extrabold text-lg mt-0.5">Rp <?= number_format($h['harga'], 0, ',', '.'); ?></p>
+                        <h3 class="font-bold text-lg text-gray-900 group-hover:text-brand-600 transition-colors"><?= $h['nama_paket']; ?></h3>
+                        <p class="gradient-text font-extrabold text-xl mt-1">Rp <?= number_format($h['harga'], 0, ',', '.'); ?></p>
                     </div>
                     <?php if ($i == 0): ?>
                     <span class="status-badge bg-amber-100 text-amber-700 border border-amber-200 flex-shrink-0 inline-flex items-center gap-1">
@@ -74,28 +80,28 @@
                 </div>
 
                 <!-- Normalisasi Detail -->
-                <div class="mt-3">
+                <div class="mt-4">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                         <?php foreach ($h['detail'] as $d): ?>
-                        <div class="bg-surface-50 rounded-xl p-2.5 border border-gray-100">
-                            <p class="text-[10px] text-gray-400 font-semibold uppercase"><?= $d['kode']; ?> <?= $d['nama']; ?></p>
+                        <div class="bg-slate-50 rounded-xl p-3 border-2 border-slate-200/80 hover:border-brand-300 transition-all duration-300">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase mb-1"><?= $d['kode']; ?> <?= $d['nama']; ?></p>
                             <p class="font-bold text-sm text-gray-800">R: <?= $d['normalisasi']; ?></p>
-                            <p class="text-[10px] text-gray-400">W: <?= $d['bobot']; ?> (<?= $d['sifat']; ?>)</p>
+                            <p class="text-[10px] text-gray-500">W: <?= $d['bobot']; ?> (<?= $d['sifat']; ?>)</p>
                         </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
 
-                <div class="mt-4 flex items-center gap-3">
-                    <span class="bg-brand-50 text-brand-700 px-4 py-2 rounded-full font-bold text-sm border border-brand-100 inline-flex items-center gap-1.5">
-                        <span class="material-symbols-rounded text-brand-600 text-[16px]">calculate</span> V = <?= $h['nilai_v']; ?>
+                <div class="mt-4 flex items-center gap-3 flex-wrap">
+                    <span class="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-600 to-brand-500 text-white px-4 py-2 rounded-full font-bold text-sm shadow-lg shadow-brand-500/30">
+                        <span class="material-symbols-rounded text-[16px]">calculate</span> V = <?= $h['nilai_v']; ?>
                     </span>
-                    <a href="<?= base_url('paket/detail/' . $h['id_paket']); ?>" class="inline-flex items-center gap-1.5 text-brand-600 hover:text-brand-700 text-sm font-semibold transition">
-                        <span class="material-symbols-rounded text-[16px]">info</span> Lihat Detail
+                    <a href="<?= base_url('paket/detail/' . $h['id_paket']); ?>" class="group/btn inline-flex items-center gap-1.5 text-brand-600 hover:text-brand-700 text-sm font-bold transition">
+                        <span class="material-symbols-rounded text-[16px] group-hover/btn:scale-110 transition-transform">info</span> Lihat Detail
                     </a>
                     <?php if ($this->session->userdata('role') != 'admin'): ?>
-                    <a href="<?= base_url('pemesanan/booking/' . $h['id_paket']); ?>" class="gradient-bg text-white px-5 py-2 rounded-full text-sm font-bold hover:opacity-90 transition shadow-lg shadow-brand-500/20 inline-flex items-center gap-1.5">
-                        <span class="material-symbols-rounded text-[16px]">shopping_cart</span> Pesan
+                    <a href="<?= base_url('pemesanan/booking/' . $h['id_paket']); ?>" class="group/btn inline-flex items-center gap-2 bg-gradient-to-r from-brand-600 to-brand-500 text-white px-5 py-2.5 rounded-full text-sm font-bold hover:from-brand-700 hover:to-brand-600 hover:shadow-xl hover:shadow-brand-500/40 hover:scale-105 active:scale-95 transition-all duration-300">
+                        <span class="material-symbols-rounded text-[16px] group-hover/btn:scale-110 transition-transform">shopping_cart</span> Pesan
                     </a>
                     <?php endif; ?>
                 </div>

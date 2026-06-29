@@ -19,7 +19,7 @@
     </div>
 
     <!-- Right: Form -->
-    <div class="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-white">
+    <div class="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50">
         <div class="w-full max-w-md animate-fade-in-up">
 
             <div class="lg:hidden flex items-center gap-2 mb-8">
@@ -31,53 +31,66 @@
 
             <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Selamat Datang!</h2>
             <p class="text-gray-500 mb-8">Masuk ke akun Anda untuk melanjutkan</p>
+            
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border-2 border-slate-200/80">
 
             <?php if ($this->session->flashdata('error')): ?>
-            <div class="flex items-center gap-3 bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-xl mb-6 animate-slide-down">
-                <span class="material-symbols-rounded text-red-400">error</span>
-                <span class="text-sm"><?= $this->session->flashdata('error'); ?></span>
+            <div class="bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 text-red-800 px-5 py-4 rounded-2xl mb-6 flex items-start gap-3 animate-slide-down shadow-lg shadow-red-500/10">
+                <div class="w-8 h-8 bg-red-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-rounded text-white text-lg">error</span>
+                </div>
+                <div class="flex-1">
+                    <p class="font-bold text-sm mb-0.5">Gagal Masuk</p>
+                    <p class="text-sm text-red-700"><?= $this->session->flashdata('error'); ?></p>
+                </div>
             </div>
             <?php endif; ?>
 
             <?php if ($this->session->flashdata('success')): ?>
-            <div class="flex items-center gap-3 bg-emerald-50 border border-emerald-100 text-emerald-700 px-4 py-3 rounded-xl mb-6 animate-slide-down">
-                <span class="material-symbols-rounded text-emerald-400">check_circle</span>
-                <span class="text-sm"><?= $this->session->flashdata('success'); ?></span>
+            <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl mb-6 flex items-start gap-3 animate-slide-down shadow-lg shadow-emerald-500/10">
+                <div class="w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-rounded text-white text-lg">check_circle</span>
+                </div>
+                <div class="flex-1">
+                    <p class="font-bold text-sm mb-0.5">Berhasil</p>
+                    <p class="text-sm text-emerald-700"><?= $this->session->flashdata('success'); ?></p>
+                </div>
             </div>
             <?php endif; ?>
 
             <?= form_open('auth/login', ['class' => 'space-y-5']); ?>
 
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
+                    <label class="block text-sm font-bold text-gray-800 mb-2">Email</label>
                     <div class="relative">
-                        <span class="material-symbols-rounded absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">mail</span>
+                        <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">mail</span>
                         <input type="email" name="email" value="<?= set_value('email'); ?>"
-                            class="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition"
+                            class="w-full pl-12 pr-4 py-3 bg-white border-2 border-slate-200 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300 hover:border-slate-300"
                             placeholder="nama@email.com" required>
                     </div>
                     <?= form_error('email', '<p class="text-red-500 text-xs mt-1 flex items-center gap-1"><span class="material-symbols-rounded text-[14px]">error</span>', '</p>'); ?>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+                    <label class="block text-sm font-bold text-gray-800 mb-2">Password</label>
                     <div class="relative">
-                        <span class="material-symbols-rounded absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">lock</span>
+                        <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">lock</span>
                         <input type="password" name="password" id="pwd-input"
-                            class="w-full pl-11 pr-12 py-3 border border-gray-200 rounded-xl text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition"
+                            class="w-full pl-12 pr-12 py-3 bg-white border-2 border-slate-200 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300 hover:border-slate-300"
                             placeholder="Masukkan password" required>
-                        <button type="button" onclick="togglePwd()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                        <button type="button" onclick="togglePwd()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-600 transition">
                             <span class="material-symbols-rounded text-[20px]" id="pwd-icon">visibility_off</span>
                         </button>
                     </div>
                     <?= form_error('password', '<p class="text-red-500 text-xs mt-1 flex items-center gap-1"><span class="material-symbols-rounded text-[14px]">error</span>', '</p>'); ?>
                 </div>
 
-                <button type="submit" class="w-full gradient-bg text-white py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2">
+                <button type="submit" class="group w-full gradient-bg text-white py-3.5 rounded-xl font-bold text-sm hover:shadow-xl hover:shadow-brand-500/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
                     <span class="material-symbols-rounded text-[20px]">login</span> Masuk
                 </button>
 
             <?= form_close(); ?>
+            </div>
 
             <p class="text-center text-gray-500 text-sm mt-6">
                 <a href="<?= base_url('auth/forgot_password'); ?>" class="text-brand-600 font-semibold hover:underline">Lupa Kata Sandi?</a>

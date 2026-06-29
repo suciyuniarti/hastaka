@@ -1,4 +1,4 @@
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<main class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50 px-4 sm:px-6 lg:px-8 py-10">
 
     <div class="animate-fade-in-up">
         <div class="flex items-center gap-3 mb-8">
@@ -13,9 +13,14 @@
     </div>
 
     <?php if ($this->session->flashdata('success')): ?>
-    <div class="bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 px-5 py-4 rounded-2xl mb-6 flex items-center gap-3 animate-slide-down">
-        <span class="material-symbols-rounded text-emerald-500">check_circle</span>
-        <?= $this->session->flashdata('success'); ?>
+    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl mb-6 flex items-start gap-3 animate-slide-down shadow-lg shadow-emerald-500/10">
+        <div class="w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-rounded text-white text-lg">check_circle</span>
+        </div>
+        <div class="flex-1">
+            <p class="font-bold text-sm mb-0.5">Berhasil</p>
+            <p class="text-sm text-emerald-700"><?= $this->session->flashdata('success'); ?></p>
+        </div>
     </div>
     <?php endif; ?>
 

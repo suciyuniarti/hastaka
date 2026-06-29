@@ -1,17 +1,18 @@
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<main class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50 px-4 sm:px-6 lg:px-8 py-10">
 
-    <a href="<?= base_url('paket'); ?>" class="inline-flex items-center gap-1 text-brand-600 hover:text-brand-700 text-sm font-medium mb-6 transition group">
-        <span class="material-symbols-rounded text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span> Kembali ke Daftar Paket
+    <a href="<?= base_url('paket'); ?>" class="inline-flex items-center gap-2 text-brand-600 hover:text-brand-700 text-sm font-bold mb-8 transition-all duration-300 group hover:gap-3">
+        <span class="material-symbols-rounded text-[20px] group-hover:-translate-x-1 transition-transform">arrow_back</span> Kembali ke Daftar Paket
     </a>
 
-    <div class="grid lg:grid-cols-5 gap-10 animate-fade-in-up">
+    <div class="grid lg:grid-cols-5 gap-8">
 
         <!-- Foto -->
-        <div class="lg:col-span-3">
-            <div class="rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50">
+        <div class="lg:col-span-3 animate-fade-in-up">
+            <div class="group relative rounded-3xl overflow-hidden shadow-2xl shadow-brand-500/20 hover:shadow-3xl hover:shadow-brand-500/30 transition-all duration-300">
                 <img src="<?= base_url('application/assets/images/paket/' . $paket->foto . '?v=' . time()); ?>"
-                    class="w-full h-[420px] object-cover"
+                    class="w-full h-[420px] object-cover group-hover:scale-105 transition-transform duration-500"
                     onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
 
             <!-- Destinasi Section (below photo on lg) -->
@@ -72,72 +73,91 @@
             <h1 class="text-2xl font-extrabold text-gray-900 leading-tight"><?= $paket->nama_paket; ?></h1>
 
             <!-- Quick Stats -->
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="bg-sky-50 rounded-xl p-4 text-center border border-sky-100">
-                    <span class="material-symbols-rounded text-brand-600 text-[20px]">schedule</span>
-                    <p class="text-lg font-extrabold text-gray-800 mt-0.5"><?= $paket->durasi_hari; ?></p>
-                    <p class="text-[10px] text-gray-400 font-semibold">Hari</p>
+            <div class="grid grid-cols-3 gap-3 animate-fade-in-up" style="animation-delay: 0.1s;">
+                <div class="group bg-white rounded-xl p-4 text-center border-2 border-slate-200/80 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 cursor-default">
+                    <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-600 rounded-lg flex items-center justify-center mx-auto mb-2 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <span class="material-symbols-rounded text-white text-[20px]">schedule</span>
+                    </div>
+                    <p class="text-xl font-extrabold text-gray-800"><?= $paket->durasi_hari; ?></p>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Hari</p>
                 </div>
-                    <div class="bg-sky-50 rounded-xl p-4 text-center border border-sky-100">
-                        <span class="material-symbols-rounded text-brand-600 text-[20px]">place</span>
-                        <p class="text-lg font-extrabold text-gray-800 mt-0.5"><?= $paket->jumlah_destinasi; ?></p>
-                        <p class="text-[10px] text-gray-400 font-semibold">Destinasi</p>
+                <div class="group bg-white rounded-xl p-4 text-center border-2 border-slate-200/80 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 cursor-default">
+                    <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-600 rounded-lg flex items-center justify-center mx-auto mb-2 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <span class="material-symbols-rounded text-white text-[20px]">place</span>
                     </div>
-                    <div class="bg-sky-50 rounded-xl p-4 text-center border border-sky-100">
-                        <span class="material-symbols-rounded text-brand-600 text-[20px]">hiking</span>
-                        <p class="text-lg font-extrabold text-gray-800 mt-0.5"><?= $paket->jumlah_aktivitas; ?></p>
-                        <p class="text-[10px] text-gray-400 font-semibold">Aktivitas</p>
+                    <p class="text-xl font-extrabold text-gray-800"><?= $paket->jumlah_destinasi; ?></p>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Destinasi</p>
+                </div>
+                <div class="group bg-white rounded-xl p-4 text-center border-2 border-slate-200/80 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 cursor-default">
+                    <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-600 rounded-lg flex items-center justify-center mx-auto mb-2 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <span class="material-symbols-rounded text-white text-[20px]">hiking</span>
                     </div>
+                    <p class="text-xl font-extrabold text-gray-800"><?= $paket->jumlah_aktivitas; ?></p>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Aktivitas</p>
+                </div>
             </div>
 
             <!-- Harga -->
-            <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-6 border border-sky-200">
-                <p class="text-xs text-brand-500 font-bold uppercase tracking-wider mb-1">Harga per Orang</p>
-                <p class="text-3xl font-extrabold gradient-text">Rp <?= number_format($paket->harga, 0, ',', '.'); ?></p>
-                <p class="text-[11px] text-amber-600 mt-2 flex items-center gap-1">
-                    <span class="material-symbols-rounded text-[14px]">info</span>
-                    Harga dapat berubah jika ada penambahan destinasi
-                </p>
+            <div class="animate-fade-in-up" style="animation-delay: 0.2s;">
+                <div class="bg-gradient-to-br from-brand-600 to-brand-500 rounded-2xl p-6 text-white shadow-xl shadow-brand-500/30 hover:shadow-2xl hover:shadow-brand-500/40 hover:-translate-y-1 transition-all duration-300">
+                    <p class="text-xs font-bold uppercase tracking-wider mb-1 opacity-90">Harga per Orang</p>
+                    <p class="text-3xl font-extrabold">Rp <?= number_format($paket->harga, 0, ',', '.'); ?></p>
+                    <p class="text-[11px] mt-2 flex items-center gap-1 opacity-80">
+                        <span class="material-symbols-rounded text-[14px]">info</span>
+                        Harga dapat berubah jika ada penambahan destinasi
+                    </p>
+                </div>
             </div>
 
             <!-- Minimum Peserta -->
-            <div class="bg-sky-50 rounded-2xl p-5 border border-sky-200 flex items-start gap-3">
-                <span class="material-symbols-rounded text-brand-600 text-[20px] mt-0.5">group</span>
-                <div>
-                    <p class="font-bold text-brand-800 text-sm">Minimum <?= $paket->min_peserta ?? 1; ?> Peserta</p>
-                    <p class="text-brand-600 text-xs mt-0.5">Paket ini memerlukan minimal <?= $paket->min_peserta ?? 1; ?> peserta untuk dapat dilaksanakan. Harga sudah termasuk transportasi, akomodasi, dan guide.</p>
+            <div class="animate-fade-in-up" style="animation-delay: 0.3s;">
+                <div class="bg-white rounded-2xl p-5 border-2 border-slate-200/80 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/20 transition-all duration-300">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-600 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                            <span class="material-symbols-rounded text-white text-[20px]">group</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800 text-sm">Minimum <?= $paket->min_peserta ?? 1; ?> Peserta</p>
+                            <p class="text-gray-600 text-xs mt-1">Paket ini memerlukan minimal <?= $paket->min_peserta ?? 1; ?> peserta untuk dapat dilaksanakan. Harga sudah termasuk transportasi, akomodasi, dan guide.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Deskripsi -->
-            <div>
-                <h3 class="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                    <span class="material-symbols-rounded text-brand-500 text-[18px]">description</span> Deskripsi
-                </h3>
-                <p class="text-gray-600 leading-relaxed text-sm"><?= nl2br($paket->deskripsi); ?></p>
+            <div class="animate-fade-in-up" style="animation-delay: 0.4s;">
+                <div class="bg-white rounded-2xl p-6 border-2 border-slate-200/80">
+                    <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                        <div class="w-8 h-8 bg-brand-50 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-rounded text-brand-600 text-[18px]">description</span>
+                        </div>
+                        Deskripsi
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed text-sm"><?= nl2br($paket->deskripsi); ?></p>
+                </div>
             </div>
 
             <!-- Action -->
-            <div>
+            <div class="animate-fade-in-up" style="animation-delay: 0.5s;">
                 <?php if ($this->session->userdata('role') == 'admin'): ?>
                     <div class="w-full bg-gray-100 text-gray-500 py-3.5 rounded-2xl font-semibold text-center text-sm border border-gray-200">
                         <span class="material-symbols-rounded text-[18px] align-middle">info</span> Admin tidak dapat memesan
                     </div>
                 <?php elseif (!$this->session->userdata('id_user')): ?>
-                    <button onclick="alert('Silakan login terlebih dahulu untuk melakukan pemesanan.'); window.location.href='<?= base_url('auth/login'); ?>'" class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-500 to-sky-600 text-white py-4 rounded-2xl font-semibold text-sm hover:from-sky-600 hover:to-sky-700 transition shadow-lg shadow-sky-500/25">
-                        <span class="material-symbols-rounded text-[20px]">shopping_cart</span> Pesan Sekarang
+                    <button onclick="alert('Silakan login terlebih dahulu untuk melakukan pemesanan.'); window.location.href='<?= base_url('auth/login'); ?>'" class="group w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-600 to-brand-500 text-white py-4 rounded-2xl font-bold text-sm hover:from-brand-700 hover:to-brand-600 hover:shadow-xl hover:shadow-brand-500/50 hover:scale-105 active:scale-95 transition-all duration-300">
+                        <span class="material-symbols-rounded text-[20px] group-hover:scale-110 transition-transform">shopping_cart</span> Pesan Sekarang
                     </button>
                     <a href="https://wa.me/6287719646932?text=<?= urlencode('Halo Hastaka Holiday, saya tertarik dengan paket ' . $paket->nama_paket . ' (Rp ' . number_format($paket->harga, 0, ',', '.') . '). Bisa info lebih lanjut?'); ?>" target="_blank"
-                        class="w-full inline-flex items-center justify-center gap-2 bg-emerald-500 text-white py-4 rounded-2xl font-semibold text-sm hover:bg-emerald-600 transition">
-                        <span class="material-symbols-rounded text-[20px]">chat</span> Tanya via WhatsApp
+                        class="group w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-4 rounded-2xl font-bold text-sm hover:from-emerald-600 hover:to-emerald-700 hover:shadow-xl hover:shadow-emerald-500/50 hover:scale-105 active:scale-95 transition-all duration-300">
+                        <span class="material-symbols-rounded text-[20px] group-hover:scale-110 transition-transform">chat</span> Tanya via WhatsApp
                     </a>
                 <?php elseif ($paket->status == 'tersedia'): ?>
-                    <a href="<?= base_url('pemesanan/booking/' . $paket->id_paket); ?>" class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-500 to-sky-600 text-white py-4 rounded-2xl font-semibold text-sm hover:from-sky-600 hover:to-sky-700 transition shadow-lg shadow-sky-500/25">
-                        <span class="material-symbols-rounded text-[20px]">shopping_cart</span> Pesan Sekarang
+                    <a href="<?= base_url('pemesanan/booking/' . $paket->id_paket); ?>" class="group w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-600 to-brand-500 text-white py-4 rounded-2xl font-bold text-sm hover:from-brand-700 hover:to-brand-600 hover:shadow-xl hover:shadow-brand-500/50 hover:scale-105 active:scale-95 transition-all duration-300">
+                        <span class="material-symbols-rounded text-[20px] group-hover:scale-110 transition-transform">shopping_cart</span> Pesan Sekarang
                     </a>
                     <a href="https://wa.me/6287719646932?text=<?= urlencode('Halo Hastaka Holiday, saya tertarik dengan paket ' . $paket->nama_paket . ' (Rp ' . number_format($paket->harga, 0, ',', '.') . '). Bisa info lebih lanjut?'); ?>" target="_blank"
-                        class="w-full inline-flex items-center justify-center gap-2 bg-emerald-500 text-white py-4 rounded-2xl font-semibold text-sm hover:bg-emerald-600 transition">
-                        <span class="material-symbols-rounded text-[20px]">chat</span> Tanya via WhatsApp
+                        class="group w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-4 rounded-2xl font-bold text-sm hover:from-emerald-600 hover:to-emerald-700 hover:shadow-xl hover:shadow-emerald-500/50 hover:scale-105 active:scale-95 transition-all duration-300">
+                        <span class="material-symbols-rounded text-[20px] group-hover:scale-110 transition-transform">chat</span> Tanya via WhatsApp
                     </a>
                 <?php else: ?>
                     <button disabled class="w-full bg-gray-200 text-gray-500 py-4 rounded-2xl font-semibold text-sm cursor-not-allowed border border-gray-300">Paket Penuh</button>

@@ -1,19 +1,20 @@
-<div class="page-header animate-fade-in-up">
-    <div class="page-header-icon">
-        <span class="material-symbols-rounded">tune</span>
-    </div>
-    <div class="page-header-content">
-        <h1>Edit Kriteria</h1>
-        <p><?= $kriteria->nama_kriteria; ?></p>
-    </div>
-</div>
+<div class="space-y-6">
+    <div class="admin-form-wrap max-w-2xl">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 bg-sky-50 border border-sky-100 rounded-xl flex items-center justify-center">
+                <span class="material-symbols-rounded text-sky-600 text-xl">tune</span>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-slate-900">Edit Kriteria</h1>
+                <p class="text-sm text-slate-500"><?= $kriteria->nama_kriteria; ?></p>
+            </div>
+        </div>
 
-<div class="admin-form-wrap">
-    <?= form_open('admin/kriteria/edit/' . $kriteria->id_kriteria, ['class' => 'space-y-5']); ?>
+        <?= form_open('admin/kriteria/edit/' . $kriteria->id_kriteria, ['class' => 'space-y-5']); ?>
 
         <div class="form-group">
             <label class="form-label">
-                <span class="material-symbols-rounded text-sky-500 text-xl">badge</span> Nama Kriteria
+                <span class="material-symbols-rounded text-sky-500">badge</span> Nama Kriteria
             </label>
             <input type="text" value="<?= $kriteria->nama_kriteria; ?>" disabled
                 class="form-input" style="background: #f1f5f9; color: #64748b;">
@@ -22,7 +23,7 @@
         <div class="form-grid">
             <div class="form-group">
                 <label class="form-label">
-                    <span class="material-symbols-rounded text-sky-500 text-xl">tune</span> Bobot
+                    <span class="material-symbols-rounded text-sky-500">tune</span> Bobot
                 </label>
                 <input type="number" name="bobot" value="<?= set_value('bobot', $kriteria->bobot); ?>" step="any" min="0" max="1"
                     class="form-input" required>
@@ -30,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label">
-                    <span class="material-symbols-rounded text-sky-500 text-xl">toggle_on</span> Sifat
+                    <span class="material-symbols-rounded text-sky-500">toggle_on</span> Sifat
                 </label>
                 <select name="sifat" class="form-input" required>
                     <option value="benefit" <?= set_select('sifat', 'benefit', $kriteria->sifat == 'benefit'); ?>>Benefit (Semakin besar semakin baik)</option>
@@ -39,15 +40,14 @@
             </div>
         </div>
 
-<div class="form-actions">
+        <div class="form-actions">
             <button type="submit" class="btn btn-primary">
-                <span class="material-symbols-rounded text-xl">save</span> Update
+                <span class="material-symbols-rounded text-lg">save</span> Update
             </button>
             <a href="<?= base_url('admin/kriteria'); ?>" class="btn btn-secondary">
-                <span class="material-symbols-rounded text-xl">close</span> Batal
+                <span class="material-symbols-rounded">close</span> Batal
             </a>
         </div>
-
-    <?= form_close(); ?>
-
+        <?= form_close(); ?>
+    </div>
 </div>

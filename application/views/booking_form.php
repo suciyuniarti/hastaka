@@ -8,7 +8,7 @@
     </div>
     <?php return; ?>
 <?php endif; ?>
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<main class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50 px-4 sm:px-6 lg:px-8 py-10">
     <a href="<?= base_url("paket/detail/{$paket->id_paket}"); ?>" class="inline-flex items-center gap-1 text-brand-600 hover:text-brand-700 text-sm font-medium mb-6 transition group">
         <span class="material-symbols-rounded text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span> Kembali
     </a>
@@ -18,10 +18,10 @@
     <div class="grid lg:grid-cols-3 gap-8">
         <!-- Form -->
         <div class="lg:col-span-2 animate-fade-in-up stagger-1">
-            <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-8">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border-2 border-slate-200/80">
                 <?= form_open_multipart("pemesanan/booking/{$paket->id_paket}", ['class' => 'space-y-5']); ?>
                     <!-- Paket Info -->
-                    <div class="bg-brand-50 border border-brand-200 rounded-2xl p-4 flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-brand-50 to-sky-50 border-2 border-brand-200 rounded-2xl p-5 flex items-center gap-4">
                         <span class="material-symbols-rounded text-brand-500 text-2xl">luggage</span>
                         <div>
                             <p class="font-bold text-brand-800"><?= $paket->nama_paket; ?></p>
@@ -32,14 +32,14 @@
                             </p>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Tanggal Keberangkatan</label>
-                        <div class="relative">
-                            <span class="material-symbols-rounded absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">calendar_month</span>
-                            <input type="date" name="tgl_keberangkatan" value="<?= set_value('tgl_keberangkatan'); ?>"
-                                min="<?= date('Y-m-d', strtotime('+1 day')); ?>"
-                                class="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition" required>
-                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-800 mb-2">Tanggal Keberangkatan</label>
+                            <div class="relative">
+                                <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">calendar_month</span>
+                                <input type="date" name="tgl_keberangkatan" value="<?= set_value('tgl_keberangkatan'); ?>"
+                                    min="<?= date('Y-m-d', strtotime('+1 day')); ?>"
+                                    class="w-full pl-12 pr-4 py-3 bg-white border-2 border-slate-200 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300 hover:border-slate-300" required>
+                            </div>
                         <?= form_error('tgl_keberangkatan', '<p class="text-red-500 text-xs mt-1">', '</p>'); ?>
                         <p id="return-date-info" class="text-emerald-600 text-xs mt-1.5 flex items-center gap-1 hidden">
                             <span class="material-symbols-rounded text-[14px]">event_available</span>
@@ -146,10 +146,10 @@
                             <span class="material-symbols-rounded text-[14px]">info</span> Upload bukti pembayaran (JPG/PNG, maks 2MB)
                         </p>
                     </div>
-                    <button type="submit" class="w-full gradient-bg text-white py-3.5 rounded-2xl font-bold text-sm hover:opacity-90 transition shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2">
+                    <button type="submit" class="group w-full gradient-bg text-white py-3.5 rounded-2xl font-bold text-sm hover:shadow-xl hover:shadow-brand-500/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
                         <span class="material-symbols-rounded text-[20px]">check_circle</span> Konfirmasi Pemesanan
                     </button>
-                    <a href="https://wa.me/6287719646932?text=<?= urlencode("Halo Hastaka Holiday, saya tertarik dengan paket {$paket->nama_paket}. Bisa info lebih lanjut?"); ?>" target="_blank" class="w-full flex items-center justify-center gap-2 bg-emerald-500 text-white py-3 rounded-2xl font-bold text-sm hover:bg-emerald-600 transition mt-3">
+                    <a href="https://wa.me/6287719646932?text=<?= urlencode("Halo Hastaka Holiday, saya tertarik dengan paket {$paket->nama_paket}. Bisa info lebih lanjut?"); ?>" target="_blank" class="group w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 rounded-2xl font-bold text-sm hover:from-emerald-600 hover:to-emerald-700 hover:shadow-xl hover:shadow-emerald-500/40 hover:scale-105 active:scale-95 transition-all duration-300 mt-3">
                         <span class="material-symbols-rounded text-[20px]">chat</span> Tanya via WhatsApp
                     </a>
                 <?= form_close(); ?>
@@ -158,7 +158,7 @@
 
         <!-- Billing Summary -->
         <div class="animate-fade-in-up stagger-2">
-            <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-6 sticky top-24">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-6 border-2 border-slate-200/80 sticky top-24">
                 <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><span class="material-symbols-rounded text-brand-500">receipt_long</span> Ringkasan Tagihan</h3>
                 <img src="<?= base_url("application/assets/images/paket/{$paket->foto}?v=" . time()); ?>" class="w-full h-36 object-cover rounded-2xl mb-4" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e'">
                 <h4 class="font-bold text-gray-900"><?= $paket->nama_paket; ?></h4>

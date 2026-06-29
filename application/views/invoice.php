@@ -1,5 +1,5 @@
-<main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-8 animate-fade-in-up">
+<main class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50 px-4 sm:px-6 lg:px-8 py-10">
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border-2 border-slate-200/80 animate-fade-in-up">
         <div class="text-center border-b border-gray-100 pb-6 mb-6">
             <div class="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-brand-500/20">
                 <span class="material-symbols-rounded text-white text-2xl">receipt_long</span>
@@ -7,25 +7,54 @@
             <h1 class="text-2xl font-extrabold gradient-text">Invoice Pemesanan</h1>
         </div>
         <?php $sc=['pending'=>'bg-amber-100 text-amber-700','dikonfirmasi'=>'bg-emerald-100 text-emerald-700','selesai'=>'bg-brand-100 text-brand-700','dibatalkan'=>'bg-red-100 text-red-700']; $sl=['pending'=>'Menunggu Konfirmasi','dikonfirmasi'=>'Dikonfirmasi','selesai'=>'Selesai','dibatalkan'=>'Dibatalkan']; ?>
-<div class="flex justify-between items-start mb-6">
-        <div><p class="text-gray-500 text-xs">Kode Booking</p><p class="font-extrabold text-lg font-mono"><?= $pemesanan->kode_booking; ?></p></div>
-        <span class="status-badge <?= 'status-' . $pemesanan->status_pemesanan; ?>"><?= ['pending'=>'Menunggu Konfirmasi','dikonfirmasi'=>'Dikonfirmasi','selesai'=>'Selesai','dibatalkan'=>'Dibatalkan'][$pemesanan->status_pemesanan]; ?></span>
-    </div>
-        <div class="grid grid-cols-2 gap-4 text-sm border-t border-gray-100 pt-4">
-            <div><p class="text-gray-400 text-xs">Pemesan</p><p class="font-semibold"><?= $pemesanan->nama_lengkap; ?></p></div>
-            <div><p class="text-gray-400 text-xs">Email</p><p class="font-semibold"><?= $pemesanan->email; ?></p></div>
-            <div><p class="text-gray-400 text-xs">Paket</p><p class="font-semibold"><?= $pemesanan->nama_paket; ?></p></div>
-            <div><p class="text-gray-400 text-xs">Kategori Program</p><p class="font-semibold">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-6 border-b border-slate-100">
+            <div>
+                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Kode Booking</p>
+                <p class="font-extrabold text-lg font-mono text-slate-800"><?= $pemesanan->kode_booking; ?></p>
+            </div>
+        <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold <?= $pemesanan->status_pemesanan == 'pending' ? 'bg-amber-100 text-amber-700 border-2 border-amber-200' : ($pemesanan->status_pemesanan == 'dikonfirmasi' ? 'bg-emerald-100 text-emerald-700 border-2 border-emerald-200' : ($pemesanan->status_pemesanan == 'selesai' ? 'bg-brand-100 text-brand-700 border-2 border-brand-200' : 'bg-red-100 text-red-700 border-2 border-red-200')); ?>">
+            <span class="w-1.5 h-1.5 rounded-full <?= $pemesanan->status_pemesanan == 'pending' ? 'bg-amber-500' : ($pemesanan->status_pemesanan == 'dikonfirmasi' ? 'bg-emerald-500' : ($pemesanan->status_pemesanan == 'selesai' ? 'bg-brand-500' : 'bg-red-500')); ?>"></span>
+            <?= ['pending'=>'Menunggu Konfirmasi','dikonfirmasi'=>'Dikonfirmasi','selesai'=>'Selesai','dibatalkan'=>'Dibatalkan'][$pemesanan->status_pemesanan]; ?>
+        </span>
+        </div>
+        <div class="grid grid-cols-2 gap-4 text-sm border-t border-slate-100 pt-4">
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Pemesan</p>
+                <p class="font-semibold text-slate-800"><?= $pemesanan->nama_lengkap; ?></p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Email</p>
+                <p class="font-semibold text-slate-800"><?= $pemesanan->email; ?></p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Paket</p>
+                <p class="font-semibold text-slate-800"><?= $pemesanan->nama_paket; ?></p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Kategori Program</p>
+                <p class="font-semibold">
                 <?php if (!empty($pemesanan->nama_kategori)): ?>
                 <span class="inline-flex items-center gap-1 text-brand-700"><span class="material-symbols-rounded text-[14px]"><?= $pemesanan->kategori_icon; ?></span><?= $pemesanan->nama_kategori; ?></span>
                 <?php else: ?>
                 <span class="text-gray-300 text-xs">Belum dipilih</span>
                 <?php endif; ?>
             </p></div>
-            <div><p class="text-gray-400 text-xs">Keberangkatan</p><p class="font-semibold"><?= date('d M Y', strtotime($pemesanan->tgl_keberangkatan)); ?></p></div>
-            <div><p class="text-gray-400 text-xs">Peserta</p><p class="font-semibold"><?= $pemesanan->jumlah_peserta; ?> orang</p></div>
-            <div><p class="text-gray-400 text-xs">Harga/orang</p><p class="font-semibold">Rp <?= number_format($pemesanan->harga, 0, ',', '.'); ?></p></div>
-            <div><p class="text-gray-400 text-xs">Tipe Pembayaran</p><p class="font-semibold"><?= ($pemesanan->tipe_pembayaran ?? 'full') == 'dp' ? 'DP (Uang Muka)' : 'Lunas (Full)'; ?></p></div>
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Keberangkatan</p>
+                <p class="font-semibold text-slate-800"><?= date('d M Y', strtotime($pemesanan->tgl_keberangkatan)); ?></p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Peserta</p>
+                <p class="font-semibold text-slate-800"><?= $pemesanan->jumlah_peserta; ?> orang</p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Harga/orang</p>
+                <p class="font-semibold text-slate-800">Rp <?= number_format($pemesanan->harga, 0, ',', '.'); ?></p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Tipe Pembayaran</p>
+                <p class="font-semibold text-slate-800"><?= ($pemesanan->tipe_pembayaran ?? 'full') == 'dp' ? 'DP (Uang Muka)' : 'Lunas (Full)'; ?></p>
+            </div>
         </div>
         <div class="border-t border-gray-100 mt-4 pt-4 space-y-2">
             <div class="flex justify-between items-center">

@@ -28,16 +28,26 @@
             <p class="text-slate-500 mb-8">Masukkan email yang terdaftar untuk mendapatkan token reset</p>
 
             <?php if ($this->session->flashdata('error')): ?>
-            <div class="flex items-center gap-3 bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-xl mb-6 animate-slide-down">
-                <span class="material-symbols-rounded text-red-400">error</span>
-                <span class="text-sm"><?= $this->session->flashdata('error'); ?></span>
+            <div class="bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 text-red-800 px-5 py-4 rounded-2xl mb-6 flex items-start gap-3 animate-slide-down shadow-lg shadow-red-500/10">
+                <div class="w-8 h-8 bg-red-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-rounded text-white text-lg">error</span>
+                </div>
+                <div class="flex-1">
+                    <p class="font-bold text-sm mb-0.5">Gagal</p>
+                    <p class="text-sm text-red-700"><?= $this->session->flashdata('error'); ?></p>
+                </div>
             </div>
             <?php endif; ?>
 
             <?php if ($this->session->flashdata('success')): ?>
-            <div class="bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 px-5 py-4 rounded-xl mb-6 animate-slide-down">
-                <span class="material-symbols-rounded text-emerald-500 text-sm">check_circle</span>
-                <span class="text-sm"><?= $this->session->flashdata('success'); ?></span>
+            <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl mb-6 flex items-start gap-3 animate-slide-down shadow-lg shadow-emerald-500/10">
+                <div class="w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-rounded text-white text-lg">check_circle</span>
+                </div>
+                <div class="flex-1">
+                    <p class="font-bold text-sm mb-0.5">Berhasil</p>
+                    <p class="text-sm text-emerald-700"><?= $this->session->flashdata('success'); ?></p>
+                </div>
             </div>
             <?php endif; ?>
 

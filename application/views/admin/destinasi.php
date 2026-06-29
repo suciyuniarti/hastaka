@@ -1,11 +1,15 @@
 <?php if ($this->session->flashdata('success')): ?>
-<div class="flash-success flex items-center gap-3 mb-6">
-    <span class="material-symbols-rounded text-emerald-500">check_circle</span>
-    <?= $this->session->flashdata('success'); ?>
+<div class="flash-success" onclick="this.classList.add('flash-hide'); setTimeout(() => this.remove(), 300);">
+    <span class="material-symbols-rounded">check_circle</span>
+    <div class="flash-content">
+        <span class="flash-title">Berhasil</span>
+        <span class="flash-message"><?= $this->session->flashdata('success'); ?></span>
+    </div>
 </div>
+<div class="flash-overlay" onclick="this.remove()"></div>
 <?php endif; ?>
 
-<div class="page-header animate-fade-in-up">
+<div class="page-header">
     <div class="page-header-icon">
         <span class="material-symbols-rounded">place</span>
     </div>
@@ -15,7 +19,7 @@
     </div>
 </div>
 
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6 animate-fade-in-up" style="animation-delay: 0.1s;">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
     <div class="search-bar flex-1 w-full sm:w-auto">
         <form method="GET" action="<?= base_url('admin/destinasi'); ?>" class="flex items-center gap-3 w-full">
             <label class="text-slate-400 text-sm font-semibold whitespace-nowrap" style="font-family: 'Inter', sans-serif;">Filter:</label>
@@ -33,7 +37,7 @@
     <a href="<?= base_url('admin/destinasi/tambah'); ?>" class="btn btn-primary whitespace-nowrap"><span class="material-symbols-rounded text-lg">add</span> Tambah Destinasi</a>
 </div>
 
-<div class="admin-table-wrap animate-fade-in-up">
+<div class="admin-table-wrap">
     <div class="overflow-x-auto">
         <table class="admin-table">
             <thead>

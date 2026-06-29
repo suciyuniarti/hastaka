@@ -1,35 +1,37 @@
 <?php if ($this->session->flashdata('success')): ?>
-<div class="flash-success flex items-center gap-3 mb-6">
-    <span class="material-symbols-rounded text-emerald-500">check_circle</span>
-    <?= $this->session->flashdata('success'); ?>
+<div class="flash-success" onclick="this.classList.add('flash-hide'); setTimeout(() => this.remove(), 300);">
+    <span class="material-symbols-rounded">check_circle</span>
+    <div class="flash-content">
+        <span class="flash-title">Berhasil</span>
+        <span class="flash-message"><?= $this->session->flashdata('success'); ?></span>
+    </div>
 </div>
+<div class="flash-overlay" onclick="this.remove()"></div>
 <?php endif; ?>
 
-<div class="flex flex-col gap-4 mb-6 animate-fade-in-up">
-    <div class="page-header" style="margin-bottom: 0;">
-        <div class="page-header-icon">
-            <span class="material-symbols-rounded">luggage</span>
-        </div>
-        <div class="page-header-content">
-            <h1>Kelola Paket Wisata</h1>
-            <p><?= $total_paket ?? count($paket ?? []); ?> paket terdaftar</p>
-        </div>
+<div class="page-header">
+    <div class="page-header-icon">
+        <span class="material-symbols-rounded">luggage</span>
     </div>
+    <div class="page-header-content">
+        <h1>Kelola Paket Wisata</h1>
+        <p><?= $total_paket ?? count($paket ?? []); ?> paket terdaftar</p>
+    </div>
+</div>
 
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-        <div class="search-bar flex-1 w-full sm:w-auto">
-            <form method="GET" action="<?= base_url('admin/paket'); ?>" class="flex gap-3 w-full">
-                <div class="relative flex-1">
-                    <input type="text" name="search" placeholder="Cari nama paket..." value="<?= $this->input->get('search'); ?>" class="w-full">
-                </div>
-                <button type="submit" class="btn btn-primary"><span class="material-symbols-rounded">search</span> Cari</button>
-                <?php if ($this->input->get('search')): ?>
-                <a href="<?= base_url('admin/paket'); ?>" class="btn btn-secondary"><span class="material-symbols-rounded">close</span> Reset</a>
-                <?php endif; ?>
-            </form>
-        </div>
-        <a href="<?= base_url('admin/paket/tambah'); ?>" class="btn btn-primary whitespace-nowrap"><span class="material-symbols-rounded">add</span> Tambah Paket</a>
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+    <div class="search-bar flex-1 w-full sm:w-auto">
+        <form method="GET" action="<?= base_url('admin/paket'); ?>" class="flex gap-3 w-full">
+            <div class="relative flex-1">
+                <input type="text" name="search" placeholder="Cari nama paket..." value="<?= $this->input->get('search'); ?>" class="w-full">
+            </div>
+            <button type="submit" class="btn btn-primary"><span class="material-symbols-rounded">search</span> Cari</button>
+            <?php if ($this->input->get('search')): ?>
+            <a href="<?= base_url('admin/paket'); ?>" class="btn btn-secondary"><span class="material-symbols-rounded">close</span> Reset</a>
+            <?php endif; ?>
+        </form>
     </div>
+    <a href="<?= base_url('admin/paket/tambah'); ?>" class="btn btn-primary whitespace-nowrap"><span class="material-symbols-rounded text-lg">add</span> Tambah Paket</a>
 </div>
 
 <div class="admin-table-wrap">
@@ -49,7 +51,7 @@
             <tbody>
                 <?php if (!empty($paket)): ?>
                 <?php foreach ($paket as $i => $p): ?>
-                <tr class="border-b border-slate-100 hover:bg-sky-50/60 transition whitespace-nowrap <?= ($i % 2 == 0) ? '' : 'bg-slate-50/50'; ?> animate-fade-in-up" style="animation-delay: <?= $i * 0.05; ?>s;">
+                <tr class="border-b border-slate-100 hover:bg-sky-50/60 transition whitespace-nowrap <?= ($i % 2 == 0) ? '' : 'bg-slate-50/50'; ?>">
                             <td class="py-4 px-4 text-slate-400 text-sm font-mono td-no"><?= $i + 1; ?></td>
                             <td class="py-4 px-4">
                                 <div class="relative group">
@@ -116,4 +118,5 @@
                 </div>
             </div>
             <?php endif; ?>
+    </div>
 </div>

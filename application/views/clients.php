@@ -1,4 +1,4 @@
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<main class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50 px-4 sm:px-6 lg:px-8 py-10">
     <!-- Header -->
     <div class="text-center mb-14 animate-fade-in-up">
         <div class="inline-flex items-center gap-2 bg-brand-50 border border-brand-200 rounded-full px-4 py-1.5 text-brand-700 text-sm font-semibold mb-4">
@@ -10,22 +10,34 @@
     </div>
 
     <!-- Stats -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14 animate-fade-in-up stagger-1">
-        <div class="bg-white rounded-2xl p-5 text-center shadow-lg shadow-brand-500/10 border border-brand-100">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
+        <div class="group bg-white rounded-2xl p-5 text-center shadow-md shadow-slate-200/50 border-2 border-slate-200/80 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <span class="material-symbols-rounded text-white text-2xl">groups</span>
+            </div>
             <p class="text-3xl font-extrabold gradient-text"><?= $total_klien ?? 0; ?>+</p>
-            <p class="text-slate-500 text-sm mt-1">Total Klien</p>
+            <p class="text-slate-500 text-xs font-semibold mt-1">Total Klien</p>
         </div>
-        <div class="bg-white rounded-2xl p-5 text-center shadow-lg shadow-brand-500/10 border border-brand-100">
+        <div class="group bg-white rounded-2xl p-5 text-center shadow-md shadow-slate-200/50 border-2 border-slate-200/80 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.2s;">
+            <div class="w-12 h-12 bg-gradient-to-br from-sky-500 to-sky-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <span class="material-symbols-rounded text-white text-2xl">category</span>
+            </div>
             <p class="text-3xl font-extrabold gradient-text">4</p>
-            <p class="text-slate-500 text-sm mt-1">Kategori Klien</p>
+            <p class="text-slate-500 text-xs font-semibold mt-1">Kategori Klien</p>
         </div>
-        <div class="bg-white rounded-2xl p-5 text-center shadow-lg shadow-brand-500/10 border border-brand-100">
+        <div class="group bg-white rounded-2xl p-5 text-center shadow-md shadow-slate-200/50 border-2 border-slate-200/80 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.3s;">
+            <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <span class="material-symbols-rounded text-white text-2xl">flight</span>
+            </div>
             <p class="text-3xl font-extrabold gradient-text">100+</p>
-            <p class="text-slate-500 text-sm mt-1">Perjalanan</p>
+            <p class="text-slate-500 text-xs font-semibold mt-1">Perjalanan</p>
         </div>
-        <div class="bg-white rounded-2xl p-5 text-center shadow-lg shadow-brand-500/10 border border-brand-100">
+        <div class="group bg-white rounded-2xl p-5 text-center shadow-md shadow-slate-200/50 border-2 border-slate-200/80 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.4s;">
+            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <span class="material-symbols-rounded text-white text-2xl">emoji_events</span>
+            </div>
             <p class="text-3xl font-extrabold gradient-text">5</p>
-            <p class="text-slate-500 text-sm mt-1">Tahun Pengalaman</p>
+            <p class="text-slate-500 text-xs font-semibold mt-1">Tahun Pengalaman</p>
         </div>
     </div>
 
@@ -60,12 +72,12 @@
         </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <?php foreach ($items as $k): ?>
-            <div class="bg-white rounded-2xl p-5 shadow-md shadow-brand-500/10 border border-brand-100 hover:border-brand-300 hover:shadow-lg transition-all group">
+            <div class="group bg-white rounded-2xl p-5 shadow-md shadow-slate-200/50 border-2 border-slate-200/80 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300">
                 <div class="flex items-start gap-4">
                     <?php if (!empty($k->logo)): ?>
-                    <img src="<?= base_url('application/assets/images/klien/' . $k->logo); ?>" class="w-14 h-14 rounded-xl object-cover flex-shrink-0 border border-gray-200 group-hover:scale-110 transition-transform" onerror="this.style.display='none'">
+                    <img src="<?= base_url('application/assets/images/klien/' . $k->logo); ?>" class="w-14 h-14 rounded-xl object-cover flex-shrink-0 border-2 border-slate-200 group-hover:scale-110 group-hover:border-brand-300 transition-all duration-300" onerror="this.style.display='none'">
                     <?php else: ?>
-                    <div class="w-14 h-14 <?= $cfg[2]; ?> rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform border <?= $cfg[4]; ?>">
+                    <div class="w-14 h-14 <?= $cfg[2]; ?> rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 border-2 <?= $cfg[4]; ?>">
                         <span class="material-symbols-rounded <?= $cfg[3]; ?> text-2xl"><?= $cfg[0]; ?></span>
                     </div>
                     <?php endif; ?>

@@ -1,4 +1,4 @@
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<main class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50 px-4 sm:px-6 lg:px-8 py-10">
     <!-- Header -->
     <div class="text-center mb-14 animate-fade-in-up">
         <div class="inline-flex items-center gap-2 bg-brand-50 border border-brand-200 rounded-full px-4 py-1.5 text-brand-700 text-sm font-semibold mb-4">
@@ -24,33 +24,36 @@
         ?>
         <?php foreach ($kategori as $i => $kat): ?>
         <?php $c = $colors[$i % count($colors)]; ?>
-        <div class="bg-white rounded-3xl overflow-hidden shadow-lg shadow-brand-500/10 border border-brand-100 hover:shadow-xl hover:border-brand-300 transition-all group animate-fade-in-up">
+        <div class="group bg-white rounded-2xl overflow-hidden shadow-md shadow-slate-200/50 border-2 border-slate-200/80 hover:shadow-2xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: <?= $i * 0.1; ?>s;">
             <div class="bg-gradient-to-r <?= $c['from']; ?> <?= $c['to']; ?> p-6 relative overflow-hidden">
                 <div class="absolute inset-0 opacity-10">
                     <svg class="w-full h-full" viewBox="0 0 200 100"><defs><pattern id="prog-dots-<?= $i; ?>" width="15" height="15" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white"/></pattern></defs><rect width="100%" height="100%" fill="url(#prog-dots-<?= $i; ?>)"/></svg>
                 </div>
                 <div class="relative z-10">
-                    <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-3 backdrop-blur group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-rounded text-white text-3xl"><?= $kat->icon ?? 'school'; ?></span>
-                    </div>
+                <div class="w-14 h-14 bg-white/25 backdrop-blur rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                    <span class="material-symbols-rounded text-white text-3xl"><?= $kat->icon ?? 'school'; ?></span>
+                </div>
                     <h3 class="text-xl font-extrabold text-white"><?= $kat->nama_kategori; ?></h3>
                 </div>
             </div>
             <div class="p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-brand-600 transition-colors"><?= $kat->nama_kategori; ?></h3>
                 <?php if (!empty($kat->sasaran)): ?>
                 <div class="flex items-center gap-2 mb-3">
-                    <span class="material-symbols-rounded text-gray-400 text-[16px]">target</span>
-                    <p class="text-sm font-semibold <?= $c['text']; ?>"><?= $kat->sasaran; ?></p>
+                    <span class="material-symbols-rounded text-brand-500 text-[16px]">target</span>
+                    <p class="text-sm font-semibold text-gray-700"><?= $kat->sasaran; ?></p>
                 </div>
                 <?php endif; ?>
                 <?php if (!empty($kat->deskripsi)): ?>
-                <p class="text-gray-500 text-sm leading-relaxed mb-4"><?= $kat->deskripsi; ?></p>
+                <p class="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-2"><?= $kat->deskripsi; ?></p>
                 <?php endif; ?>
-                <div class="flex items-center gap-2">
-                    <span class="<?= $c['bg']; ?> <?= $c['text']; ?> text-xs font-bold px-3 py-1 rounded-full border <?= $c['border']; ?>">
-                        <?= $kat->icon ?? 'school'; ?>
-                    </span>
-                    <span class="text-gray-400 text-xs">Program Hastaka</span>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                    <div class="flex items-center gap-2">
+                        <span class="<?= $c['bg']; ?> <?= $c['text']; ?> text-xs font-bold px-3 py-1 rounded-full border <?= $c['border']; ?>">
+                            <?= $kat->icon ?? 'school'; ?>
+                        </span>
+                    </div>
+                    <span class="text-gray-400 text-xs font-medium">Program Hastaka</span>
                 </div>
             </div>
         </div>

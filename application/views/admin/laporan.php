@@ -1,4 +1,4 @@
-<div class="page-header animate-fade-in-up">
+<div class="page-header">
     <div class="page-header-icon">
         <span class="material-symbols-rounded">analytics</span>
     </div>
@@ -8,7 +8,7 @@
     </div>
 </div>
 
-<div class="admin-card animate-fade-in-up" style="animation-delay: 0.1s;">
+<div class="admin-card">
     <div class="flex items-center gap-2 mb-5">
         <span class="material-symbols-rounded text-sky-500">date_range</span>
         <h3 class="font-bold text-slate-700">Filter Periode</h3>

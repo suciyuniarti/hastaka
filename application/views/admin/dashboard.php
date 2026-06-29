@@ -1,22 +1,34 @@
 <?php if ($this->session->flashdata('success')): ?>
-<div class="flash-success flex items-center gap-3 mb-6">
-  <span class="material-symbols-rounded text-emerald-500">check_circle</span>
-  <?= $this->session->flashdata('success'); ?>
+<div class="flash-success" onclick="this.classList.add('flash-hide'); setTimeout(() => this.remove(), 300);">
+  <span class="material-symbols-rounded">check_circle</span>
+  <div class="flash-content">
+    <span class="flash-title">Berhasil</span>
+    <span class="flash-message"><?= $this->session->flashdata('success'); ?></span>
+  </div>
 </div>
+<div class="flash-overlay" onclick="this.remove()"></div>
 <?php endif; ?>
 
 <?php if ($this->session->flashdata('error')): ?>
-<div class="flash-error flex items-center gap-3 mb-6">
-  <span class="material-symbols-rounded text-red-500">error</span>
-  <?= $this->session->flashdata('error'); ?>
+<div class="flash-error" onclick="this.classList.add('flash-hide'); setTimeout(() => this.remove(), 300);">
+  <span class="material-symbols-rounded">error</span>
+  <div class="flash-content">
+    <span class="flash-title">Gagal</span>
+    <span class="flash-message"><?= $this->session->flashdata('error'); ?></span>
+  </div>
 </div>
+<div class="flash-overlay" onclick="this.remove()"></div>
 <?php endif; ?>
 
 <?php if ($this->session->flashdata('info')): ?>
-<div class="flash-info flex items-center gap-3 mb-6">
-  <span class="material-symbols-rounded text-sky-500">info</span>
-  <?= $this->session->flashdata('info'); ?>
+<div class="flash-info" onclick="this.classList.add('flash-hide'); setTimeout(() => this.remove(), 300);">
+  <span class="material-symbols-rounded">info</span>
+  <div class="flash-content">
+    <span class="flash-title">Informasi</span>
+    <span class="flash-message"><?= $this->session->flashdata('info'); ?></span>
+  </div>
 </div>
+<div class="flash-overlay" onclick="this.remove()"></div>
 <?php endif; ?>
 
 <div class="page-header animate-fade-in-up">

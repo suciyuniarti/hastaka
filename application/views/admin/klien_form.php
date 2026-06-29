@@ -1,17 +1,18 @@
 <?php $is_edit = isset($klien); ?>
 
-<div class="page-header animate-fade-in-up">
-    <div class="page-header-icon">
-        <span class="material-symbols-rounded"><?= $is_edit ? 'edit' : 'add'; ?></span>
-    </div>
-    <div class="page-header-content">
-        <h1><?= $is_edit ? 'Edit' : 'Tambah'; ?> Klien</h1>
-        <p><?= $is_edit ? 'Update data klien' : 'Tambah klien baru'; ?></p>
-    </div>
-</div>
+<div class="space-y-6">
+    <div class="admin-form-wrap max-w-3xl">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 bg-sky-50 border border-sky-100 rounded-xl flex items-center justify-center">
+                <span class="material-symbols-rounded text-sky-600 text-xl"><?= $is_edit ? 'edit' : 'add'; ?></span>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-slate-900"><?= $is_edit ? 'Edit' : 'Tambah'; ?> Klien</h1>
+                <p class="text-sm text-slate-500"><?= $is_edit ? 'Perbarui data klien' : 'Tambah klien baru'; ?></p>
+            </div>
+        </div>
 
-<div class="admin-form-wrap">
-    <?= form_open_multipart($is_edit ? 'admin/klien/edit/' . $klien->id_klien : 'admin/klien/tambah', ['class' => 'space-y-5']); ?>
+        <?= form_open_multipart($is_edit ? 'admin/klien/edit/' . $klien->id_klien : 'admin/klien/tambah', ['class' => 'space-y-5']); ?>
 
         <div class="form-group">
             <label class="form-label">Nama Klien <span class="required">*</span></label>
@@ -35,7 +36,7 @@
         <div class="form-group">
             <label class="form-label">Logo / Gambar</label>
             <?php if ($is_edit && !empty($klien->logo)): ?>
-            <div class="file-preview mb-3">
+            <div class="file-preview mb-4">
                 <img src="<?= base_url('application/assets/images/klien/' . $klien->logo); ?>" onerror="this.style.display='none'">
                 <div class="file-preview-info">
                     <p>Logo saat ini</p>
@@ -53,16 +54,14 @@
 
         <div class="form-group">
             <label class="form-label">Deskripsi</label>
-            <textarea name="deskripsi" rows="3" class="form-input"
-                placeholder="Deskripsi singkat tentang klien..."><?= set_value('deskripsi', $is_edit ? $klien->deskripsi : ''); ?></textarea>
+            <textarea name="deskripsi" rows="3" class="form-input" placeholder="Deskripsi singkat tentang klien..."><?= set_value('deskripsi', $is_edit ? $klien->deskripsi : ''); ?></textarea>
         </div>
 
         <div class="form-grid">
             <div class="form-group">
                 <label class="form-label">Website</label>
                 <input type="url" name="website" value="<?= set_value('website', $is_edit ? $klien->website : ''); ?>"
-                    class="form-input"
-                    placeholder="https://example.com">
+                    class="form-input" placeholder="https://example.com">
             </div>
             <div class="form-group">
                 <label class="form-label">Tanggal Kerjasama</label>
@@ -73,14 +72,13 @@
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">
-                <span class="material-symbols-rounded text-xl">save</span>
+                <span class="material-symbols-rounded text-lg">save</span>
                 <?= $is_edit ? 'Update' : 'Simpan'; ?> Klien
             </button>
             <a href="<?= base_url('admin/klien'); ?>" class="btn btn-secondary">
-                <span class="material-symbols-rounded text-xl">close</span> Batal
+                <span class="material-symbols-rounded">close</span> Batal
             </a>
         </div>
-
-    <?= form_close(); ?>
-
+        <?= form_close(); ?>
+    </div>
 </div>

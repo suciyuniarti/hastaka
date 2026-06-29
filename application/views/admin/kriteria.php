@@ -1,4 +1,4 @@
-<div class="page-header animate-fade-in-up">
+<div class="page-header">
     <div class="page-header-icon">
         <span class="material-symbols-rounded">tune</span>
     </div>
@@ -8,7 +8,7 @@
     </div>
 </div>
 
-<div class="admin-card mb-6 flex items-start gap-3 animate-fade-in-up" style="animation-delay: 0.1s;">
+<div class="admin-card mb-6 flex items-start gap-3">
     <span class="material-symbols-rounded text-sky-500 mt-0.5">info</span>
     <div class="text-sm text-sky-800">
         <p class="font-bold mb-1">Metode SAW (Simple Additive Weighting)</p>
@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<div class="admin-table-wrap animate-fade-in-up" style="animation-delay: 0.15s;">
+<div class="admin-table-wrap">
     <div class="overflow-x-auto">
         <table class="admin-table text-sm">
             <thead>
@@ -59,7 +59,7 @@
                         <span class="badge <?= 'badge-' . $kr->sifat; ?>"><?= strtoupper($kr->sifat); ?></span>
                     </td>
                     <td class="py-4 px-5 text-center">
-                            <a href="<?= base_url('admin/kriteria/edit/' . $kr->id_kriteria); ?>" class="btn btn-primary btn-icon-sm" title="Edit"><span class="material-symbols-rounded text-sm">edit</span> Edit</a>
+                        <a href="<?= base_url('admin/kriteria/edit/' . $kr->id_kriteria); ?>" class="btn btn-primary btn-icon-sm" title="Edit"><span class="material-symbols-rounded text-sm">edit</span> Edit</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>

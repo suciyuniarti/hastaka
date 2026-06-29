@@ -1,4 +1,4 @@
-<div class="page-header animate-fade-in-up">
+<div class="page-header">
     <div class="page-header-icon">
         <span class="material-symbols-rounded">tune</span>
     </div>
@@ -35,13 +35,13 @@
     <?php endforeach; ?>
 
 <div class="form-actions">
-            <button type="submit" class="btn btn-success">
-                <span class="material-symbols-rounded text-lg">save</span> Simpan Nilai
-            </button>
-            <a href="<?= base_url('admin/paket'); ?>" class="btn btn-secondary">
-                <span class="material-symbols-rounded text-lg">close</span> Batal
-            </a>
-        </div>
+        <button type="submit" class="btn btn-success">
+            <span class="material-symbols-rounded text-lg">save</span> Simpan Nilai
+        </button>
+        <a href="<?= base_url('admin/paket'); ?>" class="btn btn-secondary">
+            <span class="material-symbols-rounded text-lg">close</span> Batal
+        </a>
+    </div>
 
     <?= form_close(); ?>
 
