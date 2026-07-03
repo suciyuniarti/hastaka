@@ -216,6 +216,52 @@
     </div>
 </section>
 
+<!-- BUS REFERENCES -->
+<section class="bg-gradient-to-br from-slate-50 to-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl font-extrabold text-gray-900">Referensi <span class="gradient-text">Bus</span></h2>
+            <p class="text-gray-500 mt-2 max-w-lg mx-auto">Mitra transportasi bus pariwisata terpercaya untuk kenyamanan perjalanan Anda</p>
+        </div>
+        
+        <?php if (!empty($bus_partner)): ?>
+        <div class="relative">
+            <div class="bus-gallery-scroll sm:grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 sm:gap-6">
+                <?php foreach ($bus_partner as $i => $bus): ?>
+                <div class="bus-card-item group bg-white rounded-2xl overflow-hidden border-2 border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: <?= $i * 0.05; ?>s;">
+                    <div class="relative aspect-[4/3] bg-slate-100">
+                        <img src="<?= base_url('application/assets/images/bus/' . $bus->gambar); ?>" 
+                            alt="<?= $bus->nama; ?>" 
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            onerror="this.src='https://images.unsplash.com/photo-1549464188-d0526bfc0f2b'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <p class="font-bold text-sm text-center"><?= $bus->nama; ?></p>
+                            <?php if (!empty($bus->kota)): ?>
+                            <p class="text-xs text-center text-white/80"><?= $bus->kota; ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php else: ?>
+        <div class="text-center py-16">
+            <span class="material-symbols-rounded text-gray-300 text-6xl">directions_bus</span>
+            <p class="text-gray-400 mt-4 text-lg">Belum ada data mitra bus tersedia.</p>
+        </div>
+        <?php endif; ?>
+        
+        <div class="mt-10 text-center">
+            <p class="text-sm text-gray-600 bg-white/50 backdrop-blur-sm rounded-xl p-4 inline-block max-w-3xl">
+                Referensi bus dapat disesuaikan dengan kebutuhan pelanggan, budget, kapasitas, ketersediaan armada, dan kesepakatan. 
+                Armada yang digunakan akan disesuaikan dengan penyedia transportasi yang bekerja sama.
+            </p>
+        </div>
+    </div>
+</section>
+
 <!-- HOW IT WORKS -->
 <section class="bg-white border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">

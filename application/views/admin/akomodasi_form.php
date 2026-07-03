@@ -1,0 +1,113 @@
+<?php $is_edit = isset($akomodasi) && $akomodasi; ?>
+
+<div class="space-y-6">
+    <div class="admin-form-wrap max-w-2xl">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div class="w-10 h-10 bg-sky-50 border border-sky-100 rounded-xl flex items-center justify-center">
+                <span class="material-symbols-rounded text-sky-600 text-xl"><?= $is_edit ? 'edit' : 'add'; ?></span>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-slate-900"><?= $is_edit ? 'Edit' : 'Tambah'; ?> Akomodasi</h1>
+                <p class="text-sm text-slate-500"><?= $is_edit ? 'Perbarui informasi akomodasi' : 'Tambahkan akomodasi paket wisata baru'; ?></p>
+            </div>
+        </div>
+
+        <?= form_open($is_edit ? 'admin/akomodasi/edit/' . $akomodasi->id_akomodasi : 'admin/akomodasi/tambah', ['class' => 'space-y-5']); ?>
+
+        <div class="form-group">
+            <label class="form-label">
+                <span class="material-symbols-rounded text-sky-500">hotel</span> Nama Akomodasi <span class="required">*</span>
+            </label>
+            <input type="text" name="nama_akomodasi" value="<?= set_value('nama_akomodasi', $is_edit ? $akomodasi->nama_akomodasi : ''); ?>"
+                class="form-input" required>
+            <?= form_error('nama_akomodasi', '<p class="form-error"><span class="material-symbols-rounded text-sm">error</span>', '</p>'); ?>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">
+                <span class="material-symbols-rounded text-sky-500">icons</span> Icon (Material Symbols)
+            </label>
+            <div class="flex items-center gap-3">
+                <input type="text" name="icon" id="icon-input" value="<?= set_value('icon', $is_edit ? $akomodasi->icon : 'hotel'); ?>"
+                    placeholder="hotel, directions_bus, flight, etc."
+                    class="form-input flex-1" onchange="updateIconPreview(this.value)">
+                <div id="icon-preview" class="w-12 h-12 bg-sky-50 border border-sky-100 rounded-xl flex items-center justify-center text-sky-600 shadow-sm">
+                    <span class="material-symbols-rounded text-2xl"><?= set_value('icon', $is_edit ? $akomodasi->icon : 'hotel'); ?></span>
+                </div>
+            </div>
+            <p class="form-help">Preview icon otomatis - gunakan nama icon dari Material Symbols</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">
+                <span class="material-symbols-rounded text-sky-500">payments</span> Harga Tambahan (Rp)
+            </label>
+            <input type="number" name="harga_tambahan" value="<?= set_value('harga_tambahan', $is_edit ? $akomodasi->harga_tambahan : '0'); ?>"
+                class="form-input" min="0" placeholder="0">
+            <p class="form-help">Harga tambahan per orang (isi 0 jika gratis)</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">
+                <span class="material-symbols-rounded text-sky-500">description</span> Deskripsi
+            </label>
+            <textarea name="deskripsi" rows="3" class="form-input" placeholder="Deskripsi akomodasi..."><?= set_value('deskripsi', $is_edit ? $akomodasi->deskripsi : ''); ?></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">
+                <span class="material-symbols-rounded text-sky-500">toggle_on</span> Status
+            </label>
+            <select name="is_active" class="form-input">
+                <option value="y" <?= set_select('is_active', 'y', $is_edit && $akomodasi->is_active == 'y'); ?>>Aktif</option>
+                <option value="n" <?= set_select('is_active', 'n', $is_edit && $akomodasi->is_active == 'n'); ?>>Non-Aktif</option>
+            </select>
+            <p class="form-help">Akomodasi non-aktif tidak akan muncul di form booking</p>
+        </div>
+
+        <?php if (!empty($paket_list)): ?>
+        <div class="form-group">
+            <label class="form-label">
+                <span class="material-symbols-rounded text-sky-500">luggage</span> Paket Wisata yang Menggunakan Akomodasi Ini
+            </label>
+            <p class="form-help" style="margin-bottom: 8px;">Pilih satu atau beberapa paket wisata</p>
+            <div class="checkbox-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px;">
+                <?php foreach ($paket_list as $p): ?>
+                <label class="checkbox-item" style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 13px; font-weight: 500; color: #475569;">
+                    <input type="checkbox" name="paket[]" value="<?= $p->id_paket; ?>" <?= in_array($p->id_paket, $selected_paket ?? []) ? 'checked' : ''; ?> style="accent-color: #0ea5e9; width: 16px; height: 16px;">
+                    <span><?= $p->nama_paket; ?></span>
+                </label>
+                <?php endforeach; ?>
+            </div>
+            <p class="form-help" id="paket-count" style="margin-top: 8px;"><?= count($selected_paket ?? []); ?> paket dipilih</p>
+        </div>
+        <?php endif; ?>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <span class="material-symbols-rounded text-lg"><?= $is_edit ? 'update' : 'save'; ?></span>
+                <?= $is_edit ? 'Update' : 'Simpan'; ?>
+            </button>
+            <a href="<?= base_url('admin/akomodasi'); ?>" class="btn btn-secondary">
+                <span class="material-symbols-rounded">close</span> Batal
+            </a>
+        </div>
+        <?= form_close(); ?>
+    </div>
+</div>
+
+<script>
+function updateIconPreview(value) {
+    document.querySelector('#icon-preview .material-symbols-rounded').textContent = value || 'hotel';
+}
+
+function updatePaketCount() {
+    var count = document.querySelectorAll('input[name="paket[]"]:checked').length;
+    var el = document.getElementById('paket-count');
+    if (el) el.textContent = count + ' paket dipilih';
+}
+document.addEventListener('change', function(e) {
+    if (e.target.name === 'paket[]') updatePaketCount();
+});
+document.addEventListener('DOMContentLoaded', updatePaketCount);
+</script>

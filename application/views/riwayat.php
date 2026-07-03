@@ -51,13 +51,18 @@
                         <p class="text-slate-400 text-xs">Peserta</p>
                         <p class="font-semibold text-slate-800"><?= $p->jumlah_peserta; ?> orang</p>
                     </div>
+                    <?php if (!empty($p->nama_akomodasi)): ?>
+                    <div>
+                        <p class="text-slate-400 text-xs">Akomodasi</p>
+                        <p class="font-semibold text-brand-700 flex items-center gap-1">
+                            <span class="material-symbols-rounded text-[12px]"><?= $p->akomodasi_icon ?? 'directions_bus'; ?></span>
+                            <?= $p->nama_akomodasi; ?>
+                        </p>
+                    </div>
+                    <?php endif; ?>
                     <div>
                         <p class="text-slate-400 text-xs">Total</p>
                         <p class="font-bold gradient-text">Rp <?= number_format($p->total_bayar, 0, ',', '.'); ?></p>
-                    </div>
-                    <div>
-                        <p class="text-slate-400 text-xs">Tanggal Pesan</p>
-                        <p class="font-semibold text-slate-800"><?= date('d M Y', strtotime($p->tgl_transaksi)); ?></p>
                     </div>
                 </div>
 

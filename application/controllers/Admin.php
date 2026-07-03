@@ -11,6 +11,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property Fasilitas_model $Fasilitas_model
  * @property Klien_model $Klien_model
  * @property Aktivitas_model $Aktivitas_model
+ * @property Akomodasi_model $Akomodasi_model
  */
 class Admin extends CI_Controller
 {
@@ -31,6 +32,8 @@ class Admin extends CI_Controller
         $this->load->model('Fasilitas_model');
         $this->load->model('Klien_model');
         $this->load->model('Aktivitas_model');
+        $this->load->model('Akomodasi_model');
+        $this->load->model('Partner_model');
     }
 
     // ========== DASHBOARD ==========
@@ -119,6 +122,7 @@ class Admin extends CI_Controller
 
         if ($this->form_validation->run() == FALSE) {
             $data['title'] = 'Tambah Paket - Admin';
+            $data['is_edit'] = FALSE;
             $data['kategori_list'] = $this->Kategori_model->get_all_kategori();
             $data['destinasi_list'] = $this->Destinasi_model->get_all_destinasi();
             $data['fasilitas_list'] = $this->Fasilitas_model->get_all_fasilitas();
@@ -129,7 +133,6 @@ class Admin extends CI_Controller
             $data['content_view'] = 'admin/paket_form';
             $this->load->view('admin', $data);
         } else {
-            // Hitung jumlah destinasi dari checkbox
             $id_destinasi_arr = $this->input->post('destinasi') ?: [];
             $id_fasilitas_arr = $this->input->post('fasilitas') ?: [];
             $id_aktivitas_arr = $this->input->post('aktivitas') ?: [];
@@ -194,6 +197,7 @@ class Admin extends CI_Controller
         $this->form_validation->set_rules('durasi_hari', 'Durasi', 'required|numeric');
 
         if ($this->form_validation->run() == FALSE) {
+            $data['is_edit'] = TRUE;
             $data['kategori_list'] = $this->Kategori_model->get_all_kategori();
             $data['destinasi_list'] = $this->Destinasi_model->get_all_destinasi();
             $data['fasilitas_list'] = $this->Fasilitas_model->get_all_fasilitas();
@@ -222,7 +226,7 @@ class Admin extends CI_Controller
                 'jumlah_destinasi' => count($id_destinasi_arr),
                 'jumlah_aktivitas' => count($id_aktivitas_arr),
                 'min_peserta' => $this->input->post('min_peserta', TRUE) ?: 1,
-                'status' => $this->input->post('status', TRUE) ?: 'tersedia'
+                    'status' => $this->input->post('status', TRUE) ?: 'tersedia'
             ];
 
             if (!empty($_FILES['foto']['name'])) {
@@ -298,38 +302,23 @@ class Admin extends CI_Controller
         $data['title'] = 'Kelola Kriteria SAW - Admin';
         $data['kriteria'] = $this->Paket_model->get_all_kriteria();
 
+        if ($this->input->post()) {
+            $sifat = $this->input->post('sifat');
+
+            if (!empty($sifat) && is_array($sifat)) {
+                foreach ($sifat as $id_kriteria => $nilai_sifat) {
+                    $update = [
+                        'sifat' => $nilai_sifat
+                    ];
+                    $this->Paket_model->update_kriteria($id_kriteria, $update);
+                }
+                $this->session->set_flashdata('success', 'Kriteria berhasil diupdate!');
+            }
+            redirect('admin/kriteria');
+        }
+
         $data['content_view'] = 'admin/kriteria';
         $this->load->view('admin', $data);
-    }
-
-    public function kriteria_edit($id)
-    {
-        $data['title'] = 'Edit Kriteria - Admin';
-        $data['kriteria'] = $this->Paket_model->get_kriteria_by_id($id);
-
-        if (!$data['kriteria']) {
-            $this->session->set_flashdata('error', 'Kriteria tidak ditemukan!');
-            redirect('admin/kriteria');
-        }
-
-        $this->form_validation->set_rules('nama_kriteria', 'Nama Kriteria', 'required|trim');
-        $this->form_validation->set_rules('bobot', 'Bobot', 'required|numeric|greater_than_equal_to[0]|less_than_equal_to[1]');
-        $this->form_validation->set_rules('sifat', 'Sifat', 'required|in_list[benefit,cost]');
-
-        if ($this->form_validation->run() == FALSE) {
-            $data['content_view'] = 'admin/kriteria_edit';
-            $this->load->view('admin', $data);
-        } else {
-            $update = [
-                'nama_kriteria' => $this->input->post('nama_kriteria', TRUE),
-                'bobot' => $this->input->post('bobot', TRUE),
-                'sifat' => $this->input->post('sifat', TRUE)
-            ];
-
-            $this->Paket_model->update_kriteria($id, $update);
-            $this->session->set_flashdata('success', 'Kriteria berhasil diupdate!');
-            redirect('admin/kriteria');
-        }
     }
 
     // ========== MANAJEMEN USERS ==========
@@ -701,6 +690,90 @@ class Admin extends CI_Controller
         redirect('admin/aktivitas');
     }
 
+    // ========== AKOMODASI ==========
+    public function akomodasi($page = 0)
+    {
+        $data['title'] = 'Kelola Akomodasi - Admin';
+        $limit = 10;
+        $offset = (int) $page * $limit;
+        $data['akomodasi'] = $this->Akomodasi_model->get_all_active();
+        foreach ($data['akomodasi'] as $a) {
+            $a->paket_list = $this->Akomodasi_model->get_paket_by_akomodasi($a->id_akomodasi);
+        }
+        $data['total_akomodasi'] = count($data['akomodasi']);
+        $data['total_pages'] = 1;
+        $data['current_page'] = 0;
+        $data['content_view'] = 'admin/akomodasi';
+        $this->load->view('admin', $data);
+    }
+
+    public function akomodasi_tambah()
+    {
+        $this->form_validation->set_rules('nama_akomodasi', 'Nama Akomodasi', 'required|trim');
+
+        if ($this->form_validation->run() == FALSE) {
+            $data['title'] = 'Tambah Akomodasi - Admin';
+            $data['paket_list'] = $this->Paket_model->get_all_paket();
+            $data['selected_paket'] = [];
+            $data['content_view'] = 'admin/akomodasi_form';
+            $this->load->view('admin', $data);
+        } else {
+            $insert = [
+                'nama_akomodasi' => $this->input->post('nama_akomodasi', TRUE),
+                'icon' => $this->input->post('icon', TRUE) ?: 'hotel',
+                'harga_tambahan' => $this->input->post('harga_tambahan', TRUE) ?: 0,
+                'deskripsi' => $this->input->post('deskripsi', TRUE),
+                'is_active' => $this->input->post('is_active', TRUE) ?: 'y'
+            ];
+            $id_akomodasi = $this->Akomodasi_model->tambah_akomodasi($insert);
+            $id_paket_arr = $this->input->post('paket') ?: [];
+            $this->Akomodasi_model->set_paket_for_akomodasi($id_akomodasi, $id_paket_arr);
+            $this->session->set_flashdata('success', 'Akomodasi berhasil ditambahkan!');
+            redirect('admin/akomodasi');
+        }
+    }
+
+    public function akomodasi_edit($id)
+    {
+        $data['title'] = 'Edit Akomodasi - Admin';
+        $data['akomodasi'] = $this->Akomodasi_model->get_by_id($id);
+        if (!$data['akomodasi']) {
+            $this->session->set_flashdata('error', 'Akomodasi tidak ditemukan!');
+            redirect('admin/akomodasi');
+        }
+
+        $this->form_validation->set_rules('nama_akomodasi', 'Nama Akomodasi', 'required|trim');
+
+        if ($this->form_validation->run() == FALSE) {
+            $data['paket_list'] = $this->Paket_model->get_all_paket();
+            $data['selected_paket'] = array_map(function ($p) {
+                return $p->id_paket;
+            }, $this->Akomodasi_model->get_paket_by_akomodasi($id));
+            $data['content_view'] = 'admin/akomodasi_form';
+            $this->load->view('admin', $data);
+        } else {
+            $update = [
+                'nama_akomodasi' => $this->input->post('nama_akomodasi', TRUE),
+                'icon' => $this->input->post('icon', TRUE) ?: 'hotel',
+                'harga_tambahan' => $this->input->post('harga_tambahan', TRUE) ?: 0,
+                'deskripsi' => $this->input->post('deskripsi', TRUE),
+                'is_active' => $this->input->post('is_active', TRUE) ?: 'y'
+            ];
+            $this->Akomodasi_model->update_akomodasi($id, $update);
+            $id_paket_arr = $this->input->post('paket') ?: [];
+            $this->Akomodasi_model->set_paket_for_akomodasi($id, $id_paket_arr);
+            $this->session->set_flashdata('success', 'Akomodasi berhasil diupdate!');
+            redirect('admin/akomodasi');
+        }
+    }
+
+    public function akomodasi_hapus($id)
+    {
+        $this->Akomodasi_model->hapus_akomodasi($id);
+        $this->session->set_flashdata('success', 'Akomodasi berhasil dihapus!');
+        redirect('admin/akomodasi');
+    }
+
     // ========== HELPER: Upload Foto ==========
     private function _upload_foto()
     {
@@ -867,4 +940,5 @@ class Admin extends CI_Controller
             return ['status' => FALSE, 'error' => $this->upload->display_errors('', '')];
         }
     }
+
 }

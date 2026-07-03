@@ -8,6 +8,17 @@ class Pemesanan extends CI_Controller {
         parent::__construct();
         $this->load->model('Paket_model');
         $this->load->model('Transaksi_model');
+        $this->load->model('Akomodasi_model');
+        $this->load->model('Bank_model');
+    }
+
+    public function tentang_kami()
+    {
+        $data['title'] = 'Tentang Kami - Hastaka Holiday';
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/navbar');
+        $this->load->view('tentang_kami', $data);
+        $this->load->view('templates/footer');
     }
 
     public function index()
@@ -45,6 +56,7 @@ class Pemesanan extends CI_Controller {
 
         $data['title'] = 'Booking Paket - Hastaka Holiday';
         $data['paket'] = $this->Paket_model->get_paket_by_id($id_paket);
+        $data['akomodasi_list'] = $this->Akomodasi_model->get_by_paket($id_paket);
 
         if (!$data['paket']) {
             $this->session->set_flashdata('error', 'Paket tidak ditemukan!');
@@ -59,6 +71,7 @@ class Pemesanan extends CI_Controller {
         $this->form_validation->set_rules('titik_kumpul', 'Titik Kumpul', 'required|trim');
         $this->form_validation->set_rules('catatan', 'Catatan', 'trim');
         $this->form_validation->set_rules('tipe_pembayaran', 'Tipe Pembayaran', 'required|in_list[full,dp]');
+        $this->form_validation->set_rules('id_akomodasi[]', 'Akomodasi', 'required|numeric');
 
         // Custom validation: min peserta
         $min_peserta = $data['paket']->min_peserta ?? 1;
@@ -71,7 +84,26 @@ class Pemesanan extends CI_Controller {
             $this->load->view('templates/footer');
         } else {
             $jumlah = $this->input->post('jumlah_peserta', TRUE);
-            $total = $data['paket']->harga * $jumlah;
+            $id_akomodasi_array = $this->input->post('id_akomodasi', TRUE);
+            
+            // Handle both array (multiple selection) and single value
+            if (is_array($id_akomodasi_array)) {
+                $id_akomodasi = $id_akomodasi_array[0]; // Store first selected ID
+                // Sum all selected akomodasi prices
+                $harga_akomodasi = 0;
+                foreach ($id_akomodasi_array as $id_ak) {
+                    $ak = $this->Akomodasi_model->get_by_id($id_ak);
+                    if ($ak) {
+                        $harga_akomodasi += (int) $ak->harga_tambahan;
+                    }
+                }
+            } else {
+                $id_akomodasi = $id_akomodasi_array;
+                $akomodasi = $this->Akomodasi_model->get_by_id($id_akomodasi);
+                $harga_akomodasi = $akomodasi ? (int) $akomodasi->harga_tambahan : 0;
+            }
+            
+            $total = ($data['paket']->harga + $harga_akomodasi) * $jumlah;
             $tipe_pembayaran = $this->input->post('tipe_pembayaran', TRUE);
             $jumlah_dp = 0;
             $total_bayar = $total;
@@ -96,6 +128,7 @@ class Pemesanan extends CI_Controller {
             $pemesanan_data = [
                 'id_user' => $this->session->userdata('id_user'),
                 'id_paket' => $id_paket,
+                'id_akomodasi' => $id_akomodasi,
                 'tgl_keberangkatan' => $this->input->post('tgl_keberangkatan', TRUE),
                 'jam_keberangkatan' => $this->input->post('jam_keberangkatan', TRUE),
                 'jumlah_peserta' => $jumlah,

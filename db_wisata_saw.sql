@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS kriteria (
     id_kriteria INT AUTO_INCREMENT PRIMARY KEY,
     kode_kriteria VARCHAR(10) NOT NULL,
     nama_kriteria VARCHAR(50) NOT NULL,
+    bobot DECIMAL(5,4) DEFAULT 0.25,
     sifat ENUM('benefit', 'cost') NOT NULL
 );
 
@@ -66,6 +67,7 @@ CREATE TABLE IF NOT EXISTS pemesanan (
     kode_booking VARCHAR(20) NOT NULL UNIQUE,
     id_user INT NOT NULL,
     id_paket INT NOT NULL,
+    id_akomodasi INT NOT NULL DEFAULT 1,
     tgl_keberangkatan DATE NOT NULL,
     jumlah_peserta INT NOT NULL DEFAULT 1,
     total_bayar INT NOT NULL DEFAULT 0,
@@ -77,6 +79,48 @@ CREATE TABLE IF NOT EXISTS pemesanan (
 );
 
 -- ============================================================
+-- Tabel 6: akomodasi
+-- ============================================================
+CREATE TABLE IF NOT EXISTS akomodasi (
+    id_akomodasi INT AUTO_INCREMENT PRIMARY KEY,
+    nama_akomodasi VARCHAR(100) NOT NULL,
+    icon VARCHAR(50) DEFAULT 'directions_bus',
+    harga_tambahan INT NOT NULL DEFAULT 0,
+    deskripsi TEXT,
+    is_active ENUM('y','n') NOT NULL DEFAULT 'y',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================================
+-- Tabel 7: bank
+-- ============================================================
+CREATE TABLE IF NOT EXISTS bank (
+    id_bank INT AUTO_INCREMENT PRIMARY KEY,
+    nama_bank VARCHAR(100) NOT NULL,
+    jenis VARCHAR(50) DEFAULT NULL,
+    nomor_rekening VARCHAR(50) NOT NULL,
+    atas_nama VARCHAR(120) NOT NULL,
+    cabang VARCHAR(120) DEFAULT NULL,
+    is_active ENUM('y','n') NOT NULL DEFAULT 'y',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Data awal bank (contoh)
+INSERT INTO bank (nama_bank, jenis, nomor_rekening, atas_nama, cabang, is_active)
+VALUES
+('BCA', 'Transfer Bank', '1234567890', 'Hastaka Holiday', 'Surabaya', 'y');
+
+-- ============================================================
+-- Data awal akomodasi
+-- ============================================================
+INSERT INTO akomodasi (nama_akomodasi, icon, harga_tambahan, deskripsi) VALUES
+('Full Bus', 'directions_bus', 500000, 'Transportasi seluruh perjalanan menggunakan bus pariwisata'),
+('Full Pesawat', 'flight', 1500000, 'Transportasi udara PP sesuai jadwal'),
+('Full Kereta', 'train', 300000, 'Transportasi kereta api PP'),
+('Mix (Bus + Pesawat)', 'commute', 800000, 'Kombinasi bus dan pesawat sesuai rute');
+
+
+-- ============================================================
 -- Data Awal: Admin default
 -- Password: admin123
 -- ============================================================
@@ -86,11 +130,11 @@ INSERT INTO users (nama_lengkap, email, password, role, status) VALUES
 -- ============================================================
 -- Data Awal: Kriteria SAW
 -- ============================================================
-INSERT INTO kriteria (kode_kriteria, nama_kriteria, sifat) VALUES
-('C1', 'Harga Paket', 'cost'),
-('C2', 'Durasi Wisata', 'benefit'),
-('C3', 'Fasilitas / Destinasi', 'benefit'),
-('C4', 'Rating / Ulasan', 'benefit');
+INSERT INTO kriteria (kode_kriteria, nama_kriteria, bobot, sifat) VALUES
+('C1', 'Harga Paket', 0.25, 'cost'),
+('C2', 'Durasi Wisata', 0.25, 'benefit'),
+('C3', 'Fasilitas / Destinasi', 0.25, 'benefit'),
+('C4', 'Rating / Ulasan', 0.25, 'benefit');
 
 -- ============================================================
 -- Data Awal: Paket Wisata Contoh
@@ -131,3 +175,65 @@ INSERT INTO nilai_alternatif (id_paket, id_kriteria, nilai) VALUES
 -- ============================================================
 INSERT INTO users (nama_lengkap, email, password, role, status) VALUES
 ('John Doe', 'john@example.com', '$2y$10$w4AkGzcxkzvmVeiugtq7OuDZjCt5WYSWCleV4WIFutZZq8sbYP4W2', 'pelanggan', 'aktif');
+
+-- ============================================================
+-- Tabel 8: paket_akomodasi (pivot)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS paket_akomodasi (
+    id_paket INT NOT NULL,
+    id_akomodasi INT NOT NULL,
+    PRIMARY KEY (id_paket, id_akomodasi),
+    FOREIGN KEY (id_paket) REFERENCES paket_wisata(id_paket) ON DELETE CASCADE,
+    FOREIGN KEY (id_akomodasi) REFERENCES akomodasi(id_akomodasi) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ============================================================
+-- Tabel 9: partner_bus
+-- ============================================================
+CREATE TABLE IF NOT EXISTS partner_bus (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(150) NOT NULL,
+    kota VARCHAR(100) DEFAULT NULL,
+    gambar VARCHAR(255) DEFAULT NULL,
+    is_active ENUM('y','n') NOT NULL DEFAULT 'y',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- ============================================================
+-- Tabel 9: partner_hotel
+-- ============================================================
+CREATE TABLE IF NOT EXISTS partner_hotel (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(150) NOT NULL,
+    bintang INT DEFAULT NULL,
+    icon VARCHAR(50) DEFAULT 'hotel',
+    deskripsi TEXT,
+    gambar VARCHAR(255) DEFAULT NULL,
+    is_active ENUM('y','n') NOT NULL DEFAULT 'y',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- ============================================================
+-- Data awal Partner Bus
+-- ============================================================
+INSERT INTO partner_bus (nama, kota, is_active) VALUES
+('Jackal Holiday', 'Surabaya', 'y'),
+('Prabu Jaya Trans', 'Surabaya', 'y'),
+('Ness', 'Surabaya', 'y'),
+('Surya Putra', 'Malang', 'y'),
+('Armada', 'Surabaya', 'y'),
+('Blue Bird', 'Surabaya', 'y'),
+('Bhineka', 'Surabaya', 'y'),
+('Josal', 'Surabaya', 'y'),
+('Ashroof', 'Surabaya', 'y');
+
+-- ============================================================
+-- Data awal Partner Hotel
+-- ============================================================
+INSERT INTO partner_hotel (nama, bintang, icon, deskripsi, is_active) VALUES
+('Hotel Bintang 3', 3, 'hotel', 'Fasilitas lengkap dengan harga terjangkau di setiap kota tujuan', 'y'),
+('Hotel Bintang 4', 4, 'hotel', 'Kamar luas dengan layanan premium dan lokasi strategis', 'y'),
+('Homestay & Villa', 0, 'cottage', 'Penginapan nyaman dengan nuansa lokal untuk pengalaman autentik', 'y'),
+('Resort & Apartment', 0, 'apartment', 'Pilihan premium untuk liburan yang lebih eksklusif', 'y');

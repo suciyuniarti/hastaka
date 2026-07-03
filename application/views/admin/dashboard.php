@@ -6,7 +6,6 @@
     <span class="flash-message"><?= $this->session->flashdata('success'); ?></span>
   </div>
 </div>
-<div class="flash-overlay" onclick="this.remove()"></div>
 <?php endif; ?>
 
 <?php if ($this->session->flashdata('error')): ?>
@@ -17,7 +16,6 @@
     <span class="flash-message"><?= $this->session->flashdata('error'); ?></span>
   </div>
 </div>
-<div class="flash-overlay" onclick="this.remove()"></div>
 <?php endif; ?>
 
 <?php if ($this->session->flashdata('info')): ?>
@@ -28,6 +26,9 @@
     <span class="flash-message"><?= $this->session->flashdata('info'); ?></span>
   </div>
 </div>
+<?php endif; ?>
+
+<?php if ($this->session->flashdata('success') || $this->session->flashdata('error') || $this->session->flashdata('info')): ?>
 <div class="flash-overlay" onclick="this.remove()"></div>
 <?php endif; ?>
 

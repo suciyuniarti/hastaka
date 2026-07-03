@@ -9,12 +9,24 @@ class Home extends CI_Controller {
         $this->load->model('Paket_model');
         $this->load->model('Transaksi_model');
         $this->load->model('Kategori_model');
+        $this->load->model('Partner_model');
     }
 
     public function index()
     {
         $data['title'] = 'Hastaka Holiday - Rekomendasi Paket Wisata';
         $data['paket_populer'] = $this->Paket_model->get_paket_populer(3);
+         $data['bus_partner'] = $this->Partner_model->get_all_bus();
+        
+        if (empty($data['bus_partner'])) {
+            $data['bus_partner'] = [
+                (object)['nama' => 'Bus Pariwisata A', 'gambar' => 'bus1.svg', 'kota' => 'Surabaya'],
+                (object)['nama' => 'Bus Pariwisata B', 'gambar' => 'bus2.svg', 'kota' => 'Malang'],
+                (object)['nama' => 'Bus Pariwisata C', 'gambar' => 'bus3.svg', 'kota' => 'Jakarta'],
+                (object)['nama' => 'Bus Pariwisata D', 'gambar' => 'bus4.svg', 'kota' => 'Bandung'],
+                (object)['nama' => 'Bus Pariwisata E', 'gambar' => 'bus5.svg', 'kota' => null],
+            ];
+        }
 
         // Data pelanggan yang login (untuk dashboard pelanggan)
         $data['user_logged_in'] = $this->session->userdata('id_user');

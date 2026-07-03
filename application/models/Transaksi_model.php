@@ -3,20 +3,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Transaksi_model extends CI_Model {
 
+    // Catatan: pada skema database, tabel `pemesanan` memakai kolom `id_akomodasi`.
+    // Apabila kolom tersebut tidak ada (mis. schema belum sinkron), query JOIN ke `akomodasi`
+    // akan gagal dengan error 1054.
+
+
     public function get_all_pemesanan()
     {
-        $this->db->select('pemesanan.*, users.nama_lengkap, users.email, paket_wisata.nama_paket, paket_wisata.harga');
+        $this->db->select('pemesanan.*, users.nama_lengkap, users.email, paket_wisata.nama_paket, paket_wisata.harga, akomodasi.nama_akomodasi, akomodasi.icon as akomodasi_icon, akomodasi.harga_tambahan as harga_akomodasi');
         $this->db->join('users', 'users.id_user = pemesanan.id_user');
         $this->db->join('paket_wisata', 'paket_wisata.id_paket = pemesanan.id_paket');
+        $this->db->join('akomodasi', 'akomodasi.id_akomodasi = pemesanan.id_akomodasi', 'left');
         $this->db->order_by('pemesanan.tgl_transaksi', 'DESC');
         return $this->db->get('pemesanan')->result();
     }
 
     public function get_pemesanan_paginated($limit, $offset)
     {
-        $this->db->select('pemesanan.*, users.nama_lengkap, users.email, paket_wisata.nama_paket, paket_wisata.harga');
+        $this->db->select('pemesanan.*, users.nama_lengkap, users.email, paket_wisata.nama_paket, paket_wisata.harga, akomodasi.nama_akomodasi, akomodasi.icon as akomodasi_icon, akomodasi.harga_tambahan as harga_akomodasi');
         $this->db->join('users', 'users.id_user = pemesanan.id_user');
         $this->db->join('paket_wisata', 'paket_wisata.id_paket = pemesanan.id_paket');
+        $this->db->join('akomodasi', 'akomodasi.id_akomodasi = pemesanan.id_akomodasi', 'left');
         $this->db->order_by('pemesanan.tgl_transaksi', 'DESC');
         $this->db->limit($limit, $offset);
         return $this->db->get('pemesanan')->result();
@@ -29,26 +36,29 @@ class Transaksi_model extends CI_Model {
 
     public function get_pemesanan_by_id($id)
     {
-        $this->db->select('pemesanan.*, users.nama_lengkap, users.email, paket_wisata.nama_paket, paket_wisata.harga, paket_wisata.deskripsi, paket_wisata.foto');
+        $this->db->select('pemesanan.*, users.nama_lengkap, users.email, paket_wisata.nama_paket, paket_wisata.harga, paket_wisata.deskripsi, paket_wisata.foto, akomodasi.nama_akomodasi, akomodasi.icon as akomodasi_icon, akomodasi.harga_tambahan as harga_akomodasi');
         $this->db->join('users', 'users.id_user = pemesanan.id_user');
         $this->db->join('paket_wisata', 'paket_wisata.id_paket = pemesanan.id_paket');
+        $this->db->join('akomodasi', 'akomodasi.id_akomodasi = pemesanan.id_akomodasi', 'left');
         $this->db->where('pemesanan.id_pemesanan', $id);
         return $this->db->get('pemesanan')->row();
     }
 
     public function get_pemesanan_by_kode($kode)
     {
-        $this->db->select('pemesanan.*, users.nama_lengkap, users.email, paket_wisata.nama_paket, paket_wisata.harga, paket_wisata.deskripsi, paket_wisata.foto');
+        $this->db->select('pemesanan.*, users.nama_lengkap, users.email, paket_wisata.nama_paket, paket_wisata.harga, paket_wisata.deskripsi, paket_wisata.foto, akomodasi.nama_akomodasi, akomodasi.icon as akomodasi_icon, akomodasi.harga_tambahan as harga_akomodasi');
         $this->db->join('users', 'users.id_user = pemesanan.id_user');
         $this->db->join('paket_wisata', 'paket_wisata.id_paket = pemesanan.id_paket');
+        $this->db->join('akomodasi', 'akomodasi.id_akomodasi = pemesanan.id_akomodasi', 'left');
         $this->db->where('pemesanan.kode_booking', $kode);
         return $this->db->get('pemesanan')->row();
     }
 
     public function get_pemesanan_by_user($id_user)
     {
-        $this->db->select('pemesanan.*, paket_wisata.nama_paket, paket_wisata.harga, paket_wisata.foto');
+        $this->db->select('pemesanan.*, paket_wisata.nama_paket, paket_wisata.harga, paket_wisata.foto, akomodasi.nama_akomodasi, akomodasi.icon as akomodasi_icon, akomodasi.harga_tambahan as harga_akomodasi');
         $this->db->join('paket_wisata', 'paket_wisata.id_paket = pemesanan.id_paket');
+        $this->db->join('akomodasi', 'akomodasi.id_akomodasi = pemesanan.id_akomodasi', 'left');
         $this->db->where('pemesanan.id_user', $id_user);
         $this->db->order_by('pemesanan.tgl_transaksi', 'DESC');
         return $this->db->get('pemesanan')->result();

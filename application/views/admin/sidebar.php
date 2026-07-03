@@ -19,19 +19,20 @@
    <!-- Navigation -->
    <nav class="flex-1 p-4 space-y-1 overflow-y-auto sidebar-nav">
      <?php
-     $menu = [
-       ['url' => 'admin/dashboard', 'icon' => 'dashboard', 'label' => 'Dashboard', 'seg' => 'dashboard'],
-       ['url' => 'admin/paket', 'icon' => 'luggage', 'label' => 'Paket Wisata', 'seg' => 'paket'],
-       ['url' => 'admin/kategori', 'icon' => 'category', 'label' => 'Kategori Program', 'seg' => 'kategori'],
-       ['url' => 'admin/destinasi', 'icon' => 'place', 'label' => 'Destinasi', 'seg' => 'destinasi'],
-       ['url' => 'admin/fasilitas', 'icon' => 'inventory_2', 'label' => 'Fasilitas', 'seg' => 'fasilitas'],
-       ['url' => 'admin/aktivitas', 'icon' => 'hiking', 'label' => 'Aktivitas', 'seg' => 'aktivitas'],
-       ['url' => 'admin/klien', 'icon' => 'groups', 'label' => 'Klien', 'seg' => 'klien'],
-       ['url' => 'admin/kriteria', 'icon' => 'tune', 'label' => 'Kriteria SAW', 'seg' => 'kriteria'],
-       ['url' => 'admin/users', 'icon' => 'group', 'label' => 'Pelanggan', 'seg' => 'users'],
-       ['url' => 'admin/transaksi', 'icon' => 'receipt_long', 'label' => 'Transaksi', 'seg' => 'transaksi'],
-       ['url' => 'admin/laporan', 'icon' => 'analytics', 'label' => 'Laporan', 'seg' => 'laporan'],
-     ];
+      $menu = [
+        ['url' => 'admin/dashboard', 'icon' => 'dashboard', 'label' => 'Dashboard', 'seg' => 'dashboard'],
+        ['url' => 'admin/paket', 'icon' => 'luggage', 'label' => 'Paket Wisata', 'seg' => 'paket'],
+        ['url' => 'admin/kategori', 'icon' => 'category', 'label' => 'Kategori Program', 'seg' => 'kategori'],
+        ['url' => 'admin/destinasi', 'icon' => 'place', 'label' => 'Destinasi', 'seg' => 'destinasi'],
+        ['url' => 'admin/fasilitas', 'icon' => 'inventory_2', 'label' => 'Fasilitas', 'seg' => 'fasilitas'],
+         ['url' => 'admin/aktivitas', 'icon' => 'hiking', 'label' => 'Aktivitas', 'seg' => 'aktivitas'],
+         ['url' => 'admin/akomodasi', 'icon' => 'hotel', 'label' => 'Akomodasi', 'seg' => 'akomodasi'],
+         ['url' => 'admin/klien', 'icon' => 'groups', 'label' => 'Klien', 'seg' => 'klien'],
+        ['url' => 'admin/kriteria', 'icon' => 'tune', 'label' => 'Kriteria SAW', 'seg' => 'kriteria'],
+        ['url' => 'admin/users', 'icon' => 'group', 'label' => 'Pelanggan', 'seg' => 'users'],
+        ['url' => 'admin/transaksi', 'icon' => 'receipt_long', 'label' => 'Transaksi', 'seg' => 'transaksi'],
+        ['url' => 'admin/laporan', 'icon' => 'analytics', 'label' => 'Laporan', 'seg' => 'laporan'],
+      ];
      foreach ($menu as $m):
        $active = ($this->uri->segment(2) == $m['seg']) || (!$this->uri->segment(2) && $m['seg'] == 'dashboard');
      ?>

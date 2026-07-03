@@ -678,14 +678,14 @@
   border-top: 1px solid #E2E8F0;
 }
 
-/* ── CENTERED FLASH MESSAGE ── */
+/* ── FLASH MESSAGE ── */
 .flash-success,
 .flash-error,
 .flash-info {
   position: fixed;
-  top: 50%;
+  top: 20px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   z-index: 9999;
   min-width: 320px;
   max-width: 500px;
@@ -753,22 +753,22 @@
 @keyframes fadeInScale {
   from {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
+    transform: translateX(-50%) translateY(-20px) scale(0.8);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateX(-50%) translateY(0) scale(1);
   }
 }
 
 @keyframes fadeOutScale {
   from {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateX(-50%) translateY(0) scale(1);
   }
   to {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
+    transform: translateX(-50%) translateY(-20px) scale(0.8);
   }
 }
 

@@ -89,3 +89,28 @@
         box-shadow: none !important;
     }
 }
+
+/* Bus gallery horizontal scroll on mobile */
+@media (max-width: 639px) {
+    .bus-gallery-scroll {
+        display: flex;
+        overflow-x: auto;
+        gap: 1rem;
+        padding: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+    }
+    .bus-gallery-scroll::-webkit-scrollbar {
+        height: 4px;
+    }
+    .bus-gallery-scroll::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 2px;
+    }
+    .bus-gallery-scroll::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 2px;
+    }
+    .bus-card-item {
+        flex: 0 0 280px;
+    }
+}

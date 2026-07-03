@@ -101,6 +101,11 @@ $route['admin/aktivitas/edit/(:num)']    = 'admin/aktivitas_edit/$1';
 $route['admin/aktivitas/hapus/(:num)']   = 'admin/aktivitas_hapus/$1';
 $route['admin/aktivitas/tambah']         = 'admin/aktivitas_tambah';
 
+// Admin > Akomodasi
+$route['admin/akomodasi/edit/(:num)']    = 'admin/akomodasi_edit/$1';
+$route['admin/akomodasi/hapus/(:num)']   = 'admin/akomodasi_hapus/$1';
+$route['admin/akomodasi/tambah']         = 'admin/akomodasi_tambah';
+
 // Admin > Dashboard (alias)
 $route['admin']                       = 'admin/dashboard';
 
