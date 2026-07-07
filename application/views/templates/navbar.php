@@ -4,9 +4,7 @@
 
         <!-- Logo -->
         <a href="<?= base_url(); ?>" class="flex items-center gap-2 group">
-            <div class="w-9 h-9 gradient-bg rounded-xl flex items-center justify-center shadow-lg shadow-sky-500/30 group-hover:shadow-sky-500/50 transition-shadow">
-                <span class="material-symbols-rounded text-white text-lg">explore</span>
-            </div>
+            <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-9 h-9 object-contain">
             <span class="font-extrabold text-xl text-sky-500 hidden sm:block tracking-tight">Hastaka Holiday</span>
         </a>
 
@@ -135,3 +133,4 @@ document.addEventListener('click', function(e) {
     if (dd && !e.target.closest('[x-data]')) dd.classList.add('hidden');
 });
 </script>
+

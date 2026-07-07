@@ -1,4 +1,7 @@
-<?php $is_edit = isset($akomodasi) && $akomodasi; ?>
+<?php 
+$is_edit = isset($akomodasi) && $akomodasi;
+$akomodasi = $akomodasi ?? null;
+?>
 
 <div class="space-y-6">
     <div class="admin-form-wrap max-w-2xl">
@@ -40,18 +43,32 @@
 
         <div class="form-group">
             <label class="form-label">
-                <span class="material-symbols-rounded text-sky-500">payments</span> Harga Tambahan (Rp)
+                <span class="material-symbols-rounded text-sky-500">payments</span> Harga Tambahan per Orang (Rp)
             </label>
-            <input type="number" name="harga_tambahan" value="<?= set_value('harga_tambahan', $is_edit ? $akomodasi->harga_tambahan : '0'); ?>"
-                class="form-input" min="0" placeholder="0">
-            <p class="form-help">Harga tambahan per orang (isi 0 jika gratis)</p>
+            <input type="number" name="harga_tambahan" id="harga-input" value="<?= set_value('harga_tambahan', $is_edit ? $akomodasi->harga_tambahan : '0'); ?>"
+                class="form-input" min="0" placeholder="0" oninput="formatRupiah(this)" required>
+            <p class="form-help">Harga ini akan dikali jumlah peserta saat pelanggan booking</p>
+            <p class="text-xs text-slate-500 mt-1">Preview: <strong id="harga-preview">Rp <?= number_format(set_value('harga_tambahan', $is_edit ? $akomodasi->harga_tambahan : 0), 0, ',', '.'); ?></strong></p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">
+                <span class="material-symbols-rounded text-sky-500">map</span> Wilayah
+            </label>
+            <input type="text" name="wilayah" value="<?= set_value('wilayah', $is_edit ? ($akomodasi->wilayah ?? '') : ''); ?>"
+                class="form-input" placeholder="contoh: Jabodetabek, Bandung, Surabaya">
+            <p class="form-help">Informasi wilayah yang dilayani. Akan ditampilkan ke pelanggan saat booking.</p>
         </div>
 
         <div class="form-group">
             <label class="form-label">
                 <span class="material-symbols-rounded text-sky-500">description</span> Deskripsi
             </label>
-            <textarea name="deskripsi" rows="3" class="form-input" placeholder="Deskripsi akomodasi..."><?= set_value('deskripsi', $is_edit ? $akomodasi->deskripsi : ''); ?></textarea>
+            <textarea name="deskripsi" rows="3" class="form-input" placeholder="Deskripsi akomodasi..." maxlength="200" oninput="updateCharCount()"><?= set_value('deskripsi', $is_edit ? $akomodasi->deskripsi : ''); ?></textarea>
+            <div class="flex justify-between mt-1">
+                <p class="form-help">Maksimal 200 karakter</p>
+                <p class="text-xs text-slate-500"><span id="char-count"><?= strlen(set_value('deskripsi', $is_edit ? $akomodasi->deskripsi : '')); ?></span>/200</p>
+            </div>
         </div>
 
         <div class="form-group">
@@ -68,14 +85,15 @@
         <?php if (!empty($paket_list)): ?>
         <div class="form-group">
             <label class="form-label">
-                <span class="material-symbols-rounded text-sky-500">luggage</span> Paket Wisata yang Menggunakan Akomodasi Ini
+                <span class="material-symbols-rounded text-sky-500">luggage</span> Tersedia Di Paket <span class="required">*</span>
             </label>
-            <p class="form-help" style="margin-bottom: 8px;">Pilih satu atau beberapa paket wisata</p>
-            <div class="checkbox-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px;">
+            <p class="form-help" style="margin-bottom: 8px;">Pilih minimal 1 paket wisata yang menggunakan akomodasi ini</p>
+            <div class="checkbox-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
                 <?php foreach ($paket_list as $p): ?>
-                <label class="checkbox-item" style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 13px; font-weight: 500; color: #475569;">
-                    <input type="checkbox" name="paket[]" value="<?= $p->id_paket; ?>" <?= in_array($p->id_paket, $selected_paket ?? []) ? 'checked' : ''; ?> style="accent-color: #0ea5e9; width: 16px; height: 16px;">
-                    <span><?= $p->nama_paket; ?></span>
+                <label class="checkbox-item" style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 13px; font-weight: 500; color: #475569;">
+                    <input type="checkbox" name="paket[]" value="<?= $p->id_paket; ?>" <?= in_array($p->id_paket, $selected_paket ?? []) ? 'checked' : ''; ?> style="accent-color: #0ea5e9; width: 16px; height: 16px;" onchange="updatePaketCheckbox(this)">
+                    <span style="flex: 1;"><?= $p->nama_paket; ?></span>
+                    <span style="font-size: 11px; color: #64748b; font-weight: 600;"><?= $p->durasi_hari; ?>H</span>
                 </label>
                 <?php endforeach; ?>
             </div>
@@ -101,13 +119,53 @@ function updateIconPreview(value) {
     document.querySelector('#icon-preview .material-symbols-rounded').textContent = value || 'hotel';
 }
 
+function formatRupiah(input) {
+    const value = input.value;
+    const preview = document.getElementById('harga-preview');
+    if (preview) {
+        preview.textContent = 'Rp ' + parseInt(value || 0).toLocaleString('id-ID');
+    }
+}
+
+function updateCharCount() {
+    const textarea = document.querySelector('textarea[name="deskripsi"]');
+    const counter = document.getElementById('char-count');
+    if (textarea && counter) {
+        counter.textContent = textarea.value.length;
+    }
+}
+
 function updatePaketCount() {
     var count = document.querySelectorAll('input[name="paket[]"]:checked').length;
     var el = document.getElementById('paket-count');
     if (el) el.textContent = count + ' paket dipilih';
 }
+
+function updatePaketCheckbox(checkbox) {
+    var label = checkbox.closest('.checkbox-item');
+    if (checkbox.checked) {
+        label.style.borderColor = '#0ea5e9';
+        label.style.backgroundColor = '#EFF8FF';
+    } else {
+        label.style.borderColor = '#e2e8f0';
+        label.style.backgroundColor = '#fff';
+    }
+    updatePaketCount();
+}
+
 document.addEventListener('change', function(e) {
-    if (e.target.name === 'paket[]') updatePaketCount();
+    if (e.target.name === 'paket[]') {
+        updatePaketCheckbox(e.target);
+    }
 });
-document.addEventListener('DOMContentLoaded', updatePaketCount);
+
+document.addEventListener('DOMContentLoaded', function() {
+    updatePaketCount();
+    updateCharCount();
+    
+    // Initialize checkbox states
+    document.querySelectorAll('input[name="paket[]"]').forEach(function(checkbox) {
+        updatePaketCheckbox(checkbox);
+    });
+});
 </script>

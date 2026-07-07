@@ -710,6 +710,9 @@ class Admin extends CI_Controller
     public function akomodasi_tambah()
     {
         $this->form_validation->set_rules('nama_akomodasi', 'Nama Akomodasi', 'required|trim');
+        $this->form_validation->set_rules('icon', 'Icon', 'required|trim');
+        $this->form_validation->set_rules('harga_tambahan', 'Harga Tambahan', 'required|numeric');
+        $this->form_validation->set_rules('is_active', 'Status', 'required|in_list[y,n]');
 
         if ($this->form_validation->run() == FALSE) {
             $data['title'] = 'Tambah Akomodasi - Admin';
@@ -720,14 +723,19 @@ class Admin extends CI_Controller
         } else {
             $insert = [
                 'nama_akomodasi' => $this->input->post('nama_akomodasi', TRUE),
-                'icon' => $this->input->post('icon', TRUE) ?: 'hotel',
+                'icon' => $this->input->post('icon', TRUE),
                 'harga_tambahan' => $this->input->post('harga_tambahan', TRUE) ?: 0,
                 'deskripsi' => $this->input->post('deskripsi', TRUE),
+                'wilayah' => $this->input->post('wilayah', TRUE),
                 'is_active' => $this->input->post('is_active', TRUE) ?: 'y'
             ];
             $id_akomodasi = $this->Akomodasi_model->tambah_akomodasi($insert);
+            
             $id_paket_arr = $this->input->post('paket') ?: [];
-            $this->Akomodasi_model->set_paket_for_akomodasi($id_akomodasi, $id_paket_arr);
+            if (!empty($id_paket_arr)) {
+                $this->Akomodasi_model->set_paket_for_akomodasi($id_akomodasi, $id_paket_arr);
+            }
+            
             $this->session->set_flashdata('success', 'Akomodasi berhasil ditambahkan!');
             redirect('admin/akomodasi');
         }
@@ -743,6 +751,9 @@ class Admin extends CI_Controller
         }
 
         $this->form_validation->set_rules('nama_akomodasi', 'Nama Akomodasi', 'required|trim');
+        $this->form_validation->set_rules('icon', 'Icon', 'required|trim');
+        $this->form_validation->set_rules('harga_tambahan', 'Harga Tambahan', 'required|numeric');
+        $this->form_validation->set_rules('is_active', 'Status', 'required|in_list[y,n]');
 
         if ($this->form_validation->run() == FALSE) {
             $data['paket_list'] = $this->Paket_model->get_all_paket();
@@ -754,14 +765,19 @@ class Admin extends CI_Controller
         } else {
             $update = [
                 'nama_akomodasi' => $this->input->post('nama_akomodasi', TRUE),
-                'icon' => $this->input->post('icon', TRUE) ?: 'hotel',
+                'icon' => $this->input->post('icon', TRUE),
                 'harga_tambahan' => $this->input->post('harga_tambahan', TRUE) ?: 0,
                 'deskripsi' => $this->input->post('deskripsi', TRUE),
+                'wilayah' => $this->input->post('wilayah', TRUE),
                 'is_active' => $this->input->post('is_active', TRUE) ?: 'y'
             ];
             $this->Akomodasi_model->update_akomodasi($id, $update);
+            
             $id_paket_arr = $this->input->post('paket') ?: [];
-            $this->Akomodasi_model->set_paket_for_akomodasi($id, $id_paket_arr);
+            if (!empty($id_paket_arr)) {
+                $this->Akomodasi_model->set_paket_for_akomodasi($id, $id_paket_arr);
+            }
+            
             $this->session->set_flashdata('success', 'Akomodasi berhasil diupdate!');
             redirect('admin/akomodasi');
         }
@@ -769,9 +785,30 @@ class Admin extends CI_Controller
 
     public function akomodasi_hapus($id)
     {
+        // Cek apakah akomodasi sudah digunakan di pemesanan
+        if ($this->Akomodasi_model->is_used_in_pemesanan($id)) {
+            $this->session->set_flashdata('error', 'Akomodasi ini tidak bisa dihapus karena sudah digunakan dalam pemesanan. Nonaktifkan saja.');
+            redirect('admin/akomodasi');
+            return;
+        }
+        
         $this->Akomodasi_model->hapus_akomodasi($id);
         $this->session->set_flashdata('success', 'Akomodasi berhasil dihapus!');
         redirect('admin/akomodasi');
+    }
+
+    public function akomodasi_toggle_status($id)
+    {
+        $akomodasi = $this->Akomodasi_model->get_by_id($id);
+        if (!$akomodasi) {
+            echo json_encode(['success' => false, 'message' => 'Akomodasi tidak ditemukan']);
+            return;
+        }
+        
+        $new_status = ($akomodasi->is_active == 'y' || $akomodasi->is_active == 1) ? 'n' : 'y';
+        $this->Akomodasi_model->update_akomodasi($id, ['is_active' => $new_status]);
+        
+        echo json_encode(['success' => true, 'is_active' => $new_status, 'message' => 'Status berhasil diubah']);
     }
 
     // ========== HELPER: Upload Foto ==========

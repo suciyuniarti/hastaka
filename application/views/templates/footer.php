@@ -8,9 +8,7 @@
             <!-- Brand -->
             <div class="md:col-span-1">
                 <div class="flex items-center gap-3 mb-5">
-                    <div class="w-12 h-12 bg-gradient-to-br from-sky-400 to-sky-500 rounded-2xl flex items-center justify-center shadow-xl shadow-sky-500/40 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                        <span class="material-symbols-rounded text-white text-2xl">explore</span>
-                    </div>
+                    <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-9 h-9 object-contain">
                     <span class="font-extrabold text-2xl text-white tracking-tight">Hastaka Holiday</span>
                 </div>
                 <p class="text-slate-300 text-sm leading-relaxed">Sistem rekomendasi paket wisata cerdas menggunakan metode SAW untuk membantu Anda menemukan perjalanan sempurna.</p>

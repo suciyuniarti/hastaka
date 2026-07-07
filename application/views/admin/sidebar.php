@@ -2,10 +2,7 @@
 
    <!-- Logo -->
    <div class="p-5 flex items-center gap-3 border-b border-white/10">
-     <div class="w-11 h-11 bg-white/15 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg relative overflow-hidden sidebar-logo">
-       <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
-       <span class="material-symbols-rounded text-white text-2xl relative z-10">admin_panel_settings</span>
-     </div>
+     <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-9 h-9 object-contain">
      <div>
        <h3 class="font-extrabold text-base text-white tracking-tight leading-tight">
          Hastaka <span class="text-sky-300">Holiday</span>
@@ -65,3 +62,5 @@
         <span class="font-medium">Logout</span>
      </a>
    </div>
+
+</div>

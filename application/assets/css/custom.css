@@ -114,3 +114,161 @@
         flex: 0 0 280px;
     }
 }
+
+/* Rekomendasi page enhancements */
+.pulse-blue {
+    animation: pulseBlue 2s infinite;
+}
+
+@keyframes pulseBlue {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(14, 165, 233, 0);
+    }
+}
+
+.dot-pattern {
+    background-image: radial-gradient(#bae6fd 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.deco-circle-1 {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    top: -80px;
+    right: -80px;
+    pointer-events: none;
+}
+
+.deco-circle-2 {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    bottom: -50px;
+    left: -50px;
+    pointer-events: none;
+}
+
+.btn-nilai {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-nilai[data-nilai="1"] {
+    border-color: #e5e7eb;
+    background: #f9fafb;
+}
+.btn-nilai[data-nilai="1"] .angka {
+    color: #9ca3af;
+}
+.btn-nilai[data-nilai="1"] .label {
+    color: #9ca3af;
+}
+
+.btn-nilai[data-nilai="2"] {
+    border-color: #bae6fd;
+    background: #f0f9ff;
+}
+.btn-nilai[data-nilai="2"] .angka {
+    color: #0ea5e9;
+}
+.btn-nilai[data-nilai="2"] .label {
+    color: #0ea5e9;
+}
+
+.btn-nilai[data-nilai="3"] {
+    border-color: #7dd3fc;
+    background: #f0f9ff;
+}
+.btn-nilai[data-nilai="3"] .angka {
+    color: #0284c7;
+}
+.btn-nilai[data-nilai="3"] .label {
+    color: #0284c7;
+}
+
+.btn-nilai[data-nilai="4"] {
+    border-color: #38bdf8;
+    background: #f0f9ff;
+}
+.btn-nilai[data-nilai="4"] .angka {
+    color: #0369a1;
+}
+.btn-nilai[data-nilai="4"] .label {
+    color: #0369a1;
+}
+
+.btn-nilai[data-nilai="5"] {
+    border-color: #0ea5e9;
+    background: #e0f2fe;
+}
+.btn-nilai[data-nilai="5"] .angka {
+    color: #0369a1;
+}
+.btn-nilai[data-nilai="5"] .label {
+    color: #0369a1;
+}
+
+.btn-nilai:hover:not(.aktif) {
+    border-color: #7dd3fc !important;
+    background: #f0f9ff !important;
+    transition: all 0.15s ease;
+}
+
+.btn-nilai.aktif {
+    border-color: #0ea5e9 !important;
+    background: linear-gradient(135deg, #EFF8FF, #e0f2fe) !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+    transition: all 0.15s ease;
+}
+
+.btn-nilai.aktif .angka {
+    color: #0284c7 !important;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.btn-nilai.aktif .label {
+    color: #0369a1 !important;
+    font-weight: 500;
+}
+
+.progress-preferensi {
+    height: 3px;
+    background: #e0f2fe;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.progress-preferensi-terisi {
+    opacity: 1;
+}
+
+.progress-preferensi-fill {
+    height: 100%;
+    background: #0ea5e9;
+    border-radius: 99px;
+    transition: width 0.3s ease;
+}
+
+.kriteria-icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #EFF8FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}

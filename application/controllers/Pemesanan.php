@@ -128,7 +128,6 @@ class Pemesanan extends CI_Controller {
             $pemesanan_data = [
                 'id_user' => $this->session->userdata('id_user'),
                 'id_paket' => $id_paket,
-                'id_akomodasi' => $id_akomodasi,
                 'tgl_keberangkatan' => $this->input->post('tgl_keberangkatan', TRUE),
                 'jam_keberangkatan' => $this->input->post('jam_keberangkatan', TRUE),
                 'jumlah_peserta' => $jumlah,
@@ -143,7 +142,35 @@ class Pemesanan extends CI_Controller {
                 'jumlah_dp' => $jumlah_dp
             ];
 
+            $this->db->trans_start();
+            
             $id_pemesanan = $this->Transaksi_model->buat_pemesanan($pemesanan_data);
+            
+            // Simpan akomodasi yang dipilih ke tabel pemesanan_akomodasi dengan snapshot lengkap
+            if (!empty($id_akomodasi_array) && is_array($id_akomodasi_array)) {
+                foreach ($id_akomodasi_array as $id_ak) {
+                    $ak = $this->Akomodasi_model->get_by_id($id_ak);
+                    if ($ak) {
+                        $subtotal = (int) $ak->harga_tambahan * (int) $jumlah;
+                        $this->db->insert('pemesanan_akomodasi', [
+                            'id_pemesanan' => $id_pemesanan,
+                            'id_akomodasi' => $id_ak,
+                            'nama_akomodasi' => $ak->nama_akomodasi,
+                            'harga_per_orang' => $ak->harga_tambahan,
+                            'jumlah_peserta' => $jumlah,
+                            'subtotal' => $subtotal
+                        ]);
+                    }
+                }
+            }
+            
+            $this->db->trans_complete();
+            
+            if ($this->db->trans_status() === FALSE) {
+                $this->session->set_flashdata('error', 'Gagal menyimpan pemesanan. Silakan coba lagi.');
+                redirect('pemesanan/booking/' . $id_paket);
+            }
+            
             redirect('pemesanan/invoice/' . $id_pemesanan);
         }
     }

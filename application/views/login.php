@@ -1,20 +1,17 @@
 <div class="min-h-screen flex">
     <!-- Left: Illustration -->
     <div class="hidden lg:flex lg:w-1/2 gradient-bg relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <svg class="w-full h-full" viewBox="0 0 400 400"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
+        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <div class="deco-circle-1"></div>
+            <div class="deco-circle-2"></div>
         </div>
         <div class="relative z-10 flex flex-col justify-center px-16 text-white">
-            <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-8 backdrop-blur">
-                <span class="material-symbols-rounded text-4xl">explore</span>
+            <div class="flex items-center gap-3 mb-8">
+                <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-12 h-12 object-contain rounded-xl bg-white/10 p-1">
+                <span class="text-lg font-semibold text-white">Hastaka Holiday</span>
             </div>
             <h1 class="text-5xl font-extrabold leading-tight mb-4">Jelajahi Dunia<br>Bersama Kami</h1>
-            <p class="text-xl text-white/80 leading-relaxed max-w-md">Temukan paket wisata terbaik dengan rekomendasi cerdas menggunakan metode SAW.</p>
-            <div class="flex gap-8 mt-12">
-                <div><p class="text-3xl font-bold">50+</p><p class="text-white/70 text-sm">Destinasi</p></div>
-                <div><p class="text-3xl font-bold">1000+</p><p class="text-white/70 text-sm">Pelanggan</p></div>
-                <div><p class="text-3xl font-bold">4.9</p><p class="text-white/70 text-sm">Rating</p></div>
-            </div>
+            <p class="text-xl text-white/80 leading-relaxed max-w-md">Temukan paket wisata terbaik sesuai dengan preferensimu.</p>
         </div>
     </div>
 
@@ -23,16 +20,19 @@
         <div class="w-full max-w-md animate-fade-in-up">
 
             <div class="lg:hidden flex items-center gap-2 mb-8">
-                <div class="w-9 h-9 gradient-bg rounded-xl flex items-center justify-center">
-                    <span class="material-symbols-rounded text-white text-lg">explore</span>
-                </div>
+                <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-9 h-9 object-contain">
                 <span class="font-extrabold text-xl gradient-text">Hastaka Holiday</span>
             </div>
 
-            <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Selamat Datang!</h2>
+            <div class="hidden lg:flex items-center gap-2 mb-6">
+                <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-8 h-8 object-contain">
+                <span class="font-bold text-sm" style="color: #0ea5e9;">Hastaka Holiday</span>
+            </div>
+
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-2" style="font-size: 24px; font-weight: 700;">Selamat Datang!</h2>
             <p class="text-gray-500 mb-8">Masuk ke akun Anda untuk melanjutkan</p>
             
-            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border-2 border-slate-200/80">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border-2 border-slate-200/80" style="box-shadow: 0 8px 32px rgba(14,165,233,0.12); border: 0.5px solid #e0f2fe;">
 
             <?php if ($this->session->flashdata('error')): ?>
             <div class="bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 text-red-800 px-5 py-4 rounded-2xl mb-6 flex items-start gap-3 animate-slide-down shadow-lg shadow-red-500/10">

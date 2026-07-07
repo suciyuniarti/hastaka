@@ -49,10 +49,9 @@
                                 <div class="form-group">
                                     <label class="form-label">Tanggal Keberangkatan</label>
                                     <div class="relative">
-                                        <span class="material-symbols-rounded absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">calendar_month</span>
                                         <input type="date" name="tgl_keberangkatan" value="<?= set_value('tgl_keberangkatan'); ?>"
                                             min="<?= date('Y-m-d', strtotime('+1 day')); ?>"
-                                            class="form-input pl-10" required>
+                                            class="form-input" required>
                                     </div>
                                     <?= form_error('tgl_keberangkatan', '<p class="form-error"><span class="material-symbols-rounded text-sm">error</span>', '</p>'); ?>
                                     <p id="return-date-info" class="text-emerald-600 text-xs mt-1.5 flex items-center gap-1 hidden">
@@ -63,9 +62,8 @@
                                 <div class="form-group">
                                     <label class="form-label">Jam Keberangkatan</label>
                                     <div class="relative">
-                                        <span class="material-symbols-rounded absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">schedule</span>
                                         <input type="time" name="jam_keberangkatan" value="<?= set_value('jam_keberangkatan'); ?>"
-                                            class="form-input pl-10" required>
+                                            class="form-input" required>
                                     </div>
                                     <?= form_error('jam_keberangkatan', '<p class="form-error"><span class="material-symbols-rounded text-sm">error</span>', '</p>'); ?>
                                 </div>
@@ -73,10 +71,9 @@
                             <div class="form-group">
                                 <label class="form-label">Jumlah Peserta</label>
                                 <div class="relative">
-                                    <span class="material-symbols-rounded absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">group</span>
                                     <input type="number" name="jumlah_peserta" id="jml-peserta" value="<?= set_value('jumlah_peserta', $paket->min_peserta ?? '1'); ?>"
                                         min="<?= $paket->min_peserta ?? 1; ?>" max="50"
-                                        class="form-input pl-10" required>
+                                        class="form-input" required>
                                 </div>
                                 <?= form_error('jumlah_peserta', '<p class="form-error"><span class="material-symbols-rounded text-sm">error</span>', '</p>'); ?>
                                 <p class="form-help">Minimal <strong><?= $paket->min_peserta ?? 1; ?> peserta</strong> untuk paket ini</p>
@@ -162,19 +159,31 @@
                                 <!-- Pilihan Akomodasi -->
                                 <div>
                                     <p class="section-label">
-                                        <span class="material-symbols-rounded text-[16px]">directions_bus</span>
+                                        <span class="material-symbols-rounded text-[16px]">luggage</span>
                                         Pilihan Akomodasi
                                         <span class="text-slate-400 font-normal">(Bisa pilih lebih dari satu)</span>
                                     </p>
                                     <?php if (!empty($akomodasi_list)): ?>
-                                    <div class="space-y-3">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-1">
                                         <?php foreach ($akomodasi_list as $a): ?>
-                                        <label class="flex items-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-xl cursor-pointer transition akomodasi-option" data-id="<?= $a->id_akomodasi; ?>" data-harga="<?= (int) $a->harga_tambahan; ?>">
-                                            <input type="checkbox" name="id_akomodasi[]" value="<?= $a->id_akomodasi; ?>" <?= $a->id_akomodasi == 1 ? 'checked' : ''; ?> class="text-brand-600 focus:ring-brand-500" onchange="updateAkomodasi()">
-                                            <span class="material-symbols-rounded text-brand-600 text-[18px]"><?= $a->icon; ?></span>
-                                            <div class="flex-1">
-                                                <p class="font-semibold text-sm text-gray-800"><?= $a->nama_akomodasi; ?></p>
-                                                <p class="text-xs text-gray-500">+ Rp <?= number_format($a->harga_tambahan, 0, ',', '.'); ?>/org</p>
+                                        <label class="akomodasi-card flex items-start gap-3 px-3.5 py-3 border-2 border-gray-200 rounded-xl cursor-pointer transition hover:border-brand-300 hover:bg-brand-50/40" data-id="<?= $a->id_akomodasi; ?>" data-harga="<?= (int) $a->harga_tambahan; ?>">
+                                            <input type="checkbox" name="id_akomodasi[]" value="<?= $a->id_akomodasi; ?>" class="mt-0.5 text-brand-600 focus:ring-brand-500" onchange="updateAkomodasi()">
+                                            <span class="material-symbols-rounded text-brand-600 text-[18px] flex-shrink-0"><?= $a->icon; ?></span>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="font-semibold text-sm text-gray-800 leading-tight"><?= $a->nama_akomodasi; ?></p>
+                                                <?php if (!empty($a->deskripsi)): ?>
+                                                <p class="text-xs text-gray-500 mt-0.5 line-clamp-2"><?= $a->deskripsi; ?></p>
+                                                <?php endif; ?>
+                                                <?php if (!empty($a->wilayah)): ?>
+                                                <p class="text-xs mt-0.5 flex items-center gap-1" style="font-size: 11px; color: #6b7280;">
+                                                    <span class="material-symbols-rounded text-[12px]">place</span>
+                                                    <?= $a->wilayah; ?>
+                                                </p>
+                                                <?php endif; ?>
+                                                <p class="text-xs font-medium mt-1" style="color: #374151; font-size: 13px;">Rp <?= number_format($a->harga_tambahan, 0, ',', '.'); ?> <span class="text-gray-400">/orang</span></p>
+                                                <p class="text-xs font-medium mt-0.5 estimasi-text" style="color: #16a34a; font-weight: 500; display: none;">
+                                                    Estimasi (<span class="peserta-count"><?= $paket->min_peserta ?? 1; ?></span> peserta): + Rp <span class="estimasi-total"><?= number_format($a->harga_tambahan * ($paket->min_peserta ?? 1), 0, ',', '.'); ?></span>
+                                                </p>
                                             </div>
                                         </label>
                                         <?php endforeach; ?>
@@ -245,17 +254,26 @@
                             <span class="font-semibold">Rp <?= number_format($paket->harga, 0, ',', '.'); ?></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-slate-500">Akomodasi/orang</span>
-                            <span class="font-semibold" id="sum-akomodasi">Rp 0</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
                             <span class="text-slate-500">Jumlah peserta</span>
                             <span class="font-semibold" id="sum-peserta">1</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-slate-500">Subtotal</span>
-                            <span class="font-semibold" id="sum-subtotal">Rp <?= number_format($paket->harga, 0, ',', '.'); ?></span>
+                            <span class="text-slate-500">Subtotal paket</span>
+                            <span class="font-semibold" id="sum-subtotal-paket">Rp <?= number_format($paket->harga, 0, ',', '.'); ?></span>
                         </div>
+                        
+                        <!-- Akomodasi breakdown -->
+                        <div id="akomodasi-breakdown" class="hidden space-y-2 pt-2 border-t border-slate-100">
+                            <p class="text-xs font-semibold text-slate-600 uppercase tracking-wide">Akomodasi:</p>
+                            <div id="akomodasi-list" class="space-y-1.5 pl-2">
+                                <!-- Items will be added here by JS -->
+                            </div>
+                            <div class="flex justify-between text-sm font-semibold pt-1 border-t border-slate-200">
+                                <span class="text-slate-600">Total Akomodasi</span>
+                                <span id="sum-total-akomodasi">Rp 0</span>
+                            </div>
+                        </div>
+                        
                         <div class="flex justify-between bg-brand-50 -mx-2 px-4 py-3 rounded-xl border border-brand-100">
                             <span class="font-bold text-brand-800 text-sm">Total Tagihan</span>
                             <span class="font-extrabold gradient-text text-xl" id="sum-total">Rp <?= number_format($paket->harga, 0, ',', '.'); ?></span>
@@ -385,19 +403,47 @@ function formatRp(n) {
 function updateTotal() {
     const jml = parseInt(document.getElementById('jml-peserta').value) || 1;
     
-    // Sum all selected akomodasi prices
-    hargaAkomodasi = 0;
+    // Calculate subtotal paket
+    const subtotalPaket = hargaPerOrang * jml;
+    document.getElementById('sum-peserta').textContent = jml;
+    document.getElementById('sum-subtotal-paket').textContent = formatRp(subtotalPaket);
+    
+    // Calculate akomodasi breakdown
+    let totalAkomodasi = 0;
+    const akomodasiList = document.getElementById('akomodasi-list');
+    const akomodasiBreakdown = document.getElementById('akomodasi-breakdown');
+    akomodasiList.innerHTML = '';
+    
     document.querySelectorAll('input[name="id_akomodasi[]"]:checked').forEach(chk => {
-        const label = chk.closest('.akomodasi-option');
-        hargaAkomodasi += parseInt(label.dataset.harga);
+        const card = chk.closest('.akomodasi-card');
+        const harga = parseInt(card.dataset.harga);
+        const nama = card.querySelector('.font-semibold').textContent;
+        const subtotalItem = harga * jml;
+        totalAkomodasi += subtotalItem;
+        
+        // Add item to breakdown list
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'flex justify-between text-xs';
+        itemDiv.innerHTML = `
+            <span class="text-slate-600">· ${nama} × ${jml}</span>
+            <span class="font-semibold text-slate-700">+ ${formatRp(subtotalItem)}</span>
+        `;
+        akomodasiList.appendChild(itemDiv);
     });
     
-    const subtotal = (hargaPerOrang + hargaAkomodasi) * jml;
-    document.getElementById('sum-peserta').textContent = jml;
-    document.getElementById('sum-akomodasi').textContent = formatRp(hargaAkomodasi);
-    document.getElementById('sum-subtotal').textContent = formatRp(subtotal);
-    document.getElementById('sum-total').textContent = formatRp(subtotal);
-    updateDpDisplay(subtotal);
+    // Show/hide akomodasi breakdown
+    if (document.querySelectorAll('input[name="id_akomodasi[]"]:checked').length > 0) {
+        akomodasiBreakdown.classList.remove('hidden');
+    } else {
+        akomodasiBreakdown.classList.add('hidden');
+    }
+    
+    document.getElementById('sum-total-akomodasi').textContent = formatRp(totalAkomodasi);
+    
+    // Calculate grand total
+    const total = subtotalPaket + totalAkomodasi;
+    document.getElementById('sum-total').textContent = formatRp(total);
+    updateDpDisplay(total);
 }
 
 function updatePaymentType(type) {
@@ -434,16 +480,31 @@ function updateDpDisplay(total) {
 
 function updateAkomodasi() {
     // Update visual selection state
-    document.querySelectorAll('.akomodasi-option').forEach(opt => {
-        const chk = opt.querySelector('input[type="checkbox"]');
+    document.querySelectorAll('.akomodasi-card').forEach(card => {
+        const chk = card.querySelector('input[type="checkbox"]');
         if (chk.checked) {
-            opt.classList.remove('border-gray-200');
-            opt.classList.add('border-brand-500', 'bg-brand-50');
+            card.classList.remove('border-gray-200');
+            card.classList.add('border-brand-500', 'bg-brand-50');
         } else {
-            opt.classList.remove('border-brand-500', 'bg-brand-50');
-            opt.classList.add('border-gray-200');
+            card.classList.remove('border-brand-500', 'bg-brand-50');
+            card.classList.add('border-gray-200');
         }
     });
+    
+    // Update estimasi text for each card
+    const jml = parseInt(document.getElementById('jml-peserta').value) || 1;
+    document.querySelectorAll('.akomodasi-card').forEach(card => {
+        const estimasiText = card.querySelector('.estimasi-text');
+        const pesertaCount = card.querySelector('.peserta-count');
+        const estimasiTotal = card.querySelector('.estimasi-total');
+        const harga = parseInt(card.dataset.harga);
+        
+        if (estimasiText && pesertaCount && estimasiTotal) {
+            pesertaCount.textContent = jml;
+            estimasiTotal.textContent = formatRp(harga * jml);
+        }
+    });
+    
     updateTotal();
 }
 
