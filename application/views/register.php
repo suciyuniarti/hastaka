@@ -1,123 +1,204 @@
-<div class="min-h-screen flex">
-    <!-- Left: Illustration -->
-    <div class="hidden lg:flex lg:w-1/2 gradient-bg relative overflow-hidden">
-        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-            <div class="deco-circle-1"></div>
-            <div class="deco-circle-2"></div>
-        </div>
-        <div class="relative z-10 flex flex-col justify-center px-16 text-white">
-            <div class="flex items-center gap-3 mb-8">
-                <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-12 h-12 object-contain rounded-xl bg-white/10 p-1">
-                <span class="text-lg font-semibold text-white">Hastaka Holiday</span>
+<div style="display: flex; min-height: 100vh;">
+    <!-- Panel Kiri 50% -->
+    <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden" style="background: linear-gradient(135deg, #0ea5e9, #0284c7); padding: 48px;">
+        <!-- Dekorasi lingkaran -->
+        <div style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+        <div style="position: absolute; bottom: -100px; left: -100px; width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+        
+        <!-- Konten -->
+        <div style="position: relative; z-index: 10; display: flex; flex-direction: column; justify-content: center;">
+            <!-- Logo -->
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 32px;">
+                <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-12 h-12 object-contain rounded-xl bg-white/10 p-1" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="material-symbols-rounded" style="display: none; width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; align-items: center; justify-content: center; color: white; font-size: 28px;">explore</div>
+                <span style="font-size: 18px; font-weight: 600; color: white;">Hastaka Holiday</span>
             </div>
-            <h1 class="text-5xl font-extrabold leading-tight mb-4">Buat Akun<br>Gratis Sekarang</h1>
-            <p class="text-xl text-white/80 leading-relaxed max-w-md">Daftar dan nikmati kemudahan booking paket wisata dengan rekomendasi cerdas.</p>
+            
+            <!-- Judul -->
+            <h1 style="font-size: 36px; font-weight: 700; color: white; margin-top: 24px; margin-bottom: 16px; line-height: 1.2;">
+                Buat Akun<br>Gratis Sekarang
+            </h1>
+            
+            <!-- Subjudul -->
+            <p style="color: rgba(255,255,255,0.85); font-size: 16px; line-height: 1.6; max-width: 480px;">
+                Daftar dan nikmati kemudahan booking paket wisata.
+            </p>
         </div>
     </div>
 
-    <!-- Right: Form -->
-    <div class="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50">
-        <div class="w-full max-w-md animate-fade-in-up">
-
+    <!-- Panel Kanan 50% (Form) -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center px-6 py-12" style="background: #f0f9ff; overflow-y: auto;">
+        <div class="w-full max-w-md">
+            <!-- Logo kecil untuk mobile -->
             <div class="lg:hidden flex items-center gap-2 mb-8">
-                <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-9 h-9 object-contain">
+                <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="http://localhost/hastaka/auth/loginHastaka Holiday" class="w-9 h-9 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="material-symbols-rounded" style="display: none; width: 36px; height: 36px; background: linear-gradient(135deg, #0ea5e9, #0284c7); border-radius: 8px; align-items: center; justify-content: center; color: white; font-size: 20px;">explore</div>
                 <span class="font-extrabold text-xl gradient-text">Hastaka Holiday</span>
             </div>
 
-            <div class="hidden lg:flex items-center gap-2 mb-6">
-                <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-8 h-8 object-contain">
-                <span class="font-bold text-sm" style="color: #0ea5e9;">Hastaka Holiday</span>
+            <!-- Logo kecil untuk desktop -->
+            <div class="hidden lg:flex items-center gap-2 mb-8">
+                <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-8 h-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="material-symbols-rounded" style="display: none; width: 32px; height: 32px; background: linear-gradient(135deg, #0ea5e9, #0284c7); border-radius: 8px; align-items: center; justify-content: center; color: white; font-size: 18px;">explore</div>
+                <span style="font-size: 14px; font-weight: 600; color: #0ea5e9;">Hastaka Holiday</span>
             </div>
 
-            <h2 class="text-3xl font-extrabold text-gray-900 mb-2" style="font-size: 24px; font-weight: 700;">Daftar Akun</h2>
-            <p class="text-gray-500 mb-8">Buat akun gratis dan temukan paket wisata terbaikmu</p>
+            <!-- Judul Form -->
+            <h2 style="font-size: 28px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Daftar Akun</h2>
+            <p style="font-size: 14px; color: #6b7280; margin-bottom: 32px;">Buat akun gratis dan temukan paket wisata terbaikmu</p>
             
-            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border-2 border-slate-200/80" style="box-shadow: 0 8px 32px rgba(14,165,233,0.12); border: 0.5px solid #e0f2fe;">
+            <!-- Card Form -->
+            <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 24px rgba(14,165,233,0.08); border: 0.5px solid #e0f2fe;">
+                
+                <?= form_open('auth/register', ['class' => 'space-y-5', 'id' => 'form-register']); ?>
 
-            <?php if ($this->session->flashdata('error')): ?>
-            <div class="bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 text-red-800 px-5 py-4 rounded-2xl mb-6 flex items-start gap-3 animate-slide-down shadow-lg shadow-red-500/10">
-                <div class="w-8 h-8 bg-red-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span class="material-symbols-rounded text-white text-lg">error</span>
-                </div>
-                <div class="flex-1">
-                    <p class="font-bold text-sm mb-0.5">Gagal Mendaftar</p>
-                    <p class="text-sm text-red-700"><?= $this->session->flashdata('error'); ?></p>
-                </div>
+                    <div>
+                        <label style="display: block; font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 8px;">Nama Lengkap</label>
+                        <div style="position: relative;">
+                            <span class="material-symbols-rounded" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 20px;">person</span>
+                            <input type="text" name="nama_lengkap" value="<?= set_value('nama_lengkap'); ?>"
+                                style="width: 100%; padding: 12px 12px 12px 44px; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
+                                placeholder="Nama lengkap Anda" required>
+                        </div>
+                        <?= form_error('nama_lengkap', '<p style="color: #ef4444; font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 14px;">error</span>', '</p>'); ?>
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 8px;">Email</label>
+                        <div style="position: relative;">
+                            <span class="material-symbols-rounded" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 20px;">mail</span>
+                            <input type="email" name="email" value="<?= set_value('email'); ?>"
+                                style="width: 100%; padding: 12px 12px 12px 44px; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
+                                placeholder="nama@email.com" required>
+                        </div>
+                        <?= form_error('email', '<p style="color: #ef4444; font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 14px;">error</span>', '</p>'); ?>
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 8px;">Password</label>
+                        <div style="position: relative;">
+                            <span class="material-symbols-rounded" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 20px;">lock</span>
+                            <input type="password" name="password" id="reg-pwd"
+                                style="width: 100%; padding: 12px 44px 12px 44px; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
+                                placeholder="Minimal 6 karakter" required>
+                            <button type="button" onclick="toggleRegPwd('reg-pwd','reg-pwd-icon')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; background: none; border: none; cursor: pointer; padding: 0;">
+                                <span class="material-symbols-rounded" style="font-size: 20px;" id="reg-pwd-icon">visibility_off</span>
+                            </button>
+                        </div>
+                        <?= form_error('password', '<p style="color: #ef4444; font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 14px;">error</span>', '</p>'); ?>
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 8px;">Konfirmasi Password</label>
+                        <div style="position: relative;">
+                            <span class="material-symbols-rounded" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 20px;">lock</span>
+                            <input type="password" name="konfirmasi_password" id="reg-pwd2"
+                                style="width: 100%; padding: 12px 44px 12px 44px; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
+                                placeholder="Ulangi password" required>
+                            <button type="button" onclick="toggleRegPwd('reg-pwd2','reg-pwd2-icon')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; background: none; border: none; cursor: pointer; padding: 0;">
+                                <span class="material-symbols-rounded" style="font-size: 20px;" id="reg-pwd2-icon">visibility_off</span>
+                            </button>
+                        </div>
+                        <?= form_error('konfirmasi_password', '<p style="color: #ef4444; font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 14px;">error</span>', '</p>'); ?>
+                    </div>
+
+                    <?php 
+                    $reg_errors = $this->session->flashdata('errors'); 
+                    ?>
+                    <?php if (!empty($reg_errors)): ?>
+                    <div style="background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
+                        <p style="font-size: 13px; font-weight: 500; color: #b91c1c; margin: 0 0 6px 0;">⚠ Mohon perbaiki kesalahan berikut:</p>
+                        <ul style="font-size: 12px; color: #b91c1c; margin: 0; padding-left: 16px;">
+                            <?php foreach($reg_errors as $err): ?>
+                            <li><?= htmlspecialchars($err) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
+
+                    <div id="error-box-register" style="display: none; background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
+                        <p style="font-size: 13px; font-weight: 500; color: #b91c1c; margin: 0 0 6px 0;">⚠ Mohon perbaiki kesalahan berikut:</p>
+                        <ul id="error-list-register" style="font-size: 12px; color: #b91c1c; margin: 0; padding-left: 16px;"></ul>
+                    </div>
+
+                    <button type="submit" style="width: 100%; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 14px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(14,165,233,0.3); transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(14,165,233,0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(14,165,233,0.3)';">
+                        <span class="material-symbols-rounded" style="font-size: 20px;">person_add</span> Daftar Sekarang
+                    </button>
+
+                <?= form_close(); ?>
             </div>
-            <?php endif; ?>
 
-            <?= form_open('auth/register', ['class' => 'space-y-5']); ?>
-
-                <div>
-                    <label class="block text-sm font-bold text-gray-800 mb-2">Nama Lengkap</label>
-                    <div class="relative">
-                        <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">person</span>
-                        <input type="text" name="nama_lengkap" value="<?= set_value('nama_lengkap'); ?>"
-                            class="w-full pl-12 pr-4 py-3 bg-white border-2 border-slate-200 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300 hover:border-slate-300"
-                            placeholder="Nama lengkap Anda" required>
-                    </div>
-                    <?= form_error('nama_lengkap', '<p class="text-red-500 text-xs mt-1 flex items-center gap-1"><span class="material-symbols-rounded text-[14px]">error</span>', '</p>'); ?>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold text-gray-800 mb-2">Email</label>
-                    <div class="relative">
-                        <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">mail</span>
-                        <input type="email" name="email" value="<?= set_value('email'); ?>"
-                            class="w-full pl-12 pr-4 py-3 bg-white border-2 border-slate-200 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300 hover:border-slate-300"
-                            placeholder="nama@email.com" required>
-                    </div>
-                    <?= form_error('email', '<p class="text-red-500 text-xs mt-1 flex items-center gap-1"><span class="material-symbols-rounded text-[14px]">error</span>', '</p>'); ?>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold text-gray-800 mb-2">Password</label>
-                    <div class="relative">
-                        <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">lock</span>
-                        <input type="password" name="password" id="reg-pwd"
-                            class="w-full pl-12 pr-12 py-3 bg-white border-2 border-slate-200 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300 hover:border-slate-300"
-                            placeholder="Minimal 6 karakter" required>
-                        <button type="button" onclick="toggleRegPwd('reg-pwd','reg-pwd-icon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-600 transition">
-                            <span class="material-symbols-rounded text-[20px]" id="reg-pwd-icon">visibility_off</span>
-                        </button>
-                    </div>
-                    <?= form_error('password', '<p class="text-red-500 text-xs mt-1 flex items-center gap-1"><span class="material-symbols-rounded text-[14px]">error</span>', '</p>'); ?>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold text-gray-800 mb-2">Konfirmasi Password</label>
-                    <div class="relative">
-                        <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">lock</span>
-                        <input type="password" name="konfirmasi_password" id="reg-pwd2"
-                            class="w-full pl-12 pr-12 py-3 bg-white border-2 border-slate-200 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300 hover:border-slate-300"
-                            placeholder="Ulangi password" required>
-                        <button type="button" onclick="toggleRegPwd('reg-pwd2','reg-pwd2-icon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-600 transition">
-                            <span class="material-symbols-rounded text-[20px]" id="reg-pwd2-icon">visibility_off</span>
-                        </button>
-                    </div>
-                    <?= form_error('konfirmasi_password', '<p class="text-red-500 text-xs mt-1 flex items-center gap-1"><span class="material-symbols-rounded text-[14px]">error</span>', '</p>'); ?>
-                </div>
-
-                <button type="submit" class="group w-full gradient-bg text-white py-3.5 rounded-xl font-bold text-sm hover:shadow-xl hover:shadow-brand-500/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
-                    <span class="material-symbols-rounded text-[20px]">person_add</span> Daftar Sekarang
-                </button>
-
-            <?= form_close(); ?>
-            </div>
-
-            <p class="text-center text-gray-500 text-sm mt-8">
+            <p style="text-align: center; color: #6b7280; font-size: 14px; margin-top: 32px;">
                 Sudah punya akun?
-                <a href="<?= base_url('auth/login'); ?>" class="text-brand-600 font-semibold hover:underline">Masuk di sini</a>
+                <a href="<?= base_url('auth/login'); ?>" style="color: #0ea5e9; font-weight: 600; text-decoration: none;">Masuk di sini</a>
             </p>
         </div>
     </div>
 </div>
 
 <script>
-function toggleRegPwd(inputId, iconId) {
-    const inp = document.getElementById(inputId);
-    const icon = document.getElementById(iconId);
-    if (inp.type === 'password') { inp.type = 'text'; icon.textContent = 'visibility'; }
-    else { inp.type = 'password'; icon.textContent = 'visibility_off'; }
-}
+(function(){
+  var form = document.getElementById('form-register');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    var errors = [];
+    
+    var namaEl = form.querySelector('input[name="nama_lengkap"]');
+    var emailEl = form.querySelector('input[name="email"]');
+    var passEl = form.querySelector('input[name="password"]');
+    var konfEl = form.querySelector('input[name="konfirmasi_password"]');
+    
+    var nama = namaEl ? namaEl.value.trim() : '';
+    var email = emailEl ? emailEl.value.trim() : '';
+    var pass = passEl ? passEl.value : '';
+    var konf = konfEl ? konfEl.value : '';
+    
+    if (!nama) {
+      errors.push('Nama lengkap wajib diisi.');
+    } else if (nama.length < 3) {
+      errors.push('Nama minimal 3 karakter.');
+    } else if (/[^a-zA-Z\s]/.test(nama)) {
+      errors.push('Nama hanya boleh berisi huruf dan spasi.');
+    }
+    
+    if (!email) {
+      errors.push('Email wajib diisi.');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.push('Format email tidak valid.');
+    }
+    
+    if (!pass) {
+      errors.push('Password wajib diisi.');
+    } else if (pass.length < 6) {
+      errors.push('Password minimal 6 karakter.');
+    }
+    
+    if (!konf) {
+      errors.push('Konfirmasi password wajib diisi.');
+    } else if (pass !== konf) {
+      errors.push('Konfirmasi password tidak cocok.');
+    }
+    
+    if (errors.length > 0) {
+      e.preventDefault();
+      var box = document.getElementById('error-box-register');
+      var list = document.getElementById('error-list-register');
+      if (!box || !list) {
+        alert(errors.join('\n'));
+        return;
+      }
+      list.innerHTML = errors.map(function(e){ return '<li>' + e + '</li>'; }).join('');
+      box.style.display = 'block';
+      box.scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+  });
+
+  form.querySelectorAll('input').forEach(function(input) {
+    input.addEventListener('input', function() {
+      var box = document.getElementById('error-box-register');
+      if (box) box.style.display = 'none';
+    });
+  });
+})();
 </script>
