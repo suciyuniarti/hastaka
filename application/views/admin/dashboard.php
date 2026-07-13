@@ -1,35 +1,4 @@
-<?php if ($this->session->flashdata('success')): ?>
-<div class="flash-success" onclick="this.classList.add('flash-hide'); setTimeout(() => this.remove(), 300);">
-  <span class="material-symbols-rounded">check_circle</span>
-  <div class="flash-content">
-    <span class="flash-title">Berhasil</span>
-    <span class="flash-message"><?= $this->session->flashdata('success'); ?></span>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if ($this->session->flashdata('error')): ?>
-<div class="flash-error" onclick="this.classList.add('flash-hide'); setTimeout(() => this.remove(), 300);">
-  <span class="material-symbols-rounded">error</span>
-  <div class="flash-content">
-    <span class="flash-title">Gagal</span>
-    <span class="flash-message"><?= $this->session->flashdata('error'); ?></span>
-  </div>
-</div>
-<?php endif; ?>
-
-<?php if ($this->session->flashdata('info')): ?>
-<div class="flash-info" onclick="this.classList.add('flash-hide'); setTimeout(() => this.remove(), 300);">
-  <span class="material-symbols-rounded">info</span>
-  <div class="flash-content">
-    <span class="flash-title">Informasi</span>
-    <span class="flash-message"><?= $this->session->flashdata('info'); ?></span>
-  </div>
-</div>
-<?php endif; ?>
-
 <?php if ($this->session->flashdata('success') || $this->session->flashdata('error') || $this->session->flashdata('info')): ?>
-<div class="flash-overlay" onclick="this.remove()"></div>
 <?php endif; ?>
 
 <div class="page-header animate-fade-in-up">

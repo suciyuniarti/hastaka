@@ -90,18 +90,16 @@
                                 <div class="form-group">
                                     <label class="form-label">Nama Lengkap</label>
                                     <div class="relative">
-                                        <span class="material-symbols-rounded absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">badge</span>
                                         <input type="text" name="nama_pemesan" value="<?= set_value('nama_pemesan', $this->session->userdata('nama_lengkap')); ?>"
-                                            class="form-input pl-10" required>
+                                            class="form-input" required>
                                     </div>
                                     <?= form_error('nama_pemesan', '<p class="form-error"><span class="material-symbols-rounded text-sm">error</span>', '</p>'); ?>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">No. Telepon / WhatsApp</label>
                                     <div class="relative">
-                                        <span class="material-symbols-rounded absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">phone</span>
                                         <input type="tel" name="no_telepon" value="<?= set_value('no_telepon'); ?>"
-                                            class="form-input pl-10" placeholder="08xxxxxxxxxx" required>
+                                            class="form-input" placeholder="08xxxxxxxxxx" required>
                                     </div>
                                     <?= form_error('no_telepon', '<p class="form-error"><span class="material-symbols-rounded text-sm">error</span>', '</p>'); ?>
                                 </div>
@@ -109,9 +107,8 @@
                             <div class="form-group">
                                 <label class="form-label">Titik Kumpul / Lokasi Penjemputan</label>
                                 <div class="relative">
-                                    <span class="material-symbols-rounded absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">place</span>
                                     <input type="text" name="titik_kumpul" value="<?= set_value('titik_kumpul'); ?>"
-                                        class="form-input pl-10" placeholder="Contoh: Terminal Bungurasih, Surabaya" required>
+                                        class="form-input" placeholder="Contoh: Terminal Bungurasih, Surabaya" required>
                                 </div>
                                 <?= form_error('titik_kumpul', '<p class="form-error"><span class="material-symbols-rounded text-sm">error</span>', '</p>'); ?>
                             </div>
@@ -160,35 +157,44 @@
                                 <div>
                                     <p class="section-label">
                                         <span class="material-symbols-rounded text-[16px]">luggage</span>
-                                        Pilihan Akomodasi
-                                        <span class="text-slate-400 font-normal">(Bisa pilih lebih dari satu)</span>
+                                        Layanan Tambahan
+                                        <span class="text-slate-400 font-normal">(Opsional — bisa pilih lebih dari satu)</span>
+                                    </p>
+                                    <p style="font-size: 12px; color: #6b7280; font-style: italic; margin-top: -12px; margin-bottom: 12px;">
+                                        Layanan di luar paket standar. Tim kami akan menghubungi Anda untuk konfirmasi ketersediaan.
                                     </p>
                                     <?php if (!empty($akomodasi_list)): ?>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-1">
+                                    <div class="max-h-[400px] overflow-y-auto pr-1 space-y-2">
                                         <?php foreach ($akomodasi_list as $a): ?>
-                                        <label class="akomodasi-card flex items-start gap-3 px-3.5 py-3 border-2 border-gray-200 rounded-xl cursor-pointer transition hover:border-brand-300 hover:bg-brand-50/40" data-id="<?= $a->id_akomodasi; ?>" data-harga="<?= (int) $a->harga_tambahan; ?>">
-                                            <input type="checkbox" name="id_akomodasi[]" value="<?= $a->id_akomodasi; ?>" class="mt-0.5 text-brand-600 focus:ring-brand-500" onchange="updateAkomodasi()">
-                                            <span class="material-symbols-rounded text-brand-600 text-[18px] flex-shrink-0"><?= $a->icon; ?></span>
+                                        <label class="akomodasi-card" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; margin-bottom: 8px; border: 1.5px solid #e5e7eb; border-radius: 10px; transition: all 0.15s ease; cursor: pointer;" data-id="<?= $a->id_akomodasi; ?>" data-harga="<?= (int) $a->harga_tambahan; ?>">
+                                            <input type="checkbox" name="id_akomodasi[]" value="<?= $a->id_akomodasi; ?>" class="text-brand-600 focus:ring-brand-500" onchange="updateAkomodasi()">
+                                            <span class="material-symbols-rounded flex-shrink-0" style="font-size: 24px; color: #0ea5e9; background: #EFF8FF; border-radius: 8px; padding: 6px;"><?= $a->icon; ?></span>
                                             <div class="flex-1 min-w-0">
-                                                <p class="font-semibold text-sm text-gray-800 leading-tight"><?= $a->nama_akomodasi; ?></p>
+                                                <p class="font-semibold text-sm text-gray-800" style="font-weight: 500; font-size: 14px;"><?= $a->nama_akomodasi; ?></p>
                                                 <?php if (!empty($a->deskripsi)): ?>
-                                                <p class="text-xs text-gray-500 mt-0.5 line-clamp-2"><?= $a->deskripsi; ?></p>
+                                                <p class="text-xs text-gray-500 mt-0.5" style="font-size: 12px; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= $a->deskripsi; ?></p>
                                                 <?php endif; ?>
                                                 <?php if (!empty($a->wilayah)): ?>
-                                                <p class="text-xs mt-0.5 flex items-center gap-1" style="font-size: 11px; color: #6b7280;">
+                                                <p class="text-xs mt-0.5 flex items-center gap-1" style="font-size: 11px; color: #9ca3af;">
                                                     <span class="material-symbols-rounded text-[12px]">place</span>
                                                     <?= $a->wilayah; ?>
                                                 </p>
                                                 <?php endif; ?>
-                                                <p class="text-xs font-medium mt-1" style="color: #374151; font-size: 13px;">Rp <?= number_format($a->harga_tambahan, 0, ',', '.'); ?> <span class="text-gray-400">/orang</span></p>
-                                                <p class="text-xs font-medium mt-0.5 estimasi-text" style="color: #16a34a; font-weight: 500; display: none;">
-                                                    Estimasi (<span class="peserta-count"><?= $paket->min_peserta ?? 1; ?></span> peserta): + Rp <span class="estimasi-total"><?= number_format($a->harga_tambahan * ($paket->min_peserta ?? 1), 0, ',', '.'); ?></span>
+                                            </div>
+                                            <div class="text-right flex-shrink-0">
+                                                <p class="font-semibold" style="font-weight: 600; color: #0ea5e9; font-size: 14px;">Rp <?= number_format($a->harga_tambahan, 0, ',', '.'); ?></p>
+                                                <p style="font-size: 11px; color: #6b7280;">/orang</p>
+                                                <p class="text-xs font-medium mt-0.5 estimasi-text" style="color: #16a34a; font-weight: 500; font-size: 12px; display: none;">
+                                                    + Rp <span class="estimasi-total"><?= number_format($a->harga_tambahan * ($paket->min_peserta ?? 1), 0, ',', '.'); ?></span>
+                                                </p>
+                                                <p class="text-xs font-medium estimasi-text" style="color: #16a34a; font-weight: 500; font-size: 11px; display: none;">
+                                                    Estimasi (<span class="peserta-count"><?= $paket->min_peserta ?? 1; ?></span> peserta)
                                                 </p>
                                             </div>
                                         </label>
                                         <?php endforeach; ?>
                                     </div>
-                                    <p class="text-xs text-slate-500 mt-2">💡 Anda dapat memilih kombinasi akomodasi (misal: Bus + Pesawat)</p>
+                                    <p style="font-size: 12px; color: #6b7280; margin-top: 8px;">💡 Layanan bersifat kondisional. Tim kami akan konfirmasi ketersediaan setelah pemesanan.</p>
                                     <?php else: ?>
                                     <div class="text-center py-8 bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
                                         <span class="material-symbols-rounded text-slate-300 text-4xl mb-2">info</span>
@@ -494,14 +500,26 @@ function updateAkomodasi() {
     // Update estimasi text for each card
     const jml = parseInt(document.getElementById('jml-peserta').value) || 1;
     document.querySelectorAll('.akomodasi-card').forEach(card => {
-        const estimasiText = card.querySelector('.estimasi-text');
-        const pesertaCount = card.querySelector('.peserta-count');
+        const estimasiTexts = card.querySelectorAll('.estimasi-text');
         const estimasiTotal = card.querySelector('.estimasi-total');
+        const pesertaCount = card.querySelector('.peserta-count');
         const harga = parseInt(card.dataset.harga);
         
-        if (estimasiText && pesertaCount && estimasiTotal) {
+        if (estimasiTotal && pesertaCount) {
             pesertaCount.textContent = jml;
             estimasiTotal.textContent = formatRp(harga * jml);
+        }
+        
+        // Show/hide estimasi texts based on checkbox state
+        if (estimasiTexts.length > 0) {
+            const chk = card.querySelector('input[type="checkbox"]');
+            estimasiTexts.forEach(text => {
+                if (chk.checked) {
+                    text.style.display = 'block';
+                } else {
+                    text.style.display = 'none';
+                }
+            });
         }
     });
     

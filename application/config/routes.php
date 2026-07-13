@@ -61,6 +61,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['admin/paket/edit/(:num)']     = 'admin/paket_edit/$1';
 $route['admin/paket/hapus/(:num)']    = 'admin/paket_hapus/$1';
 $route['admin/paket/tambah']          = 'admin/paket_tambah';
+$route['admin/paket/get_data/(:num)'] = 'admin/paket/get_data/$1';
 
 // Admin > Users
 $route['admin/users/toggle/(:num)']   = 'admin/users_toggle/$1';
@@ -79,17 +80,20 @@ $route['admin/kriteria/edit/(:num)']  = 'admin/kriteria_edit/$1';
 $route['admin/kategori/edit/(:num)']     = 'admin/kategori_edit/$1';
 $route['admin/kategori/hapus/(:num)']    = 'admin/kategori_hapus/$1';
 $route['admin/kategori/tambah']          = 'admin/kategori_tambah';
+$route['admin/kategori/get_data/(:num)'] = 'admin/kategori/get_data/$1';
 
 // Admin > Destinasi (pagination route MUST come before specific routes)
 $route['admin/destinasi/(:num)']         = 'admin/destinasi/$1';
 $route['admin/destinasi/edit/(:num)']    = 'admin/destinasi_edit/$1';
 $route['admin/destinasi/hapus/(:num)']   = 'admin/destinasi_hapus/$1';
 $route['admin/destinasi/tambah']         = 'admin/destinasi_tambah';
+$route['admin/destinasi/get_data/(:num)'] = 'admin/destinasi/get_data/$1';
 
 // Admin > Fasilitas
 $route['admin/fasilitas/edit/(:num)']    = 'admin/fasilitas_edit/$1';
 $route['admin/fasilitas/hapus/(:num)']   = 'admin/fasilitas_hapus/$1';
 $route['admin/fasilitas/tambah']         = 'admin/fasilitas_tambah';
+$route['admin/fasilitas/get_data/(:num)'] = 'admin/fasilitas/get_data/$1';
 
 // Admin > Klien
 $route['admin/klien/edit/(:num)']        = 'admin/klien_edit/$1';
@@ -100,11 +104,13 @@ $route['admin/klien/tambah']             = 'admin/klien_tambah';
 $route['admin/aktivitas/edit/(:num)']    = 'admin/aktivitas_edit/$1';
 $route['admin/aktivitas/hapus/(:num)']   = 'admin/aktivitas_hapus/$1';
 $route['admin/aktivitas/tambah']         = 'admin/aktivitas_tambah';
+$route['admin/aktivitas/get_data/(:num)'] = 'admin/aktivitas/get_data/$1';
 
 // Admin > Akomodasi
 $route['admin/akomodasi/edit/(:num)']    = 'admin/akomodasi_edit/$1';
 $route['admin/akomodasi/hapus/(:num)']   = 'admin/akomodasi_hapus/$1';
 $route['admin/akomodasi/tambah']         = 'admin/akomodasi_tambah';
+$route['admin/akomodasi/get_data/(:num)'] = 'admin/akomodasi/get_data/$1';
 
 // Admin > Dashboard (alias)
 $route['admin']                       = 'admin/dashboard';

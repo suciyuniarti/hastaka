@@ -82,7 +82,27 @@ class Admin extends CI_Controller
         $limit = 10;
         $offset = (int) $page * $limit;
         $this->_fix_missing_foto();
-        $data['paket'] = $this->Paket_model->get_all_paket();
+        
+        // Ambil keyword pencarian
+        $keyword = $this->input->get('keyword');
+        $data['keyword'] = $keyword ?: '';
+        
+        if (!empty($keyword)) {
+            // Filter paket berdasarkan keyword
+            $data['paket'] = $this->Paket_model->search_paket($keyword);
+        } else {
+            $data['paket'] = $this->Paket_model->get_all_paket();
+        }
+        
+        // Set pagination variables
+        $data['total_paket'] = count($data['paket']);
+        $data['total_pages'] = 1;
+        $data['current_page'] = 0;
+        
+        $data['destinasi_list'] = $this->Destinasi_model->get_all_destinasi();
+        $data['fasilitas_list'] = $this->Fasilitas_model->get_all_fasilitas();
+        $data['aktivitas_list'] = $this->Aktivitas_model->get_all_aktivitas();
+        
         $data['content_view'] = 'admin/paket';
         $this->load->view('admin', $data);
     }
@@ -269,31 +289,174 @@ class Admin extends CI_Controller
         redirect('admin/paket');
     }
 
+    public function get_data($id_paket)
+    {
+        $paket = $this->Paket_model->get_paket_by_id($id_paket);
+        if (!$paket) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(404)
+                ->set_output(json_encode(['error' => 'Paket tidak ditemukan']));
+            return;
+        }
+
+        $selected_destinasi = array_map(function ($d) {
+            return (int) $d->id_destinasi;
+        }, $this->Destinasi_model->get_by_paket($id_paket));
+
+        $selected_fasilitas = array_map(function ($f) {
+            return (int) $f->id_fasilitas;
+        }, $this->Fasilitas_model->get_by_paket($id_paket));
+
+        $selected_aktivitas = array_map(function ($a) {
+            return (int) $a->id_aktivitas;
+        }, $this->Aktivitas_model->get_by_paket($id_paket));
+
+        $response = [
+            'id_paket' => (int) $paket->id_paket,
+            'nama_paket' => (string) $paket->nama_paket,
+            'deskripsi' => (string) $paket->deskripsi,
+            'harga' => (int) $paket->harga,
+            'durasi_hari' => (int) $paket->durasi_hari,
+            'min_peserta' => isset($paket->min_peserta) && $paket->min_peserta ? (int) $paket->min_peserta : 1,
+            'status' => (string) $paket->status,
+            'foto' => (string) ($paket->foto ?: ''),
+            'selected_destinasi' => $selected_destinasi,
+            'selected_fasilitas' => $selected_fasilitas,
+            'selected_aktivitas' => $selected_aktivitas,
+        ];
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
+    public function get_kategori($id)
+    {
+        $kategori = $this->Kategori_model->get_kategori_by_id($id);
+        if (!$kategori) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['error' => 'Data tidak ditemukan']));
+            return;
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($kategori));
+    }
+
+    public function get_destinasi($id)
+    {
+        $destinasi = $this->Destinasi_model->get_destinasi_by_id($id);
+        if (!$destinasi) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['error' => 'Data tidak ditemukan']));
+            return;
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($destinasi));
+    }
+
+    public function get_fasilitas($id)
+    {
+        $fasilitas = $this->Fasilitas_model->get_fasilitas_by_id($id);
+        if (!$fasilitas) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['error' => 'Data tidak ditemukan']));
+            return;
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($fasilitas));
+    }
+
+    public function get_aktivitas($id)
+    {
+        $aktivitas = $this->Aktivitas_model->get_aktivitas_by_id($id);
+        if (!$aktivitas) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['error' => 'Data tidak ditemukan']));
+            return;
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($aktivitas));
+    }
+
+    public function get_akomodasi($id)
+    {
+        $akomodasi = $this->Akomodasi_model->get_by_id($id);
+        if (!$akomodasi) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['error' => 'Data tidak ditemukan']));
+            return;
+        }
+
+        $selected_paket = array_map(function($p) {
+            return (int)$p->id_paket;
+        }, $this->Akomodasi_model->get_paket_by_akomodasi($id));
+
+        $response = (array)$akomodasi;
+        $response['selected_paket'] = $selected_paket;
+        $response['is_used'] = $this->Akomodasi_model->is_used_in_pemesanan($id);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
     // ========== NILAI ALTERNATIF ==========
     public function nilai($id_paket)
     {
-        $data['title'] = 'Nilai Alternatif - Admin';
-        $data['paket'] = $this->Paket_model->get_paket_by_id($id_paket);
-        $data['kriteria'] = $this->Paket_model->get_all_kriteria();
-        $data['nilai'] = $this->Paket_model->get_nilai_by_paket($id_paket);
+        redirect('admin/paket');
+    }
 
-        if (!$data['paket']) {
-            redirect('admin/paket');
+    public function get_nilai($id_paket)
+    {
+        $paket = $this->Paket_model->get_paket_by_id($id_paket);
+        if (!$paket) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['error' => 'Paket tidak ditemukan']));
+            return;
         }
 
-        if ($this->input->method() == 'post') {
-            foreach ($data['kriteria'] as $kr) {
-                $nilai = $this->input->post('nilai_' . $kr->id_kriteria, TRUE);
-                if ($nilai !== null) {
-                    $this->Paket_model->update_nilai($id_paket, $kr->id_kriteria, $nilai);
-                }
-            }
-            $this->session->set_flashdata('success', 'Nilai alternatif berhasil diupdate!');
-            redirect('admin/nilai/' . $id_paket);
+        $kriteria = $this->Paket_model->get_all_kriteria();
+        $nilai_list = $this->Paket_model->get_nilai_by_paket($id_paket);
+
+        $nilai_map = [];
+        foreach ($nilai_list as $n) {
+            $nilai_map[$n->id_kriteria] = $n->nilai;
         }
 
-        $data['content_view'] = 'admin/nilai_form';
-        $this->load->view('admin', $data);
+        $result = [];
+        foreach ($kriteria as $kr) {
+            $sumber = '';
+            if ($kr->kode_kriteria == 'C1') $sumber = 'Harga Paket';
+            if ($kr->kode_kriteria == 'C2') $sumber = 'Durasi Perjalanan (hari)';
+            if ($kr->kode_kriteria == 'C3') $sumber = 'Jumlah Destinasi terpilih';
+            if ($kr->kode_kriteria == 'C4') $sumber = 'Jumlah Aktivitas terpilih';
+
+            $result[] = [
+                'kode' => $kr->kode_kriteria,
+                'nama' => $kr->nama_kriteria,
+                'sifat' => strtoupper($kr->sifat),
+                'nilai' => isset($nilai_map[$kr->id_kriteria]) ? $nilai_map[$kr->id_kriteria] : 0,
+                'sumber' => $sumber
+            ];
+        }
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode([
+                'nama_paket' => $paket->nama_paket,
+                'kriteria' => $result
+            ]));
     }
 
     // ========== MANAJEMEN KRITERIA ==========
@@ -703,6 +866,7 @@ class Admin extends CI_Controller
         $data['total_akomodasi'] = count($data['akomodasi']);
         $data['total_pages'] = 1;
         $data['current_page'] = 0;
+        $data['paket_list'] = $this->Paket_model->get_all_paket();
         $data['content_view'] = 'admin/akomodasi';
         $this->load->view('admin', $data);
     }

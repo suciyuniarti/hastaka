@@ -11,6 +11,12 @@ class Paket_model extends CI_Model {
         return $this->db->order_by('created_at', 'DESC')->get('paket_wisata')->result();
     }
 
+    public function search_paket($keyword)
+    {
+        $this->db->like('nama_paket', $keyword);
+        return $this->db->order_by('created_at', 'DESC')->get('paket_wisata')->result();
+    }
+
     public function get_paket_tersedia()
     {
         return $this->db->where('status', 'tersedia')->order_by('nama_paket', 'ASC')->get('paket_wisata')->result();

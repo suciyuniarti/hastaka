@@ -18,29 +18,39 @@ class Auth extends CI_Controller {
             } else {
                 redirect('home');
             }
+            return;
         }
 
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'required|trim');
+        // Bersihkan flashdata error register agar tidak muncul di halaman login
+        $this->session->set_flashdata('errors', '');
 
-        if ($this->form_validation->run() == FALSE) {
-            $data['title'] = 'Login - Hastaka Holiday';
-            $this->load->view('templates/header', $data);
-            $this->load->view('login');
-            $this->load->view('templates/auth_footer');
-        } else {
-            $email = $this->input->post('email', TRUE);
-            $password = $this->input->post('password', TRUE);
+        // Jika ada POST (form disubmit)
+        if ($this->input->method() == 'post') {
+            $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email', [
+                'required' => 'Email wajib diisi.',
+                'valid_email' => 'Format email tidak valid.'
+            ]);
+            $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]', [
+                'required' => 'Password wajib diisi.',
+                'min_length' => 'Password minimal 6 karakter.'
+            ]);
 
-            $user = $this->User_model->get_user_by_email($email);
-
-            if ($user) {
-                if ($user->status == 'nonaktif') {
-                    $this->session->set_flashdata('error', 'Akun Anda telah dinonaktifkan. Hubungi administrator.');
-                    redirect('auth/login');
+            if ($this->form_validation->run() == FALSE) {
+                $errors = array_values($this->form_validation->error_array());
+                if (!empty($errors)) {
+                    $this->session->set_flashdata('login_errors', $errors);
                 }
+            } else {
+                $email = $this->input->post('email', TRUE);
+                $password = $this->input->post('password', TRUE);
 
-                if (password_verify($password, $user->password)) {
+                $user = $this->User_model->get_user_by_email($email);
+
+                if (!$user) {
+                    $this->session->set_flashdata('login_errors', ['Email atau password salah. Silakan coba lagi.']);
+                } elseif ($user->status !== 'aktif') {
+                    $this->session->set_flashdata('login_errors', ['Akun Anda tidak aktif. Hubungi admin untuk informasi lebih lanjut.']);
+                } elseif (password_verify($password, $user->password)) {
                     $session_data = [
                         'id_user' => $user->id_user,
                         'nama_lengkap' => $user->nama_lengkap,
@@ -52,24 +62,29 @@ class Auth extends CI_Controller {
 
                     if ($user->role == 'admin') {
                         redirect('admin/dashboard');
+                        return;
                     } else {
                         // Redirect back ke halaman sebelumnya jika ada
                         $redirect = $this->session->userdata('redirect_after_login');
                         if ($redirect) {
                             $this->session->unset_userdata('redirect_after_login');
                             redirect($redirect);
+                            return;
                         }
                         redirect('home');
+                        return;
                     }
                 } else {
-                    $this->session->set_flashdata('error', 'Password salah!');
-                    redirect('auth/login');
+                    $this->session->set_flashdata('login_errors', ['Email atau password salah. Silakan coba lagi.']);
                 }
-            } else {
-                $this->session->set_flashdata('error', 'Email tidak terdaftar!');
-                redirect('auth/login');
             }
         }
+
+        // Tampilkan form login
+        $data['title'] = 'Login - Hastaka Holiday';
+        $this->load->view('templates/header', $data);
+        $this->load->view('login');
+        $this->load->view('templates/auth_footer');
     }
 
     public function register()
@@ -78,14 +93,36 @@ class Auth extends CI_Controller {
             redirect('home');
         }
 
-        $this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'required|trim|min_length[3]');
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]', [
-            'is_unique' => 'Email sudah terdaftar. Gunakan email lain.'
+        $this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'required|trim|min_length[3]|max_length[100]|regex_match[/^[a-zA-Z\s]+$/]', [
+            'required' => 'Nama lengkap wajib diisi.',
+            'min_length' => 'Nama minimal 3 karakter.',
+            'max_length' => 'Nama maksimal 100 karakter.',
+            'regex_match' => 'Nama hanya boleh berisi huruf dan spasi.'
         ]);
-        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]');
-        $this->form_validation->set_rules('konfirmasi_password', 'Konfirmasi Password', 'required|trim|matches[password]');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|max_length[100]|is_unique[users.email]', [
+            'required' => 'Email wajib diisi.',
+            'valid_email' => 'Format email tidak valid.',
+            'max_length' => 'Email maksimal 100 karakter.',
+            'is_unique' => 'Email ini sudah terdaftar. Silakan masuk atau gunakan email lain.'
+        ]);
+        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]|max_length[255]', [
+            'required' => 'Password wajib diisi.',
+            'min_length' => 'Password minimal 6 karakter.',
+            'max_length' => 'Password maksimal 255 karakter.'
+        ]);
+        $this->form_validation->set_rules('konfirmasi_password', 'Konfirmasi Password', 'required|trim|matches[password]', [
+            'required' => 'Konfirmasi password wajib diisi.',
+            'matches' => 'Konfirmasi password tidak cocok dengan password.'
+        ]);
 
         if ($this->form_validation->run() == FALSE) {
+            $errors = [];
+            foreach ($this->form_validation->error_array() as $err) {
+                $errors[] = $err;
+            }
+            if (!empty($errors)) {
+                $this->session->set_flashdata('errors', $errors);
+            }
             $data['title'] = 'Register - Hastaka Holiday';
             $this->load->view('templates/header', $data);
             $this->load->view('register');

@@ -4,19 +4,21 @@
     </div>
     <div class="page-header-content">
         <h1>Kelola Kriteria SAW</h1>
-        <p>Atur bobot dan sifat kriteria untuk perhitungan SAW</p>
+        <p>Atur sifat kriteria untuk perhitungan SAW</p>
     </div>
 </div>
 
 <div class="admin-card mb-6 flex items-start gap-3">
     <span class="material-symbols-rounded text-sky-500 mt-0.5">info</span>
     <div class="text-sm text-sky-800">
-        <p class="font-bold mb-1">Metode SAW (Simple Additive Weighting)</p>
-        <p>Kriteria digunakan dalam perhitungan pembobotan untuk menentukan rekomendasi paket wisata terbaik. <strong class="font-bold">Total bobot</strong> harus tepat 1 (contoh: 0.3 + 0.3 + 0.2 + 0.2 = 1). <strong class="font-bold">Sifat</strong> menentukan apakah nilai semakin besar semakin baik (benefit) atau semakin kecil semakin baik (cost).</p>
+        <p class="font-bold mb-2">Panduan Kelola Kriteria SAW</p>
+        <p style="margin-bottom: 12px;">Di halaman ini admin dapat mengatur sifat setiap kriteria yang digunakan dalam perhitungan rekomendasi paket wisata.</p>
+        <p style="margin-bottom: 8px;"><strong>Cost</strong> → digunakan untuk kriteria yang semakin kecil nilainya semakin baik (contoh: harga — paket lebih murah lebih direkomendasikan)</p>
+        <p style="margin-bottom: 8px;"><strong>Benefit</strong> → digunakan untuk kriteria yang semakin besar nilainya semakin baik (contoh: durasi, destinasi, aktivitas — semakin banyak semakin direkomendasikan)</p>
     </div>
 </div>
 
-<?= form_open('admin/kriteria', ['class' => 'admin-table-wrap']); ?>
+<?= form_open('admin/kriteria', ['class' => 'admin-table-wrap', 'id' => 'form-kriteria']); ?>
 <div class="overflow-x-auto">
     <table class="admin-table text-sm">
         <thead>
@@ -52,7 +54,7 @@
                 </td>
                 <td class="py-4 px-5 text-center">
                     <input type="hidden" name="bobot[<?= $kr->id_kriteria; ?>]" value="<?= $kr->bobot; ?>">
-                    <select name="sifat[<?= $kr->id_kriteria; ?>]" class="form-input w-28 text-xs py-1 sifat-select" data-kode="<?= $kr->kode_kriteria; ?>" required>
+                    <select name="sifat[<?= $kr->id_kriteria; ?>]" class="form-input w-28 text-xs py-1 sifat-select" data-kode="<?= $kr->kode_kriteria; ?>" data-nama="<?= $kr->nama_kriteria; ?>" required>
                         <option value="benefit" <?= $kr->sifat == 'benefit' ? 'selected' : ''; ?>>Benefit</option>
                         <option value="cost" <?= $kr->sifat == 'cost' ? 'selected' : ''; ?>>Cost</option>
                     </select>
@@ -81,41 +83,143 @@
     </p>
 </div>
 
-<div class="form-actions px-5 py-4 border-t border-slate-100 flex justify-between items-center">
-    <div class="text-sm text-slate-600">
-        Total Bobot: <span id="total-bobot" class="font-bold text-amber-600">1.00</span>
-        <span id="total-warning" class="text-red-500 text-xs ml-2 hidden">(harus = 1)</span>
-    </div>
-    <button type="submit" class="btn btn-primary">
-        <span class="material-symbols-rounded text-lg">save</span> Simpan Semua
+<div class="form-actions px-5 py-4 border-t border-slate-100 flex justify-end items-center">
+    <button type="button" class="btn btn-primary" onclick="konfirmasiSimpanKriteria()">
+        <span class="material-symbols-rounded text-lg">save</span> Simpan Perubahan Sifat
     </button>
 </div>
 <?= form_close(); ?>
+
+<!-- Modal Konfirmasi Simpan Kriteria -->
+<div id="modalKonfirmasiKriteria" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+    <div class="modal-box" style="background: white; border-radius: 12px; max-width: 500px; width: 90%; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+        <!-- Header -->
+        <div style="padding: 24px 24px 0; text-align: center;">
+            <div style="width: 40px; height: 40px; background: #FEF3C7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                <span class="material-symbols-rounded" style="color: #f59e0b; font-size: 24px;">warning</span>
+            </div>
+            <h3 style="font-weight: 600; font-size: 18px; color: #1f2937; margin: 0;">Simpan Perubahan Sifat Kriteria?</h3>
+        </div>
+        
+        <!-- Body -->
+        <div style="padding: 16px 24px;">
+            <p style="font-size: 13px; color: #6b7280; margin: 0 0 16px; text-align: center;">Perubahan yang akan disimpan:</p>
+            
+            <!-- Ringkasan Kriteria -->
+            <div id="ringkasan-kriteria" style="background: #f9fafb; border-radius: 8px; padding: 12px 16px; max-height: 300px; overflow-y: auto;">
+                <!-- Ringkasan akan diisi oleh JavaScript -->
+            </div>
+            
+            <!-- Peringatan -->
+            <div style="background: #FEF3C7; border: 0.5px solid #FCD34D; border-radius: 8px; padding: 10px 14px; margin-top: 12px; display: flex; gap: 8px; align-items: start;">
+                <span class="material-symbols-rounded" style="color: #f59e0b; font-size: 18px; flex-shrink: 0;">warning</span>
+                <p style="font-size: 12px; color: #92400E; margin: 0; line-height: 1.5;">
+                    Perubahan ini akan langsung mempengaruhi urutan hasil rekomendasi paket wisata untuk semua pelanggan. Pastikan sifat kriteria sudah sesuai sebelum menyimpan.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div style="padding: 12px 24px 24px; display: flex; gap: 10px; justify-content: flex-end;">
+            <button type="button" class="btn btn-secondary" onclick="batalSimpanKriteria()" style="padding: 8px 16px; border: 1px solid #d1d5db; background: white; color: #374151; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                Batal
+            </button>
+            <button type="button" class="btn btn-primary" onclick="simpanKriteria()" style="padding: 8px 16px; background: #0ea5e9; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                Ya, Simpan
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form');
+(function() {
+  'use strict';
+  
+  window.konfirmasiSimpanKriteria = function() {
+    const dropdowns = document.querySelectorAll('select[name^="sifat"]');
+    
+    if (dropdowns.length === 0) {
+      console.error('Dropdown sifat tidak ditemukan');
+      return;
+    }
+    
+    let ringkasan = '';
+    
+    dropdowns.forEach(function(select) {
+      const kode = select.dataset.kode || '?';
+      const nama = select.dataset.nama || '?';
+      const sifat = select.value;
+      
+      const sifatLabel = sifat === 'cost'
+        ? '<span style="background:#FEF2F2;color:#dc2626;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:500">COST</span> <span style="font-size:11px;color:#dc2626">↓ semakin kecil semakin baik</span>'
+        : '<span style="background:#f0fdf4;color:#16a34a;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:500">BENEFIT</span> <span style="font-size:11px;color:#16a34a">↑ semakin besar semakin baik</span>';
+      
+      ringkasan += `
+        <div style="padding:8px 0;border-bottom:0.5px solid #e5e7eb">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="background:#EFF8FF;color:#0369a1;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:500">${kode}</span>
+            <span style="font-size:13px;font-weight:500">${nama}</span>
+          </div>
+          <div style="padding-left:4px">
+            ${sifatLabel}
+          </div>
+        </div>
+      `;
+    });
+    
+    const elRingkasan = document.getElementById('ringkasan-kriteria');
+    if (elRingkasan) {
+      elRingkasan.innerHTML = ringkasan;
+    }
+    
+    const modal = document.getElementById('modalKonfirmasiKriteria');
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+    } else {
+      console.error('Modal tidak ditemukan — submit langsung');
+      document.getElementById('form-kriteria').submit();
+    }
+  };
+
+  window.batalSimpanKriteria = function() {
+    const modal = document.getElementById('modalKonfirmasiKriteria');
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.remove('active');
+    }
+  };
+
+  window.simpanKriteria = function() {
+    const form = document.getElementById('form-kriteria');
+    if (form) {
+      form.submit();
+    } else {
+      console.error('Form tidak ditemukan');
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
     const sifatSelects = document.querySelectorAll('.sifat-select');
 
-    // Fungsi untuk update teks sifat
     function updateSifatInfo(select) {
-        const infoDiv = select.closest('td').querySelector('.sifat-info');
-        const sifat = select.value;
-        
-        if (sifat === 'cost') {
-            infoDiv.innerHTML = '<span style="color: #dc2626;">↓ Semakin kecil semakin baik</span>';
-        } else {
-            infoDiv.innerHTML = '<span style="color: #16a34a;">↑ Semakin besar semakin baik</span>';
-        }
+      const infoDiv = select.closest('td').querySelector('.sifat-info');
+      const sifat = select.value;
+      
+      if (sifat === 'cost') {
+        infoDiv.innerHTML = '<span style="color: #dc2626;">↓ Semakin kecil semakin baik</span>';
+      } else {
+        infoDiv.innerHTML = '<span style="color: #16a34a;">↑ Semakin besar semakin baik</span>';
+      }
     }
 
-    // Inisialisasi teks untuk semua dropdown
     sifatSelects.forEach(select => {
-        updateSifatInfo(select);
-        
-        // Update saat dropdown berubah
-        select.addEventListener('change', function() {
-            updateSifatInfo(this);
-        });
+      updateSifatInfo(select);
+      
+      select.addEventListener('change', function() {
+        updateSifatInfo(this);
+      });
     });
-});
+  });
+})();
 </script>

@@ -32,7 +32,7 @@ class Klien_model extends CI_Model {
     {
         return $this->db->update('klien', $data, ['id_klien' => $id]);
     }
-
+    
     public function hapus_klien($id)
     {
         return $this->db->delete('klien', ['id_klien' => $id]);

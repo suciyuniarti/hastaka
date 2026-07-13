@@ -1,12 +1,4 @@
 <?php if ($this->session->flashdata('success')): ?>
-<div class="flash-success" onclick="this.classList.add('flash-hide'); setTimeout(() => this.remove(), 300);">
-    <span class="material-symbols-rounded">check_circle</span>
-    <div class="flash-content">
-        <span class="flash-title">Berhasil</span>
-        <span class="flash-message"><?= $this->session->flashdata('success'); ?></span>
-    </div>
-</div>
-<div class="flash-overlay" onclick="this.remove()"></div>
 <?php endif; ?>
 
 <div class="page-header">
