@@ -47,14 +47,6 @@
                 <?php if (!empty($kat->deskripsi)): ?>
                 <p class="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-2"><?= $kat->deskripsi; ?></p>
                 <?php endif; ?>
-                <div class="flex items-center justify-between pt-4 border-t border-slate-100">
-                    <div class="flex items-center gap-2">
-                        <span class="<?= $c['bg']; ?> <?= $c['text']; ?> text-xs font-bold px-3 py-1 rounded-full border <?= $c['border']; ?>">
-                            <?= $kat->icon ?? 'school'; ?>
-                        </span>
-                    </div>
-                    <span class="text-gray-400 text-xs font-medium">Program Hastaka</span>
-                </div>
             </div>
         </div>
         <?php endforeach; ?>

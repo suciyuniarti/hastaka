@@ -11,7 +11,7 @@
                     <img src="<?= base_url('application/assets/images/logo-hastaka.png') ?>" alt="Hastaka Holiday" class="w-9 h-9 object-contain">
                     <span class="font-extrabold text-2xl text-white tracking-tight">Hastaka Holiday</span>
                 </div>
-                <p class="text-slate-300 text-sm leading-relaxed">Sistem rekomendasi paket wisata cerdas menggunakan metode SAW untuk membantu Anda menemukan perjalanan sempurna.</p>
+                <p class="text-slate-300 text-sm leading-relaxed">Sistem Informasi yang menyediakan berbagai pilihan paket wisata dan melakukan pemesanan dengan mudah.</p>
             </div>
 
             <!-- Quick Links -->
@@ -40,9 +40,9 @@
                     Kontak
                 </h4>
                 <ul class="space-y-3">
-                    <li><a href="mailto:admin@hastaka.com" class="text-slate-300 hover:text-sky-400 text-sm transition-all duration-300 flex items-center gap-2.5 group hover:translate-x-1"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">mail</span> admin@hastaka.com</a></li>
+                    <li><a href="mailto:hastakaholiday@gmail.com" class="text-slate-300 hover:text-sky-400 text-sm transition-all duration-300 flex items-center gap-2.5 group hover:translate-x-1"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">mail</span> hastakaholiday@gmail.com</a></li>
                     <li><a href="https://wa.me/6287719646932" target="_blank" class="text-slate-300 hover:text-sky-400 text-sm transition-all duration-300 flex items-center gap-2.5 group hover:translate-x-1"><span class="material-symbols-rounded text-[16px] group-hover:scale-110 transition-transform">chat</span> 0877-1964-6932</a></li>
-                    <li><span class="text-slate-300 text-sm flex items-center gap-2.5"><span class="material-symbols-rounded text-[16px] text-slate-400">location_on</span> Indonesia</span></li>
+                    <li><span class="text-slate-300 text-sm flex items-center gap-2.5"><span class="material-symbols-rounded text-[16px] text-slate-400">location_on</span> Bandung</span></li>
                 </ul>
             </div>
 
@@ -53,10 +53,6 @@
     <div class="border-t border-sky-700/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-3">
             <p class="text-slate-400 text-sm">&copy; <?= date('Y'); ?> Hastaka Holiday. All rights reserved.</p>
-            <div class="flex items-center gap-4">
-                <a href="#" class="text-slate-400 hover:text-sky-400 transition text-sm">Privacy Policy</a>
-                <a href="#" class="text-slate-400 hover:text-sky-400 transition text-sm">Terms of Service</a>
-            </div>
         </div>
     </div>
     </div>

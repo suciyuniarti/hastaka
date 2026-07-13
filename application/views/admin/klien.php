@@ -25,7 +25,6 @@
                     <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider">Nama Klien</th>
                     <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider">Jenis</th>
                     <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider">Website</th>
-                    <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider">Tgl Kerjasama</th>
                     <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider w-40 text-center">Aksi</th>
                 </tr>
             </thead>
@@ -52,9 +51,6 @@
                             </td>
                             <td class="py-4 px-5">
                                 <p class="font-semibold text-slate-800"><?= $k->nama_klien; ?></p>
-                                <?php if (!empty($k->deskripsi)): ?>
-                                    <p class="text-slate-400 text-xs mt-0.5 line-clamp-1"><?= $k->deskripsi; ?></p>
-                                <?php endif; ?>
                             </td>
                             <td class="py-4 px-5">
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border <?= $jenis_colors[$k->jenis] ?? 'bg-slate-600 text-white border-slate-700'; ?>">
@@ -69,9 +65,6 @@
                                 <?php else: ?>
                                     <span class="text-slate-300 text-xs">-</span>
                                 <?php endif; ?>
-                            </td>
-                            <td class="py-4 px-5 text-slate-500 text-xs">
-                                <?= $k->tanggal_kerjasama ? date('d M Y', strtotime($k->tanggal_kerjasama)) : '-'; ?>
                             </td>
                             <td class="py-4 px-5 text-center">
                                 <div class="flex items-center justify-center gap-2">

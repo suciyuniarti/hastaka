@@ -9,38 +9,6 @@
         <p class="text-gray-500 max-w-xl mx-auto">Hastaka Holiday telah dipercaya oleh berbagai sekolah, perusahaan, instansi pemerintah, dan komunitas untuk menyelenggarakan perjalanan terbaik.</p>
     </div>
 
-    <!-- Stats -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
-        <div class="group bg-white rounded-2xl p-5 text-center shadow-md shadow-slate-200/50 border-2 border-slate-200/80 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.1s;">
-            <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <span class="material-symbols-rounded text-white text-2xl">groups</span>
-            </div>
-            <p class="text-3xl font-extrabold gradient-text"><?= $total_klien ?? 0; ?>+</p>
-            <p class="text-slate-500 text-xs font-semibold mt-1">Total Klien</p>
-        </div>
-        <div class="group bg-white rounded-2xl p-5 text-center shadow-md shadow-slate-200/50 border-2 border-slate-200/80 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.2s;">
-            <div class="w-12 h-12 bg-gradient-to-br from-sky-500 to-sky-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <span class="material-symbols-rounded text-white text-2xl">category</span>
-            </div>
-            <p class="text-3xl font-extrabold gradient-text">4</p>
-            <p class="text-slate-500 text-xs font-semibold mt-1">Kategori Klien</p>
-        </div>
-        <div class="group bg-white rounded-2xl p-5 text-center shadow-md shadow-slate-200/50 border-2 border-slate-200/80 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.3s;">
-            <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <span class="material-symbols-rounded text-white text-2xl">flight</span>
-            </div>
-            <p class="text-3xl font-extrabold gradient-text">100+</p>
-            <p class="text-slate-500 text-xs font-semibold mt-1">Perjalanan</p>
-        </div>
-        <div class="group bg-white rounded-2xl p-5 text-center shadow-md shadow-slate-200/50 border-2 border-slate-200/80 hover:shadow-lg hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.4s;">
-            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <span class="material-symbols-rounded text-white text-2xl">emoji_events</span>
-            </div>
-            <p class="text-3xl font-extrabold gradient-text">5</p>
-            <p class="text-slate-500 text-xs font-semibold mt-1">Tahun Pengalaman</p>
-        </div>
-    </div>
-
     <!-- Client Grid -->
     <?php
     $jenis_icons = [

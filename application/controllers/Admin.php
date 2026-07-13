@@ -677,7 +677,6 @@ class Admin extends CI_Controller
                 'nama_destinasi' => $this->input->post('nama_destinasi', TRUE),
                 'kota' => $this->input->post('kota', TRUE),
                 'jenis' => 'wisata',
-                'deskripsi' => $this->input->post('deskripsi', TRUE)
             ];
             $this->Destinasi_model->tambah_destinasi($insert);
             $this->session->set_flashdata('success', 'Destinasi berhasil ditambahkan!');
@@ -706,7 +705,6 @@ class Admin extends CI_Controller
                 'nama_destinasi' => $this->input->post('nama_destinasi', TRUE),
                 'kota' => $this->input->post('kota', TRUE),
                 'jenis' => 'wisata',
-                'deskripsi' => $this->input->post('deskripsi', TRUE)
             ];
             $this->Destinasi_model->update_destinasi($id, $update);
             $this->session->set_flashdata('success', 'Destinasi berhasil diupdate!');
@@ -1034,9 +1032,7 @@ class Admin extends CI_Controller
             $insert = [
                 'nama_klien' => $this->input->post('nama_klien', TRUE),
                 'jenis' => $this->input->post('jenis', TRUE),
-                'deskripsi' => $this->input->post('deskripsi', TRUE),
                 'website' => $this->input->post('website', TRUE),
-                'tanggal_kerjasama' => $this->input->post('tanggal_kerjasama', TRUE) ?: null,
             ];
 
             // Upload logo
@@ -1075,9 +1071,7 @@ class Admin extends CI_Controller
             $update = [
                 'nama_klien' => $this->input->post('nama_klien', TRUE),
                 'jenis' => $this->input->post('jenis', TRUE),
-                'deskripsi' => $this->input->post('deskripsi', TRUE),
                 'website' => $this->input->post('website', TRUE),
-                'tanggal_kerjasama' => $this->input->post('tanggal_kerjasama', TRUE) ?: null,
             ];
 
             // Upload logo baru (opsional)

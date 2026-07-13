@@ -52,21 +52,11 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="form-label">Deskripsi</label>
-            <textarea name="deskripsi" rows="3" class="form-input" placeholder="Deskripsi singkat tentang klien..."><?= set_value('deskripsi', $is_edit ? $klien->deskripsi : ''); ?></textarea>
-        </div>
-
         <div class="form-grid">
             <div class="form-group">
                 <label class="form-label">Website</label>
                 <input type="url" name="website" value="<?= set_value('website', $is_edit ? $klien->website : ''); ?>"
                     class="form-input" placeholder="https://example.com">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Tanggal Kerjasama</label>
-                <input type="date" name="tanggal_kerjasama" value="<?= set_value('tanggal_kerjasama', $is_edit ? $klien->tanggal_kerjasama : ''); ?>"
-                    class="form-input">
             </div>
         </div>
 

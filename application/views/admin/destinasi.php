@@ -162,10 +162,6 @@ $kota_indonesia = [
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Deskripsi</label>
-                    <textarea name="deskripsi" rows="3" class="form-input" placeholder="Deskripsi destinasi wisata..."></textarea>
-                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -207,10 +203,6 @@ $kota_indonesia = [
                         </optgroup>
                         <?php endforeach; ?>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Deskripsi</label>
-                    <textarea name="deskripsi" id="edit-deskripsi-destinasi" rows="3" class="form-input" placeholder="Deskripsi destinasi wisata..."></textarea>
                 </div>
             </form>
         </div>
@@ -271,9 +263,6 @@ function openEditModal(id) {
 
             el = document.getElementById('edit-kota');
             if (el && data.kota) el.value = data.kota;
-
-            el = document.getElementById('edit-deskripsi-destinasi');
-            if (el) el.value = data.deskripsi || '';
 
             form.action = baseUrl + 'admin/destinasi/edit/' + (data.id_destinasi || id);
         })

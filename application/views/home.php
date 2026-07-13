@@ -62,15 +62,11 @@
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
         <div class="max-w-3xl">
-            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-full px-5 py-2 text-white text-sm font-semibold mb-6 animate-fade-in border border-white/20">
-                <span class="material-symbols-rounded text-[18px]">auto_awesome</span>
-                Rekomendasi Cerdas dengan Metode SAW
-            </div>
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 animate-fade-in-up">
                 Temukan Paket<br>Wisata <span class="text-sky-300">Impian</span> Anda
             </h1>
             <p class="text-lg text-white/90 leading-relaxed mb-10 max-w-xl animate-fade-in-up stagger-1">
-                Sistem rekomendasi cerdas yang membantu Anda memilih paket wisata terbaik berdasarkan harga, durasi, destinasi, dan aktivitas.
+                Sistem Informasi yang menyediakan berbagai pilihan paket wisata dan melakukan pemesanan dengan mudah.
             </p>
             <div class="flex flex-wrap gap-4 animate-fade-in-up stagger-2">
                 <a href="<?= base_url('rekomendasi'); ?>" class="group inline-flex items-center gap-2 bg-white text-brand-700 px-8 py-4 rounded-2xl font-bold text-sm hover:shadow-2xl hover:shadow-white/30 hover:scale-105 active:scale-95 transition-all duration-300">
@@ -86,28 +82,6 @@
     <!-- Scroll indicator -->
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
         <span class="material-symbols-rounded text-white/50 text-3xl">expand_more</span>
-    </div>
-</section>
-
-<!-- STATS BAR -->
-<section class="relative -mt-8 z-20 max-w-5xl mx-auto px-4">
-    <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div class="text-center">
-            <p class="text-3xl font-extrabold gradient-text">50+</p>
-            <p class="text-gray-500 text-sm mt-1">Destinasi</p>
-        </div>
-        <div class="text-center border-x border-gray-100">
-            <p class="text-3xl font-extrabold gradient-text">4</p>
-            <p class="text-gray-500 text-sm mt-1">Kriteria Penilaian</p>
-        </div>
-        <div class="text-center border-x border-gray-100">
-            <p class="text-3xl font-extrabold gradient-text"><?= $total_paket ?? count($paket_populer); ?>+</p>
-            <p class="text-gray-500 text-sm mt-1">Paket Wisata</p>
-        </div>
-        <div class="text-center">
-            <p class="text-3xl font-extrabold gradient-text">100%</p>
-            <p class="text-gray-500 text-sm mt-1">Objektif</p>
-        </div>
     </div>
 </section>
 
@@ -178,12 +152,12 @@
 
 <!-- WHY CHOOSE HASTAKA -->
 <section class="bg-white border-y border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-20">
         <div class="text-center mb-14">
             <h2 class="text-3xl font-extrabold text-gray-900">Mengapa Pilih <span class="gradient-text">Hastaka Holiday</span>?</h2>
             <p class="text-gray-500 mt-2 max-w-lg mx-auto">Agent travel terpercaya dengan pelayanan terbaik untuk setiap perjalanan Anda</p>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="group bg-white rounded-2xl p-6 text-center border-2 border-slate-200/80 hover:border-brand-300 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300">
                 <div class="w-14 h-14 bg-gradient-to-br from-brand-500 to-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-brand-500/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                     <span class="material-symbols-rounded text-white text-2xl">verified</span>
@@ -204,13 +178,6 @@
                 </div>
                 <h3 class="font-bold text-gray-900 mb-2">Guide Berpengalaman</h3>
                 <p class="text-gray-500 text-sm leading-relaxed">Tour guide profesional dan berpengalaman siap menemani perjalanan Anda</p>
-            </div>
-            <div class="group bg-white rounded-2xl p-6 text-center border-2 border-slate-200/80 hover:border-brand-300 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300">
-                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                    <span class="material-symbols-rounded text-white text-2xl">support_agent</span>
-                </div>
-                <h3 class="font-bold text-gray-900 mb-2">Pelayanan 24/7</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Tim support kami siap membantu Anda kapan saja selama perjalanan</p>
             </div>
         </div>
     </div>
@@ -262,38 +229,6 @@
     </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="bg-white border-b border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div class="text-center mb-14">
-            <h2 class="text-3xl font-extrabold text-gray-900">Cara Kerja <span class="gradient-text">SAW</span></h2>
-            <p class="text-gray-500 mt-2 max-w-lg mx-auto">Metode Simple Additive Weighting menghasilkan rekomendasi objektif berdasarkan preferensi Anda</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="text-center group">
-                <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-brand-500/20 group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-rounded text-white text-3xl">tune</span>
-                </div>
-                <h3 class="font-bold text-lg mb-2">1. Atur Bobot</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Tentukan preferensi Anda untuk setiap kriteria (harga, durasi, destinasi, aktivitas)</p>
-            </div>
-            <div class="text-center group">
-                <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-brand-500/20 group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-rounded text-white text-3xl">calculate</span>
-                </div>
-                <h3 class="font-bold text-lg mb-2">2. Normalisasi</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Sistem menormalisasi nilai kriteria berdasarkan sifat benefit/cost</p>
-            </div>
-            <div class="text-center group">
-                <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-brand-500/20 group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-rounded text-white text-3xl">emoji_events</span>
-                </div>
-                <h3 class="font-bold text-lg mb-2">3. Dapatkan Hasil</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Paket diurutkan dari nilai tertinggi, paling sesuai preferensi Anda</p>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- CTA -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">

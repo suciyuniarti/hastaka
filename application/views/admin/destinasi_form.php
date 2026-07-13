@@ -81,13 +81,6 @@
             <?= form_error('kota', '<p class="form-error"><span class="material-symbols-rounded text-sm">error</span>', '</p'); ?>
         </div>
 
-        <div class="form-group">
-            <label class="form-label">
-                <span class="material-symbols-rounded text-sky-500">description</span> Deskripsi
-            </label>
-            <textarea name="deskripsi" rows="3" class="form-input" placeholder="Deskripsi destinasi wisata..."><?= set_value('deskripsi', $is_edit ? $destinasi->deskripsi : ''); ?></textarea>
-        </div>
-
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg"><?= $is_edit ? 'update' : 'save'; ?></span>
