@@ -94,7 +94,7 @@
 <div id="modalKonfirmasiKriteria" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
     <div class="modal-box" style="background: white; border-radius: 12px; max-width: 500px; width: 90%; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
         <!-- Header -->
-        <div style="padding: 24px 24px 0; text-align: center;">
+        <div style="padding: 24px 24px 0; text-align: center; flex-shrink: 0;">
             <div style="width: 40px; height: 40px; background: #FEF3C7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
                 <span class="material-symbols-rounded" style="color: #f59e0b; font-size: 24px;">warning</span>
             </div>
@@ -102,11 +102,11 @@
         </div>
         
         <!-- Body -->
-        <div style="padding: 16px 24px;">
+        <div style="padding: 16px 24px; flex-grow: 1; overflow-y: auto;">
             <p style="font-size: 13px; color: #6b7280; margin: 0 0 16px; text-align: center;">Perubahan yang akan disimpan:</p>
             
             <!-- Ringkasan Kriteria -->
-            <div id="ringkasan-kriteria" style="background: #f9fafb; border-radius: 8px; padding: 12px 16px; max-height: 300px; overflow-y: auto;">
+            <div id="ringkasan-kriteria" style="background: #f9fafb; border-radius: 8px; padding: 12px 16px; ">
                 <!-- Ringkasan akan diisi oleh JavaScript -->
             </div>
             
@@ -120,10 +120,8 @@
         </div>
         
         <!-- Footer -->
-        <div style="padding: 12px 24px 24px; display: flex; gap: 10px; justify-content: flex-end;">
-            <button type="button" class="btn btn-secondary" onclick="batalSimpanKriteria()" style="padding: 8px 16px; border: 1px solid #d1d5db; background: white; color: #374151; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
-                Batal
-            </button>
+        <div style="padding: 12px 24px 24px; display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0; background: #fff; border-top: 0.5px solid #e5e7eb;">   
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="button" class="btn btn-primary" onclick="simpanKriteria()" style="padding: 8px 16px; background: #0ea5e9; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer;">
                 Ya, Simpan
             </button>

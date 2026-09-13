@@ -98,8 +98,8 @@
     </div>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <?php if (!empty($paket_populer)): ?>
-            <?php foreach ($paket_populer as $i => $paket): ?>
+        <?php if (!empty($paket_terbaru)): ?>
+            <?php foreach ($paket_terbaru as $i => $paket): ?>
             <a href="<?= base_url('paket/detail/' . $paket->id_paket); ?>" class="group block rounded-2xl overflow-hidden bg-white border-2 border-slate-200/80 shadow-md shadow-slate-200/50 hover:shadow-2xl hover:shadow-brand-500/30 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up cursor-pointer" style="animation-delay: <?= $i * 0.1; ?>s;">
                 <div class="relative overflow-hidden aspect-video">
                     <img src="<?= base_url('application/assets/images/paket/' . $paket->foto . '?v=' . time()); ?>"
@@ -109,8 +109,8 @@
                     
                     <!-- Status Badge -->
                     <div class="absolute top-3 left-3">
-                        <span class="badge <?= $paket->status == 'tersedia' ? 'badge-tersedia' : 'badge-penuh'; ?> shadow-lg">
-                            <?= ucfirst($paket->status); ?>
+<span class="badge <?= $paket->status == 'tersedia' ? 'badge-tersedia' : 'badge-penuh'; ?> shadow-lg">
+                            <?= $paket->status == 'tersedia' ? 'Tersedia' : 'Tidak Tersedia'; ?>
                         </span>
                     </div>
                 </div>
@@ -193,20 +193,17 @@
         
         <?php if (!empty($bus_partner)): ?>
         <div class="relative">
-            <div class="bus-gallery-scroll sm:grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 sm:gap-6">
+            <div class="bus-gallery-scroll sm:grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 sm:gap-6">
                 <?php foreach ($bus_partner as $i => $bus): ?>
                 <div class="bus-card-item group bg-white rounded-2xl overflow-hidden border-2 border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: <?= $i * 0.05; ?>s;">
                     <div class="relative aspect-[4/3] bg-slate-100">
-                        <img src="<?= base_url('application/assets/images/bus/' . $bus->gambar); ?>" 
-                            alt="<?= $bus->nama; ?>" 
+                        <img src="<?= base_url('application/assets/images/bus/' . $bus['gambar']); ?>" 
+                            alt="<?= $bus['nama']; ?>" 
                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             onerror="this.src='https://images.unsplash.com/photo-1549464188-d0526bfc0f2b'">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                            <p class="font-bold text-sm text-center"><?= $bus->nama; ?></p>
-                            <?php if (!empty($bus->kota)): ?>
-                            <p class="text-xs text-center text-white/80"><?= $bus->kota; ?></p>
-                            <?php endif; ?>
+                            <p class="font-bold text-sm text-center"><?= $bus['nama']; ?></p>
                         </div>
                     </div>
                 </div>
@@ -229,6 +226,48 @@
     </div>
 </section>
 
+<!-- HOTEL REFERENCES -->
+<section class="bg-gradient-to-br from-slate-50 to-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl font-extrabold text-gray-900">Referensi <span class="gradient-text">Hotel</span></h2>
+            <p class="text-gray-500 mt-2 max-w-lg mx-auto">Mitra penginapan terpercaya untuk kenyamanan perjalanan Anda</p>
+        </div>
+        
+        <?php if (!empty($hotel_partner)): ?>
+        <div class="relative">
+            <div class="hotel-gallery-scroll sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 sm:gap-6">
+                <?php foreach ($hotel_partner as $i => $hotel): ?>
+                <div class="hotel-card-item group bg-white rounded-2xl overflow-hidden border-2 border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: <?= $i * 0.05; ?>s;">
+                    <div class="relative aspect-[4/3] bg-slate-100">
+                        <img src="<?= base_url('application/assets/images/hotel/' . $hotel['gambar']); ?>" 
+                            alt="<?= $hotel['nama']; ?>" 
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            onerror="this.src='https://images.unsplash.com/photo-1549464188-d0526bfc0f2b'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <p class="font-bold text-sm text-center"><?= $hotel['nama']; ?></p>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php else: ?>
+        <div class="text-center py-16">
+            <span class="material-symbols-rounded text-gray-300 text-6xl">hotel</span>
+            <p class="text-gray-400 mt-4 text-lg">Belum ada data mitra hotel tersedia.</p>
+        </div>
+        <?php endif; ?>
+        
+        <div class="mt-10 text-center">
+            <p class="text-sm text-gray-600 bg-white/50 backdrop-blur-sm rounded-xl p-4 inline-block max-w-3xl">
+                Hotel disesuaikan dengan request, budget, kesepakatan, ketersediaan kamar & jumlah tamu.
+            </p>
+        </div>
+    </div>
+</section>
+
 
 <!-- CTA -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -239,7 +278,7 @@
         <div class="relative z-10">
             <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Siap Menemukan Paket Impian?</h2>
             <p class="text-white/80 max-w-lg mx-auto mb-8">Gunakan sistem rekomendasi kami dan dapatkan paket wisata terbaik sesuai kebutuhan Anda.</p>
-            <a href="<?= base_url('rekomendasi'); ?>" class="inline-flex items-center gap-2 bg-white text-brand-700 px-8 py-4 rounded-2xl font-bold hover:bg-white/90 transition shadow-xl">
+<a href="<?= base_url('rekomendasi'); ?>" class="inline-flex items-center gap-2 bg-white text-brand-700 px-8 py-4 rounded-2xl font-bold hover:bg-white/90 hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl">
                 <span class="material-symbols-rounded text-[20px]">rocket_launch</span> Mulai Rekomendasi
             </a>
         </div>

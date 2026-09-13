@@ -33,8 +33,18 @@ class Aktivitas_model extends CI_Model {
         return $this->db->update('aktivitas_wisata', $data, ['id_aktivitas' => $id]);
     }
 
+    public function is_used_in_paket($id_aktivitas)
+    {
+        $this->db->where('id_aktivitas', $id_aktivitas);
+        $this->db->from('paket_aktivitas');
+        return $this->db->count_all_results() > 0;
+    }
+
     public function hapus_aktivitas($id)
     {
+        if ($this->is_used_in_paket($id)) {
+            return FALSE;
+        }
         return $this->db->delete('aktivitas_wisata', ['id_aktivitas' => $id]);
     }
 

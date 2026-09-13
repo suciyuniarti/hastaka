@@ -36,10 +36,6 @@ class Auth extends CI_Controller {
             ]);
 
             if ($this->form_validation->run() == FALSE) {
-                $errors = array_values($this->form_validation->error_array());
-                if (!empty($errors)) {
-                    $this->session->set_flashdata('login_errors', $errors);
-                }
             } else {
                 $email = $this->input->post('email', TRUE);
                 $password = $this->input->post('password', TRUE);
@@ -47,9 +43,9 @@ class Auth extends CI_Controller {
                 $user = $this->User_model->get_user_by_email($email);
 
                 if (!$user) {
-                    $this->session->set_flashdata('login_errors', ['Email atau password salah. Silakan coba lagi.']);
+                    $this->session->set_flashdata('login_error', 'Email atau password salah. Silakan coba lagi.');
                 } elseif ($user->status !== 'aktif') {
-                    $this->session->set_flashdata('login_errors', ['Akun Anda tidak aktif. Hubungi admin untuk informasi lebih lanjut.']);
+                    $this->session->set_flashdata('login_error', 'Akun Anda tidak aktif. Hubungi admin untuk informasi lebih lanjut.');
                 } elseif (password_verify($password, $user->password)) {
                     $session_data = [
                         'id_user' => $user->id_user,
@@ -75,7 +71,7 @@ class Auth extends CI_Controller {
                         return;
                     }
                 } else {
-                    $this->session->set_flashdata('login_errors', ['Email atau password salah. Silakan coba lagi.']);
+                    $this->session->set_flashdata('login_error', 'Email atau password salah. Silakan coba lagi.');
                 }
             }
         }
@@ -116,13 +112,6 @@ class Auth extends CI_Controller {
         ]);
 
         if ($this->form_validation->run() == FALSE) {
-            $errors = [];
-            foreach ($this->form_validation->error_array() as $err) {
-                $errors[] = $err;
-            }
-            if (!empty($errors)) {
-                $this->session->set_flashdata('errors', $errors);
-            }
             $data['title'] = 'Register - Hastaka Holiday';
             $this->load->view('templates/header', $data);
             $this->load->view('register');

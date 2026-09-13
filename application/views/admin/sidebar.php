@@ -54,9 +54,9 @@
 
    <!-- Logout -->
    <div class="mt-auto p-4 border-t border-white/10">
-     <a href="<?= base_url('auth/logout'); ?>"
-       onclick="return confirm('Yakin ingin logout?')"
-       class="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-red-300 transition-all duration-200 hover:bg-red-500/20 hover:text-white">
+      <a href="<?= base_url('auth/logout'); ?>"
+        onclick="event.preventDefault(); openLogoutModal();"
+        class="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-red-300 transition-all duration-200 hover:bg-red-500/20 hover:text-white">
 
         <span class="material-symbols-rounded text-[20px]">logout</span>
         <span class="font-medium">Logout</span>

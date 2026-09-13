@@ -91,7 +91,7 @@
     <div class="modal-box modal-md">
         <div class="modal-header">
             <span class="modal-title">Tambah Fasilitas</span>
-            <button class="modal-close" onclick="closeModal('modal-tambah-fasilitas')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modal-tambah-fasilitas')"><span class="material-symbols-rounded">close</span></button>
         </div>
         <div class="modal-body">
             <form id="form-tambah-fasilitas" action="<?= base_url('admin/fasilitas/tambah'); ?>" method="post" class="space-y-5">
@@ -116,7 +116,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('modal-tambah-fasilitas')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="submit" form="form-tambah-fasilitas" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg">save</span> Simpan
             </button>
@@ -129,7 +129,7 @@
     <div class="modal-box modal-md">
         <div class="modal-header">
             <span class="modal-title">Edit Fasilitas</span>
-            <button class="modal-close" onclick="closeModal('modal-edit-fasilitas')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modal-edit-fasilitas')"><span class="material-symbols-rounded">close</span></button>
         </div>
         <div class="modal-body">
             <div id="edit-loading" class="text-center py-8">
@@ -159,7 +159,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('modal-edit-fasilitas')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="submit" form="form-edit-fasilitas" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg">update</span> Simpan Perubahan
             </button>
@@ -178,7 +178,7 @@
             <p class="text-sm text-gray-500">Fasilitas <strong id="hapus-nama-fasilitas"></strong> akan dihapus permanen. Tindakan ini tidak bisa dibatalkan.</p>
         </div>
         <div class="modal-footer" style="justify-content: center;">
-            <button class="btn btn-secondary" onclick="closeModal('modal-hapus-fasilitas')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <form id="form-hapus-fasilitas" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">
                     <span class="material-symbols-rounded text-sm">delete</span> Ya, Hapus

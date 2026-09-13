@@ -48,7 +48,8 @@ class Admin extends CI_Controller
         $data['transaksi_berjalan'] = $this->Transaksi_model->count_transaksi_berjalan();
         $data['pendapatan_bulan_ini'] = $this->Transaksi_model->get_pendapatan_bulanan(date('m'), date('Y'));
         $data['pendapatan_tahun_ini'] = $this->Transaksi_model->get_pendapatan_tahunan(date('Y'));
-        $data['transaksi_terbaru'] = array_slice($this->Transaksi_model->get_all_pemesanan(), 0, 5);
+        $semua_transaksi = $this->Transaksi_model->get_all_pemesanan();
+        $data['transaksi_terbaru'] = array_slice($semua_transaksi, 0, 5);
 
         // Data untuk chart: pendapatan 12 bulan terakhir
         $data['chart_bulan'] = [];
@@ -62,9 +63,8 @@ class Admin extends CI_Controller
         }
 
         // Data untuk chart: status transaksi
-        $all_transaksi = $this->Transaksi_model->get_all_pemesanan();
         $status_count = ['pending' => 0, 'dikonfirmasi' => 0, 'selesai' => 0, 'dibatalkan' => 0];
-        foreach ($all_transaksi as $t) {
+        foreach ($semua_transaksi as $t) {
             if (isset($status_count[$t->status_pemesanan])) {
                 $status_count[$t->status_pemesanan]++;
             }
@@ -76,22 +76,23 @@ class Admin extends CI_Controller
     }
 
     // ========== CRUD PAKET WISATA ==========
-    public function paket($page = 0)
+public function paket($page = 0)
     {
         $data['title'] = 'Kelola Paket Wisata - Admin';
         $limit = 10;
         $offset = (int) $page * $limit;
-        $this->_fix_missing_foto();
-        
+        $paket_list = $this->Paket_model->get_all_paket();
+        $this->_fix_missing_foto($paket_list);
+
         // Ambil keyword pencarian
         $keyword = $this->input->get('keyword');
         $data['keyword'] = $keyword ?: '';
-        
+
         if (!empty($keyword)) {
             // Filter paket berdasarkan keyword
             $data['paket'] = $this->Paket_model->search_paket($keyword);
         } else {
-            $data['paket'] = $this->Paket_model->get_all_paket();
+            $data['paket'] = $paket_list;
         }
         
         // Set pagination variables
@@ -108,10 +109,9 @@ class Admin extends CI_Controller
     }
 
     // Fix foto yang tidak ada di disk
-    private function _fix_missing_foto()
+    private function _fix_missing_foto(array $paket_list)
     {
         $upload_path = FCPATH . 'application/assets/images/paket/';
-        $paket_list = $this->Paket_model->get_all_paket();
 
         // Kumpulkan semua file paket_* yang ada di disk
         $files = glob($upload_path . 'paket_*.{jpeg,jpg,png,gif}', GLOB_BRACE);
@@ -497,7 +497,10 @@ class Admin extends CI_Controller
 
     public function users_toggle($id)
     {
-        $this->User_model->toggle_status($id);
+        if (!$this->User_model->toggle_status($id)) {
+            $this->session->set_flashdata('error', 'User tidak ditemukan.');
+            redirect('admin/users');
+        }
         $this->session->set_flashdata('success', 'Status user berhasil diubah!');
         redirect('admin/users');
     }
@@ -528,6 +531,50 @@ class Admin extends CI_Controller
         $this->Transaksi_model->update_status($id, 'dibatalkan');
         $this->session->set_flashdata('success', 'Transaksi berhasil dibatalkan!');
         redirect('admin/transaksi');
+    }
+
+    /**
+     * AJAX: Get detailed transaction data for modal
+     */
+    public function get_detail_transaksi_ajax($id_pemesanan)
+    {
+        // Check if request is AJAX
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+            return;
+        }
+
+        $detail = $this->Transaksi_model->get_detail_transaksi($id_pemesanan);
+
+        if (!$detail) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(404)
+                ->set_output(json_encode(['error' => 'Transaksi tidak ditemukan']));
+            return;
+        }
+
+        // Format currency values
+        $detail['payment_breakdown']['total_tagihan_formatted'] = 'Rp ' . number_format($detail['payment_breakdown']['total_tagihan'], 0, ',', '.');
+        $detail['payment_breakdown']['total_akomodasi_formatted'] = 'Rp ' . number_format($detail['payment_breakdown']['total_akomodasi'], 0, ',', '.');
+        $detail['payment_breakdown']['total_harga_sebenarnya_formatted'] = 'Rp ' . number_format($detail['payment_breakdown']['total_harga_sebenarnya'], 0, ',', '.');
+        $detail['payment_breakdown']['total_dp_dibayar_formatted'] = 'Rp ' . number_format($detail['payment_breakdown']['total_dp_dibayar'], 0, ',', '.');
+        $detail['payment_breakdown']['sisa_lunasi_formatted'] = 'Rp ' . number_format($detail['payment_breakdown']['sisa_lunasi'], 0, ',', '.');
+        $detail['harga_paket_formatted'] = 'Rp ' . number_format($detail['harga_paket'], 0, ',', '.');
+
+        // Format date
+        $detail['tgl_keberangkatan_formatted'] = date('d F Y', strtotime($detail['tgl_keberangkatan']));
+        $detail['jam_keberangkatan_formatted'] = !empty($detail['jam_keberangkatan']) ? date('H:i', strtotime($detail['jam_keberangkatan'])) : '-';
+
+        // Format akomodasi subtotals
+        foreach ($detail['akomodasi_list'] as &$ak) {
+            $ak->subtotal_formatted = 'Rp ' . number_format($ak->subtotal, 0, ',', '.');
+            $ak->harga_per_orang_formatted = 'Rp ' . number_format($ak->harga_per_orang, 0, ',', '.');
+        }
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($detail));
     }
 
     // ========== LAPORAN ==========
@@ -676,7 +723,6 @@ class Admin extends CI_Controller
             $insert = [
                 'nama_destinasi' => $this->input->post('nama_destinasi', TRUE),
                 'kota' => $this->input->post('kota', TRUE),
-                'jenis' => 'wisata',
             ];
             $this->Destinasi_model->tambah_destinasi($insert);
             $this->session->set_flashdata('success', 'Destinasi berhasil ditambahkan!');
@@ -704,7 +750,6 @@ class Admin extends CI_Controller
             $update = [
                 'nama_destinasi' => $this->input->post('nama_destinasi', TRUE),
                 'kota' => $this->input->post('kota', TRUE),
-                'jenis' => 'wisata',
             ];
             $this->Destinasi_model->update_destinasi($id, $update);
             $this->session->set_flashdata('success', 'Destinasi berhasil diupdate!');
@@ -714,8 +759,11 @@ class Admin extends CI_Controller
 
     public function destinasi_hapus($id)
     {
-        $this->Destinasi_model->hapus_destinasi($id);
-        $this->session->set_flashdata('success', 'Destinasi berhasil dihapus!');
+        if ($this->Destinasi_model->hapus_destinasi($id)) {
+            $this->session->set_flashdata('success', 'Destinasi berhasil dihapus!');
+        } else {
+            $this->session->set_flashdata('error', 'Data tidak dapat dihapus karena masih digunakan di Paket Wisata.');
+        }
         redirect('admin/destinasi');
     }
 
@@ -780,8 +828,11 @@ class Admin extends CI_Controller
 
     public function fasilitas_hapus($id)
     {
-        $this->Fasilitas_model->hapus_fasilitas($id);
-        $this->session->set_flashdata('success', 'Fasilitas berhasil dihapus!');
+        if ($this->Fasilitas_model->hapus_fasilitas($id)) {
+            $this->session->set_flashdata('success', 'Fasilitas berhasil dihapus!');
+        } else {
+            $this->session->set_flashdata('error', 'Data tidak dapat dihapus karena masih digunakan di Paket Wisata.');
+        }
         redirect('admin/fasilitas');
     }
 
@@ -846,8 +897,11 @@ class Admin extends CI_Controller
 
     public function aktivitas_hapus($id)
     {
-        $this->Aktivitas_model->hapus_aktivitas($id);
-        $this->session->set_flashdata('success', 'Aktivitas berhasil dihapus!');
+        if ($this->Aktivitas_model->hapus_aktivitas($id)) {
+            $this->session->set_flashdata('success', 'Aktivitas berhasil dihapus!');
+        } else {
+            $this->session->set_flashdata('error', 'Data tidak dapat dihapus karena masih digunakan di Paket Wisata.');
+        }
         redirect('admin/aktivitas');
     }
 
@@ -857,7 +911,7 @@ class Admin extends CI_Controller
         $data['title'] = 'Kelola Akomodasi - Admin';
         $limit = 10;
         $offset = (int) $page * $limit;
-        $data['akomodasi'] = $this->Akomodasi_model->get_all_active();
+        $data['akomodasi'] = $this->Akomodasi_model->get_all();
         foreach ($data['akomodasi'] as $a) {
             $a->paket_list = $this->Akomodasi_model->get_paket_by_akomodasi($a->id_akomodasi);
         }
@@ -933,14 +987,25 @@ class Admin extends CI_Controller
                 'wilayah' => $this->input->post('wilayah', TRUE),
                 'is_active' => $this->input->post('is_active', TRUE) ?: 'y'
             ];
-            $this->Akomodasi_model->update_akomodasi($id, $update);
-            
-            $id_paket_arr = $this->input->post('paket') ?: [];
-            if (!empty($id_paket_arr)) {
-                $this->Akomodasi_model->set_paket_for_akomodasi($id, $id_paket_arr);
+$id_paket_arr = $this->input->post('paket') ?: [];
+
+            // DEBUG (sementara) - hapus setelah verifikasi:
+            // var_dump($this->input->post());
+            // var_dump($this->input->post('paket'));
+            // die();
+
+            $update_ok = $this->Akomodasi_model->update_akomodasi($id, $update);
+
+            // Selalu sinkronkan relasi many-to-many (hapus lama lalu insert ulang),
+            // termasuk saat semua paket dicentang/dihapus (array kosong).
+            // Tanpa pemanggilan ini, relasi lama tidak akan pernah dihapus.
+            $relasi_ok = $this->Akomodasi_model->set_paket_for_akomodasi($id, $id_paket_arr);
+
+            if ($update_ok && $relasi_ok) {
+                $this->session->set_flashdata('success', 'Akomodasi berhasil diupdate!');
+            } else {
+                $this->session->set_flashdata('error', 'Gagal mengupdate akomodasi. Silakan coba lagi.');
             }
-            
-            $this->session->set_flashdata('success', 'Akomodasi berhasil diupdate!');
             redirect('admin/akomodasi');
         }
     }
@@ -954,23 +1019,44 @@ class Admin extends CI_Controller
             return;
         }
         
-        $this->Akomodasi_model->hapus_akomodasi($id);
-        $this->session->set_flashdata('success', 'Akomodasi berhasil dihapus!');
+        if ($this->Akomodasi_model->hapus_akomodasi($id)) {
+            $this->session->set_flashdata('success', 'Akomodasi berhasil dihapus!');
+        } else {
+            $this->session->set_flashdata('error', 'Data tidak dapat dihapus karena masih digunakan di Paket Wisata.');
+        }
         redirect('admin/akomodasi');
     }
 
     public function akomodasi_toggle_status($id)
     {
+        // Clear any previous output buffers to prevent HTML before JSON
+        if (ob_get_level()) {
+            ob_clean();
+        }
+        
         $akomodasi = $this->Akomodasi_model->get_by_id($id);
         if (!$akomodasi) {
-            echo json_encode(['success' => false, 'message' => 'Akomodasi tidak ditemukan']);
+            $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(404)
+                ->set_output(json_encode(['success' => false, 'message' => 'Akomodasi tidak ditemukan']));
             return;
         }
         
         $new_status = ($akomodasi->is_active == 'y' || $akomodasi->is_active == 1) ? 'n' : 'y';
-        $this->Akomodasi_model->update_akomodasi($id, ['is_active' => $new_status]);
+        $update_result = $this->Akomodasi_model->update_akomodasi($id, ['is_active' => $new_status]);
         
-        echo json_encode(['success' => true, 'is_active' => $new_status, 'message' => 'Status berhasil diubah']);
+        if (!$update_result) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode(['success' => false, 'message' => 'Gagal mengupdate status di database']));
+            return;
+        }
+        
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(['success' => true, 'is_active' => $new_status, 'message' => 'Status berhasil diubah']));
     }
 
     // ========== HELPER: Upload Foto ==========
@@ -1106,6 +1192,21 @@ class Admin extends CI_Controller
             $this->session->set_flashdata('success', 'Klien berhasil dihapus!');
         }
         redirect('admin/klien');
+    }
+
+    // ========== KLIEN (JSON) ==========
+    public function get_klien($id)
+    {
+        $klien = $this->Klien_model->get_klien_by_id($id);
+        if (!$klien) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['error' => 'Data tidak ditemukan']));
+            return;
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($klien));
     }
 
     // Helper: Upload Logo Klien

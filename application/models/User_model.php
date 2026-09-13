@@ -31,6 +31,9 @@ class User_model extends CI_Model {
     public function toggle_status($id)
     {
         $user = $this->get_user_by_id($id);
+        if (!$user) {
+            return FALSE;
+        }
         $new_status = ($user->status == 'aktif') ? 'nonaktif' : 'aktif';
         return $this->db->update('users', ['status' => $new_status], ['id_user' => $id]);
     }

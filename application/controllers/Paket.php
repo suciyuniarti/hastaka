@@ -18,10 +18,10 @@ class Paket extends CI_Controller {
         $this->load->model('Aktivitas_model');
     }
 
-    public function index()
+public function index()
     {
         $data['title'] = 'Paket Wisata - Hastaka Holiday';
-        $data['paket'] = $this->Paket_model->get_paket_tersedia();
+        $data['paket'] = $this->Paket_model->get_all_paket_untuk_publik();
 
         // Attach fasilitas_count to each paket
         foreach ($data['paket'] as &$p) {

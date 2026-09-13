@@ -91,7 +91,7 @@
     <div class="modal-box modal-md">
         <div class="modal-header">
             <span class="modal-title">Tambah Kategori Program</span>
-            <button class="modal-close" onclick="closeModal('modal-tambah-kategori')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modal-tambah-kategori')"><span class="material-symbols-rounded">close</span></button>
         </div>
         <div class="modal-body">
             <form id="form-tambah-kategori" action="<?= base_url('admin/kategori/tambah'); ?>" method="post" class="space-y-5">
@@ -120,7 +120,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('modal-tambah-kategori')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="submit" form="form-tambah-kategori" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg">save</span> Simpan
             </button>
@@ -133,7 +133,7 @@
     <div class="modal-box modal-md">
         <div class="modal-header">
             <span class="modal-title">Edit Kategori Program</span>
-            <button class="modal-close" onclick="closeModal('modal-edit-kategori')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modal-edit-kategori')"><span class="material-symbols-rounded">close</span></button>
         </div>
         <div class="modal-body">
             <div id="edit-loading" class="text-center py-8">
@@ -167,7 +167,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('modal-edit-kategori')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="submit" form="form-edit-kategori" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg">update</span> Simpan Perubahan
             </button>
@@ -186,7 +186,7 @@
             <p class="text-sm text-gray-500">Kategori <strong id="hapus-nama-kategori"></strong> akan dihapus permanen. Program yang menggunakan kategori ini mungkin terpengaruh.</p>
         </div>
         <div class="modal-footer" style="justify-content: center;">
-            <button class="btn btn-secondary" onclick="closeModal('modal-hapus-kategori')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <form id="form-hapus-kategori" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">
                     <span class="material-symbols-rounded text-sm">delete</span> Ya, Hapus

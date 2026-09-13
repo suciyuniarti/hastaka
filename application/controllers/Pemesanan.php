@@ -9,7 +9,6 @@ class Pemesanan extends CI_Controller {
         $this->load->model('Paket_model');
         $this->load->model('Transaksi_model');
         $this->load->model('Akomodasi_model');
-        $this->load->model('Bank_model');
     }
 
     public function tentang_kami()
@@ -31,6 +30,13 @@ class Pemesanan extends CI_Controller {
 
         if ($kode) {
             $data['pemesanan'] = $this->Transaksi_model->get_pemesanan_by_kode($kode);
+            if ($data['pemesanan']) {
+                $data['akomodasi_pemesanan'] = $this->Transaksi_model->get_pemesanan_akomodasi_by_id_pemesanan($data['pemesanan']->id_pemesanan);
+            } else {
+                $data['akomodasi_pemesanan'] = [];
+            }
+        } else {
+            $data['akomodasi_pemesanan'] = [];
         }
 
         $this->load->view('templates/header', $data);
@@ -41,10 +47,11 @@ class Pemesanan extends CI_Controller {
 
     public function booking($id_paket)
     {
-        // Wajib login
+// Wajib login
         if (!$this->session->userdata('id_user')) {
             $this->session->set_userdata('redirect_after_login', current_url());
             $this->session->set_flashdata('error', 'Silakan login terlebih dahulu untuk melakukan pemesanan.');
+            log_message('debug', 'redirect_after_login set to: ' . current_url());
             redirect('auth/login');
         }
 
@@ -58,20 +65,37 @@ class Pemesanan extends CI_Controller {
         $data['paket'] = $this->Paket_model->get_paket_by_id($id_paket);
         $data['akomodasi_list'] = $this->Akomodasi_model->get_by_paket($id_paket);
 
-        if (!$data['paket']) {
+if (!$data['paket']) {
             $this->session->set_flashdata('error', 'Paket tidak ditemukan!');
             redirect('paket');
+        }
+
+        // Cegah pemesanan paket yang statusnya bukan 'tersedia' (mis. 'penuh')
+        // Diletakkan di luar if($this->form_validation->run()), sehingga berlaku
+        // untuk GET (tampilkan form) maupun POST (submit form).
+        if ($data['paket']->status != 'tersedia') {
+            $this->session->set_flashdata('error', 'Maaf, paket ini sedang tidak tersedia untuk dipesan.');
+            redirect('paket/detail/' . $id_paket);
         }
 
         $this->form_validation->set_rules('tgl_keberangkatan', 'Tanggal Keberangkatan', 'required');
         $this->form_validation->set_rules('jam_keberangkatan', 'Jam Keberangkatan', 'required');
         $this->form_validation->set_rules('jumlah_peserta', 'Jumlah Peserta', 'required|numeric');
         $this->form_validation->set_rules('nama_pemesan', 'Nama Lengkap', 'required|trim');
-        $this->form_validation->set_rules('no_telepon', 'No. Telepon', 'required|trim');
+        $this->form_validation->set_rules('no_telepon', 'Nomor Telepon', 'required|trim|numeric|min_length[10]|max_length[15]');
+
+        // Custom messages (Bahasa Indonesia)
+        $this->form_validation->set_message('required', '{field} wajib diisi.');
+        $this->form_validation->set_message('numeric', 'Nomor telepon hanya boleh berisi angka, 10-15 digit.');
+
+        $this->form_validation->set_message('min_length', 'Nomor telepon tidak valid, gunakan 10-15 digit angka.');
+        $this->form_validation->set_message('max_length', 'Nomor telepon tidak valid, gunakan 10-15 digit angka.');
+
+
         $this->form_validation->set_rules('titik_kumpul', 'Titik Kumpul', 'required|trim');
         $this->form_validation->set_rules('catatan', 'Catatan', 'trim');
         $this->form_validation->set_rules('tipe_pembayaran', 'Tipe Pembayaran', 'required|in_list[full,dp]');
-        $this->form_validation->set_rules('id_akomodasi[]', 'Akomodasi', 'required|numeric');
+        $this->form_validation->set_rules('id_akomodasi[]', 'Akomodasi', 'callback_cek_akomodasi');
 
         // Custom validation: min peserta
         $min_peserta = $data['paket']->min_peserta ?? 1;
@@ -88,7 +112,6 @@ class Pemesanan extends CI_Controller {
             
             // Handle both array (multiple selection) and single value
             if (is_array($id_akomodasi_array)) {
-                $id_akomodasi = $id_akomodasi_array[0]; // Store first selected ID
                 // Sum all selected akomodasi prices
                 $harga_akomodasi = 0;
                 foreach ($id_akomodasi_array as $id_ak) {
@@ -98,8 +121,7 @@ class Pemesanan extends CI_Controller {
                     }
                 }
             } else {
-                $id_akomodasi = $id_akomodasi_array;
-                $akomodasi = $this->Akomodasi_model->get_by_id($id_akomodasi);
+                $akomodasi = $this->Akomodasi_model->get_by_id($id_akomodasi_array);
                 $harga_akomodasi = $akomodasi ? (int) $akomodasi->harga_tambahan : 0;
             }
             
@@ -167,24 +189,31 @@ class Pemesanan extends CI_Controller {
             $this->db->trans_complete();
             
             if ($this->db->trans_status() === FALSE) {
+
                 $this->session->set_flashdata('error', 'Gagal menyimpan pemesanan. Silakan coba lagi.');
                 redirect('pemesanan/booking/' . $id_paket);
             }
             
             redirect('pemesanan/invoice/' . $id_pemesanan);
+
         }
+
     }
 
     public function invoice($id)
     {
         // Wajib login
         if (!$this->session->userdata('id_user')) {
+            $this->session->set_userdata('redirect_after_login', current_url());
             $this->session->set_flashdata('error', 'Silakan login terlebih dahulu.');
+            log_message('debug', 'redirect_after_login set to: ' . current_url());
             redirect('auth/login');
         }
 
         $data['title'] = 'Invoice - Hastaka Holiday';
         $data['pemesanan'] = $this->Transaksi_model->get_pemesanan_by_id($id);
+        $data['akomodasi_pemesanan'] = $this->Transaksi_model->get_pemesanan_akomodasi_by_id_pemesanan($id);
+
 
         if (!$data['pemesanan']) {
             $this->session->set_flashdata('error', 'Invoice tidak ditemukan!');
@@ -207,12 +236,24 @@ class Pemesanan extends CI_Controller {
     {
         // Wajib login
         if (!$this->session->userdata('id_user')) {
+            $this->session->set_userdata('redirect_after_login', current_url());
             $this->session->set_flashdata('error', 'Silakan login terlebih dahulu.');
+            log_message('debug', 'redirect_after_login set to: ' . current_url());
             redirect('auth/login');
         }
 
         $data['title'] = 'Riwayat Pemesanan - Hastaka Holiday';
         $data['pemesanan'] = $this->Transaksi_model->get_pemesanan_by_user($this->session->userdata('id_user'));
+
+        $id_pemesanan_list = array_column($data['pemesanan'], 'id_pemesanan');
+        $akomodasi_bulk = $this->Transaksi_model->get_pemesanan_akomodasi_by_ids($id_pemesanan_list);
+        $akomodasi_map = [];
+        foreach ($akomodasi_bulk as $a) {
+            $akomodasi_map[$a->id_pemesanan][] = $a;
+        }
+        foreach ($data['pemesanan'] as $p) {
+            $p->akomodasi_list = $akomodasi_map[$p->id_pemesanan] ?? [];
+        }
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/navbar');
@@ -227,6 +268,27 @@ class Pemesanan extends CI_Controller {
             $this->form_validation->set_message('_check_min_peserta', "Jumlah Peserta minimal {$min} orang untuk paket ini.");
             return FALSE;
         }
+        return TRUE;
+    }
+
+    // Callback: validasi akomodasi (opsional, tapi jika diisi harus numeric)
+    public function cek_akomodasi($value)
+    {
+        $id_akomodasi_array = $this->input->post('id_akomodasi');
+        
+        // Jika tidak ada akomodasi dipilih (opsional), skip validasi
+        if (empty($id_akomodasi_array) || !is_array($id_akomodasi_array)) {
+            return TRUE;
+        }
+
+        // Validasi setiap elemen harus numeric
+        foreach ($id_akomodasi_array as $id_ak) {
+            if (!is_numeric($id_ak) || (int)$id_ak <= 0) {
+                $this->form_validation->set_message('cek_akomodasi', 'Pilihan akomodasi tidak valid.');
+                return FALSE;
+            }
+        }
+
         return TRUE;
     }
 

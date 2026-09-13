@@ -62,7 +62,7 @@
                                         <label class="form-label">Status</label>
                                         <select name="status" class="form-input">
                                             <option value="tersedia" <?= set_select('status', 'tersedia', $is_edit && $paket->status == 'tersedia'); ?>>Tersedia</option>
-                                            <option value="penuh" <?= set_select('status', 'penuh', $is_edit && $paket->status == 'penuh'); ?>>Penuh</option>
+<option value="penuh" <?= set_select('status', 'penuh', $is_edit && $paket->status == 'penuh'); ?>>Tidak Tersedia</option>
                                         </select>
                                     </div>
                                 </div>

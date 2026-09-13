@@ -15,18 +15,22 @@ class Home extends CI_Controller {
     public function index()
     {
         $data['title'] = 'Hastaka Holiday - Rekomendasi Paket Wisata';
-        $data['paket_populer'] = $this->Paket_model->get_paket_populer(3);
-         $data['bus_partner'] = $this->Partner_model->get_all_bus();
+        $data['paket_terbaru'] = $this->Paket_model->get_paket_terbaru(3);
         
-        if (empty($data['bus_partner'])) {
-            $data['bus_partner'] = [
-                (object)['nama' => 'Bus Pariwisata A', 'gambar' => 'bus1.svg', 'kota' => 'Surabaya'],
-                (object)['nama' => 'Bus Pariwisata B', 'gambar' => 'bus2.svg', 'kota' => 'Malang'],
-                (object)['nama' => 'Bus Pariwisata C', 'gambar' => 'bus3.svg', 'kota' => 'Jakarta'],
-                (object)['nama' => 'Bus Pariwisata D', 'gambar' => 'bus4.svg', 'kota' => 'Bandung'],
-                (object)['nama' => 'Bus Pariwisata E', 'gambar' => 'bus5.svg', 'kota' => null],
-            ];
-        }
+        // Data referensi bus statis dari assets/images/bus/
+        $data['bus_partner'] = [
+            ['nama' => 'TAM Jetbus 5+ MHD Mercy', 'gambar' => 'bus1.jpg'],
+            ['nama' => 'Pandawa 87 Mercy', 'gambar' => 'bus2.jpg'],
+            ['nama' => 'Gagak Rimang Mercy', 'gambar' => 'bus3.jpg'],
+            ['nama' => 'Jackal Holiday Mercy', 'gambar' => 'bus4.jpg'],
+        ];
+
+        // Data referensi hotel statis dari assets/images/hotel/
+        $data['hotel_partner'] = [
+            ['nama' => 'BURZA HOTEL YOGYA ', 'gambar' => 'hotel1.jpg'],
+            ['nama' => 'FAVE HOTEL SEMARANG', 'gambar' => 'hotel2.jpg'],
+            ['nama' => 'GRAND PACIFIC BANDUNG', 'gambar' => 'hotel3.jpg'],
+        ];
 
         // Data pelanggan yang login (untuk dashboard pelanggan)
         $data['user_logged_in'] = $this->session->userdata('id_user');

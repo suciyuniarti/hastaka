@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="text-center mb-14 animate-fade-in-up">
         <div class="inline-flex items-center gap-2 bg-brand-50 border border-brand-200 rounded-full px-4 py-1.5 text-brand-700 text-sm font-semibold mb-4">
-            <span class="material-symbols-rounded text-[16px]\">groups</span>
+            <span class="material-symbols-rounded text-[16px]">groups</span>
             Dipercaya oleh Berbagai Instansi
         </div>
         <h1 class="text-4xl font-extrabold text-gray-900 mb-3">Klien <span class="gradient-text">Kami</span></h1>
@@ -80,7 +80,7 @@
         </div>
         <div class="relative z-10">
             <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-3">Ingin Bekerja Sama dengan Kami?</h2>
-            <p class="text-white/80 max-w-lg mx-auto mb-6\">Hubungi kami untuk mendiskusikan kebutuhan perjalanan instansi, perusahaan, atau komunitas Anda.</p>
+            <p class="text-white/80 max-w-lg mx-auto mb-6">Hubungi kami untuk mendiskusikan kebutuhan perjalanan instansi, perusahaan, atau komunitas Anda.</p>
             <a href="<?= base_url('paket'); ?>" class="inline-flex items-center gap-2 bg-white text-brand-700 px-8 py-3.5 rounded-2xl font-bold hover:bg-white/90 transition shadow-xl">
                 <span class="material-symbols-rounded text-[20px]">luggage</span> Lihat Paket Kami
             </a>

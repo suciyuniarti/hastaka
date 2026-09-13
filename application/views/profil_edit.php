@@ -73,7 +73,7 @@
             </div>
 
             <div class="flex gap-3 pt-4">
-                <button type="submit" class="inline-flex items-center gap-2 gradient-bg text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-lg">
+<button type="submit" class="inline-flex items-center gap-2 gradient-bg text-white px-8 py-3 rounded-full font-semibold hover:shadow-xl hover:shadow-sky-500/40 hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg">
                     <span class="material-symbols-rounded text-xl">save</span>
                     Simpan Perubahan
                 </button>

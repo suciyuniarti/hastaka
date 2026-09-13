@@ -72,9 +72,9 @@
                         <div class="text-xs text-slate-500 mt-1">Hari</div>
                     </td>
                     <td class="py-4 px-4 text-center whitespace-nowrap">
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold <?= $p->status == 'tersedia' ? 'badge-tersedia' : 'badge-habis'; ?>">
+<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold <?= $p->status == 'tersedia' ? 'badge-tersedia' : 'badge-habis'; ?>">
                             <span class="w-2 h-2 rounded-full <?= $p->status == 'tersedia' ? 'bg-emerald-500' : 'bg-red-500'; ?>"></span>
-                            <?= ucfirst($p->status); ?>
+                            <?= $p->status == 'tersedia' ? 'Tersedia' : 'Tidak Tersedia'; ?>
                         </span>
                     </td>
                     <td class="py-4 px-4 whitespace-nowrap">
@@ -121,7 +121,7 @@
     <div class="modal-box modal-md">
         <div class="modal-header">
             <span class="modal-title">Tambah Paket Wisata</span>
-            <button class="modal-close" onclick="closeModal('modal-tambah')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modal-tambah')"><span class="material-symbols-rounded">close</span></button>
         </div>
         <div class="modal-body">
             <form id="form-tambah-paket" action="<?= base_url('admin/paket/tambah'); ?>" method="post" enctype="multipart/form-data" class="space-y-5">
@@ -145,10 +145,23 @@
                     </div>
                     <div>
                         <label class="form-label">Status</label>
-                        <select name="status" class="form-input">
+<select name="status" class="form-input">
                             <option value="tersedia">Tersedia</option>
-                            <option value="penuh">Penuh</option>
+                            <option value="penuh">Tidak Tersedia</option>
                         </select>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="form-label">Foto Paket</label>
+                        <div class="file-upload">
+                            <input type="file" name="foto" id="input_foto_tambah" accept="image/*">
+                            <span class="material-symbols-rounded file-upload-icon">image</span>
+                            <p class="file-upload-text">Klik untuk upload foto paket</p>
+                            <p class="file-upload-hint">Format: JPG, JPEG. Maks 2MB.</p>
+                        </div>
+                        <div id="preview-tambah" style="display:none; margin-top:8px">
+                            <img id="img-preview-tambah" style="width:100%; max-height:200px; object-fit:cover; border-radius:8px; border:0.5px solid #e5e7eb">
+                            <p style="font-size:11px; color:#6b7280; margin-top:4px">Preview foto yang akan diupload</p>
+                        </div>
                     </div>
                     <div class="sm:col-span-2">
                         <label class="form-label">Deskripsi <span class="text-red-500">*</span></label>
@@ -164,7 +177,6 @@
                             <?php foreach ($destinasi_list as $d): ?>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="destinasi[]" value="<?= $d->id_destinasi; ?>">
-                                <span class="material-symbols-rounded text-[16px]"><?= $d->jenis == 'kampus' ? 'account_balance' : 'landscape'; ?></span>
                                 <span class="text-xs"><?= $d->nama_destinasi; ?></span>
                             </label>
                             <?php endforeach; ?>
@@ -205,24 +217,11 @@
                         </div>
                     </div>
                     <?php endif; ?>
-                    <div class="sm:col-span-2">
-                        <label class="form-label">Foto Paket</label>
-                        <div class="file-upload">
-                            <input type="file" name="foto" id="input_foto_tambah" accept="image/*">
-                            <span class="material-symbols-rounded file-upload-icon">image</span>
-                            <p class="file-upload-text">Klik untuk upload foto paket</p>
-                            <p class="file-upload-hint">Format: JPG, JPEG. Maks 2MB.</p>
-                        </div>
-                        <div id="preview-tambah" style="display:none; margin-top:8px">
-                            <img id="img-preview-tambah" style="width:100%; max-height:200px; object-fit:cover; border-radius:8px; border:0.5px solid #e5e7eb">
-                            <p style="font-size:11px; color:#6b7280; margin-top:4px">Preview foto yang akan diupload</p>
-                        </div>
-                    </div>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('modal-tambah')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="submit" form="form-tambah-paket" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg">save</span> Simpan Paket
             </button>
@@ -235,7 +234,7 @@
     <div class="modal-box modal-md">
         <div class="modal-header">
             <span class="modal-title">Edit Paket Wisata</span>
-            <button class="modal-close" onclick="closeModal('modal-edit')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modal-edit')"><span class="material-symbols-rounded">close</span></button>
         </div>
         <div class="modal-body">
             <div id="edit-loading" class="text-center py-8">
@@ -264,10 +263,27 @@
                     </div>
                     <div>
                         <label class="form-label">Status</label>
-                        <select name="status" id="edit-status" class="form-input">
+<select name="status" id="edit-status" class="form-input">
                             <option value="tersedia">Tersedia</option>
-                            <option value="penuh">Penuh</option>
+                            <option value="penuh">Tidak Tersedia</option>
                         </select>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="form-label">Foto Paket</label>
+                        <div id="preview-edit" style="margin-bottom:8px">
+                            <p style="font-size:11px; color:#6b7280; margin-bottom:4px">Foto saat ini:</p>
+                            <img id="img-current" style="width:100%; max-height:150px; object-fit:cover; border-radius:8px; border:0.5px solid #e5e7eb">
+                        </div>
+                        <div class="file-upload">
+                            <input type="file" name="foto" id="input_foto_edit" accept="image/*">
+                            <span class="material-symbols-rounded file-upload-icon">image</span>
+                            <p class="file-upload-text">Klik untuk mengganti foto paket</p>
+                            <p class="file-upload-hint">Format: JPG, JPEG. Maks 2MB.</p>
+                        </div>
+                        <div id="preview-edit-baru" style="display:none; margin-top:8px">
+                            <p style="font-size:11px; color:#6b7280; margin-bottom:4px">Preview foto baru:</p>
+                            <img id="img-preview-edit" style="width:100%; max-height:150px; object-fit:cover; border-radius:8px; border:0.5px solid #0ea5e9">
+                        </div>
                     </div>
                     <div class="sm:col-span-2">
                         <label class="form-label">Deskripsi <span class="text-red-500">*</span></label>
@@ -283,7 +299,6 @@
                             <?php foreach ($destinasi_list as $d): ?>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="destinasi[]" value="<?= $d->id_destinasi; ?>" class="edit-destinasi">
-                                <span class="material-symbols-rounded text-[16px]"><?= $d->jenis == 'kampus' ? 'account_balance' : 'landscape'; ?></span>
                                 <span class="text-xs"><?= $d->nama_destinasi; ?></span>
                             </label>
                             <?php endforeach; ?>
@@ -324,28 +339,11 @@
                         </div>
                     </div>
                     <?php endif; ?>
-                    <div class="sm:col-span-2">
-                        <label class="form-label">Foto Paket</label>
-                        <div id="preview-edit" style="margin-bottom:8px">
-                            <p style="font-size:11px; color:#6b7280; margin-bottom:4px">Foto saat ini:</p>
-                            <img id="img-current" style="width:100%; max-height:150px; object-fit:cover; border-radius:8px; border:0.5px solid #e5e7eb">
-                        </div>
-                        <div class="file-upload">
-                            <input type="file" name="foto" id="input_foto_edit" accept="image/*">
-                            <span class="material-symbols-rounded file-upload-icon">image</span>
-                            <p class="file-upload-text">Klik untuk mengganti foto paket</p>
-                            <p class="file-upload-hint">Format: JPG, JPEG. Maks 2MB.</p>
-                        </div>
-                        <div id="preview-edit-baru" style="display:none; margin-top:8px">
-                            <p style="font-size:11px; color:#6b7280; margin-bottom:4px">Preview foto baru:</p>
-                            <img id="img-preview-edit" style="width:100%; max-height:150px; object-fit:cover; border-radius:8px; border:0.5px solid #0ea5e9">
-                        </div>
-                    </div>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('modal-edit')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="submit" form="form-edit-paket" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg">update</span> Simpan Perubahan
             </button>
@@ -364,7 +362,7 @@
             <p class="text-sm text-gray-500">Paket <strong id="hapus-nama-paket"></strong> akan dihapus permanen. Tindakan ini tidak bisa dibatalkan.</p>
         </div>
         <div class="modal-footer" style="justify-content: center;">
-            <button class="btn btn-secondary" onclick="closeModal('modal-hapus')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <form id="form-hapus-paket" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">
                     <span class="material-symbols-rounded text-sm">delete</span> Ya, Hapus

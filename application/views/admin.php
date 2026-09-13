@@ -143,8 +143,8 @@
 }
 .modal-title {
     font-weight: 600;
-    font-size: 16px;
-    color: #111827;
+    font-size: 18px;
+    color: #0f172a;
 }
 .modal-close {
     background: none;
@@ -152,7 +152,9 @@
     cursor: pointer;
     color: #9ca3af;
     padding: 4px;
+    font-size: 20px;
     line-height: 1;
+    text-decoration: none;
     transition: color 0.15s;
 }
 .modal-close:hover {
@@ -341,6 +343,11 @@ function closeModal(modalId) {
     if (!modal) return;
     modal.classList.remove('active');
     document.body.style.overflow = '';
+}
+
+function tutupModal() {
+    const open = document.querySelector('.modal-overlay.active');
+    if (open) closeModal(open.id);
 }
 </script>
 

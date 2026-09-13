@@ -159,86 +159,36 @@
 .btn-nilai {
     position: relative;
     overflow: hidden;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.btn-nilai[data-nilai="1"] {
-    border-color: #e5e7eb;
-    background: #f9fafb;
-}
-.btn-nilai[data-nilai="1"] .angka {
-    color: #9ca3af;
-}
-.btn-nilai[data-nilai="1"] .label {
-    color: #9ca3af;
+.btn-nilai .angka,
+.btn-nilai .label {
+    color: #64748B;
+    transition: color 0.2s ease;
 }
 
-.btn-nilai[data-nilai="2"] {
-    border-color: #bae6fd;
-    background: #f0f9ff;
-}
-.btn-nilai[data-nilai="2"] .angka {
-    color: #0ea5e9;
-}
-.btn-nilai[data-nilai="2"] .label {
-    color: #0ea5e9;
-}
-
-.btn-nilai[data-nilai="3"] {
-    border-color: #7dd3fc;
-    background: #f0f9ff;
-}
-.btn-nilai[data-nilai="3"] .angka {
-    color: #0284c7;
-}
-.btn-nilai[data-nilai="3"] .label {
-    color: #0284c7;
-}
-
-.btn-nilai[data-nilai="4"] {
-    border-color: #38bdf8;
-    background: #f0f9ff;
-}
-.btn-nilai[data-nilai="4"] .angka {
-    color: #0369a1;
-}
-.btn-nilai[data-nilai="4"] .label {
-    color: #0369a1;
-}
-
-.btn-nilai[data-nilai="5"] {
-    border-color: #0ea5e9;
-    background: #e0f2fe;
-}
-.btn-nilai[data-nilai="5"] .angka {
-    color: #0369a1;
-}
-.btn-nilai[data-nilai="5"] .label {
-    color: #0369a1;
-}
-
+/* Hover (belum dipilih) */
 .btn-nilai:hover:not(.aktif) {
-    border-color: #7dd3fc !important;
-    background: #f0f9ff !important;
-    transition: all 0.15s ease;
+    border-color: #7dd3fc;
+    background: #F0F9FF;
 }
 
+/* Terpilih: hanya SATU per kartu */
 .btn-nilai.aktif {
-    border-color: #0ea5e9 !important;
-    background: linear-gradient(135deg, #EFF8FF, #e0f2fe) !important;
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
-    transition: all 0.15s ease;
+    background: linear-gradient(135deg, #0EA5E9, #38BDF8);
+    border-color: #0284c7;
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
-.btn-nilai.aktif .angka {
-    color: #0284c7 !important;
-    font-weight: 700;
-    font-size: 1.25rem;
-}
-
+.btn-nilai.aktif .angka,
 .btn-nilai.aktif .label {
-    color: #0369a1 !important;
-    font-weight: 500;
+    color: #ffffff;
+    font-weight: 700;
 }
 
 .progress-preferensi {
@@ -271,4 +221,20 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+}
+
+/* ===== Layout Profil (2 kolom, stack di bawah 1024px) ===== */
+.profil-grid {
+    display: grid;
+    grid-template-columns: 2fr 3fr; /* ≈40% / 60% */
+    gap: 24px;
+    align-items: start;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1023px) {
+    .profil-grid {
+        grid-template-columns: 1fr;
+    }
 }

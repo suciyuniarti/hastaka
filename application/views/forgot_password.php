@@ -64,7 +64,7 @@
                     <?= form_error('email', '<p class="text-red-500 text-xs mt-1 flex items-center gap-1"><span class="material-symbols-rounded text-[14px]">error</span>', '</p>'); ?>
                 </div>
 
-                <button type="submit" class="w-full gradient-bg text-white py-3.5 rounded-full font-semibold text-sm hover:opacity-90 transition shadow-lg shadow-sky-500/25 flex items-center justify-center gap-2">
+<button type="submit" class="w-full gradient-bg text-white py-3.5 rounded-full font-semibold text-sm hover:shadow-xl hover:shadow-sky-500/40 hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-sky-500/25 flex items-center justify-center gap-2">
                     <span class="material-symbols-rounded text-[20px]">key</span> Kirim Token Reset
                 </button>
 

@@ -40,10 +40,6 @@ class Rekomendasi extends CI_Controller {
         // Ambil filter
         $filter = [];
 
-        // LOG 1: Log bobot yang akan dikirim ke model
-        log_message('debug', '=== CONTROLLER: Bobot sebelum kirim ke model ===');
-        log_message('debug', 'Input dari form: ' . json_encode($bobot));
-
         $data['bobot'] = $bobot;
         $data['filter'] = $filter;
         $data['filter_kategori'] = null;
@@ -80,19 +76,28 @@ class Rekomendasi extends CI_Controller {
         // Ambil bobot dari session
         $data['bobot_input'] = $bobot;
 
-        // Hitung total bobot input
+        // ============================================
+        // REFACTOR: Gunakan hitung_saw() sebagai SUMBER PERHITUNGAN TUNGGAL
+        // Ini memastikan nilai V dan ranking konsisten dengan halaman Hasil Rekomendasi
+        // ============================================
+        
+        // Hitung total bobot input untuk normalisasi bobot
         $total_bobot_input = array_sum($bobot);
 
-        // Normalisasi bobot (Wj)
+        // Normalisasi bobot (Wj) - konsisten dengan cara perhitungan di model
         $data['bobot_normalisasi'] = [];
         foreach ($bobot as $kode => $nilai) {
             $data['bobot_normalisasi'][$kode] = $total_bobot_input > 0 ? round($nilai / $total_bobot_input, 4) : 0;
         }
 
-        // Ambil matriks keputusan (Xij)
+        // Panggil hitung_saw() SATU KALI untuk mendapatkan seluruh hasil perhitungan
+        // Hasil ini sudah terurut berdasarkan nilai V (ranking) dan mengandung detail normalisasi
+        $hasil_saw = $this->SAW_model->hitung_saw($bobot, []);
+
+        // Ambil matriks keputusan untuk ditampilkan di view
         $data['matriks_keputusan'] = $this->SAW_model->get_matriks_keputusan();
 
-        // Ambil max/min per kriteria
+        // Ambil max/min per kriteria untuk ditampilkan di view
         $max_min = $this->SAW_model->get_max_min_per_kriteria();
         $data['max_min'] = [];
         foreach ($max_min as $mm) {
@@ -103,79 +108,88 @@ class Rekomendasi extends CI_Controller {
             ];
         }
 
-        // Hitung normalisasi matriks (rij) untuk semua paket
+        // ============================================
+        // Bangun matriks_normalisasi dari hasil hitung_saw()
+        // Format disesuaikan dengan yang diharapkan view
+        // ============================================
         $data['matriks_normalisasi'] = [];
-        foreach ($data['matriks_keputusan'] as $nilai) {
-            $id_paket_loop = $nilai->id_paket;
-            $kode_kr = $nilai->kode_kriteria;
-            $nilai_xij = $nilai->nilai;
+        foreach ($hasil_saw as $item) {
+            $id_paket_hasil = $item['id_paket'];
+            $data['matriks_normalisasi'][$id_paket_hasil] = [
+                'nama_paket' => $item['nama_paket'],
+                'nilai' => []
+            ];
             
-            if (!isset($data['matriks_normalisasi'][$id_paket_loop])) {
-                $data['matriks_normalisasi'][$id_paket_loop] = [
-                    'nama_paket' => $nilai->nama_paket,
-                    'nilai' => []
-                ];
-            }
-
-            if (isset($data['max_min'][$kode_kr])) {
-                $mm = $data['max_min'][$kode_kr];
-                $r = $this->SAW_model->normalisasi($nilai_xij, $mm['max'], $mm['min'], $mm['sifat']);
-                $data['matriks_normalisasi'][$id_paket_loop]['nilai'][$kode_kr] = [
-                    'nilai_asli' => $nilai_xij,
-                    'normalisasi' => round($r, 4),
-                    'sifat' => $mm['sifat'],
-                    'max' => $mm['max'],
-                    'min' => $mm['min']
+            // Ambil detail normalisasi per kriteria dari hasil hitung_saw()
+            foreach ($item['detail'] as $detail) {
+                $kode_kr = $detail['kode'];
+                $data['matriks_normalisasi'][$id_paket_hasil]['nilai'][$kode_kr] = [
+                    'nilai_asli' => $detail['nilai_asli'],
+                    'normalisasi' => $detail['normalisasi'],
+                    'sifat' => $detail['sifat'],
+                    'max' => isset($data['max_min'][$kode_kr]) ? $data['max_min'][$kode_kr]['max'] : null,
+                    'min' => isset($data['max_min'][$kode_kr]) ? $data['max_min'][$kode_kr]['min'] : null
                 ];
             }
         }
 
-        // Hitung nilai V untuk semua paket
+        // ============================================
+        // Bangun nilai_v_semua dari hasil hitung_saw()
+        // Format disesuaikan dengan yang diharapkan view
+        // ============================================
         $data['nilai_v_semua'] = [];
-        foreach ($data['matriks_normalisasi'] as $id_paket_loop => $data_paket) {
-            $nilai_v = 0;
+        foreach ($hasil_saw as $index => $item) {
             $detail_perhitungan = [];
             
-            foreach ($data['kriteria'] as $kr) {
-                if (isset($data_paket['nilai'][$kr->kode_kriteria])) {
-                    $r = $data_paket['nilai'][$kr->kode_kriteria]['normalisasi'];
-                    $w = isset($data['bobot_normalisasi'][$kr->kode_kriteria]) ? $data['bobot_normalisasi'][$kr->kode_kriteria] : 0;
-                    $kontribusi = $r * $w;
-                    $nilai_v += $kontribusi;
-                    
-                    $detail_perhitungan[] = [
-                        'kode' => $kr->kode_kriteria,
-                        'nama' => $kr->nama_kriteria,
-                        'rij' => $r,
-                        'wj' => $w,
-                        'kontribusi' => $kontribusi
-                    ];
-                }
+            // Reconstruct detail perhitungan untuk view
+            foreach ($item['detail'] as $detail) {
+                $kode_kr = $detail['kode'];
+                $w = isset($data['bobot_normalisasi'][$kode_kr]) ? $data['bobot_normalisasi'][$kode_kr] : 0;
+                $r = $detail['normalisasi'];
+                $kontribusi = $r * $w;
+                
+                $detail_perhitungan[] = [
+                    'kode' => $detail['kode'],
+                    'nama' => $detail['nama'],
+                    'rij' => $r,
+                    'wj' => $w,
+                    'kontribusi' => $kontribusi
+                ];
             }
             
-            $data['nilai_v_semua'][$id_paket_loop] = [
-                'nama_paket' => $data_paket['nama_paket'],
-                'nilai_v' => round($nilai_v, 4),
+            $data['nilai_v_semua'][] = [
+                'nama_paket' => $item['nama_paket'],
+                'nilai_v' => $item['nilai_v'],
                 'detail' => $detail_perhitungan
             ];
         }
 
-        // Sorting by nilai V
-        usort($data['nilai_v_semua'], function($a, $b) {
-            return $b['nilai_v'] <=> $a['nilai_v'];
-        });
-
-        // Cari ranking paket yang sedang dilihat
+        // ============================================
+        // Cari ranking paket yang sedang dilihat menggunakan id_paket
+        // (bukan nama_paket) untuk konsistensi
+        // ============================================
         $data['ranking_paket'] = 0;
-        foreach ($data['nilai_v_semua'] as $index => $item) {
-            if ($item['nama_paket'] == $data['paket']->nama_paket) {
-                $data['ranking_paket'] = $index + 1;
+        foreach ($hasil_saw as $index => $item) {
+            if ($item['id_paket'] == $id_paket) {
+                $data['ranking_paket'] = $index + 1; // Ranking dimulai dari 1
                 break;
             }
         }
 
-        // Generate penjelasan dinamis
-        $data['penjelasan'] = $this->generate_penjelasan($data['paket']->nama_paket, $data['bobot_normalisasi'], $data['matriks_normalisasi'][$id_paket]['nilai']);
+        // ============================================
+        // Generate penjelasan dinamis menggunakan data dari hitung_saw()
+        // ============================================
+        // Cari detail normalisasi untuk paket yang sedang dilihat
+        $nilai_normalisasi_paket = [];
+        if (isset($data['matriks_normalisasi'][$id_paket]['nilai'])) {
+            $nilai_normalisasi_paket = $data['matriks_normalisasi'][$id_paket]['nilai'];
+        }
+        
+        $data['penjelasan'] = $this->generate_penjelasan(
+            $data['paket']->nama_paket, 
+            $data['bobot_normalisasi'], 
+            $nilai_normalisasi_paket
+        );
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/navbar');

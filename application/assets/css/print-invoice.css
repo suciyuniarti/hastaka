@@ -1,0 +1,305 @@
+/* Print stylesheet khusus Invoice (Hastaka Holiday) */
+@media print {
+
+  /* Layout halaman */
+  @page {
+    size: A4;
+    margin: 12mm 10mm;
+  }
+
+  html, body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  /* Hindari pemotongan brutal */
+  * {
+    -webkit-print-color-adjust: auto;
+    print-color-adjust: auto;
+  }
+
+  /* =====================================================
+     1) Sembunyikan UI yang tidak relevan saat print
+     ===================================================== */
+  /* Navbar/header navigasi */
+  nav,
+  .sticky,
+  .top-0,
+  header {
+    display: none !important;
+  }
+
+  /* Footer situs */
+  footer {
+    display: none !important;
+  }
+
+
+  /* Tombol/aksi */
+  button,
+  a[href],
+  [onclick],
+  .material-symbols-rounded,
+  .gradient-bg,
+  .hover\\:opacity-90,
+  .hover\\:shadow-xl,
+  .shadow-lg,
+  .shadow-md,
+  .shadow-xl {
+    /* beberapa link memang terkonten di invoice (mis: WA, riwayat) */
+  }
+
+  /* Sembunyikan elemen aksi spesifik invoice */
+  button[onclick*="window.print"],
+  a[href*="pemesanan/riwayat"],
+  a[href*="wa.me"],
+  a[target="_blank"],
+  .w-full.flex.items-center.justify-center.gap-2 {
+    display: none !important;
+  }
+
+  /* Ikon UI tidak relevan */
+  .material-symbols-rounded {
+    display: none !important;
+  }
+
+  /* Gambar dekoratif besar */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Saat print, minimalkan dekorasi besar yang biasanya berupa hero/cover */
+  img[alt*=""],
+  img[class*="hero"],
+  img[class*="decor"],
+  img[class*="parallax"],
+  img[src*="hero"],
+  img[src*="decor"],
+  img[src*="waterfall"],
+  img[src*="waterfall"],
+  img[src*="air"],
+  img[src*="destin"],
+  img[src*="gunung"],
+  img[src*="curug"],
+  img[src*="taman"],
+  img[style*="height:"],
+  img[style*="max-height:"] {
+    /* if ditemukan, kecilkan */
+    max-height: 80px !important;
+    object-fit: cover !important;
+  }
+
+  /* =====================================================
+     2) Tampilkan & rapikan konten invoice
+     ===================================================== */
+
+  /* Pastikan hanya konten invoice yang terlihat bagus */
+  .min-h-screen,
+  .bg-gradient-to-br,
+  .bg-gradient-to-r,
+  .from-sky-50,
+  .via-blue-50,
+  .to-cyan-50,
+  .from-brand-600,
+  .to-brand-700,
+  .from-slate-50,
+  .to-brand-50,
+  .from-brand-500,
+  .to-brand-600 {
+    background: transparent !important;
+  }
+
+  /* Container invoice (yang ada di invoice.php) */
+  .max-w-3xl,
+  .overflow-hidden,
+  .rounded-3xl,
+  .rounded-2xl,
+  .rounded-xl {
+    border-radius: 0 !important;
+  }
+
+  .max-w-3xl {
+    border: 1px solid #bbb !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  /* Hilangkan shadow */
+  * {
+    box-shadow: none !important;
+  }
+
+  /* Ganti background kartu/box warna menjadi border tipis abu-abu (TAPI kecualikan header utama invoice biru)
+     Header utama di invoice punya class: bg-gradient-to-r from-brand-600 to-brand-700
+  */
+  .bg-gradient-to-br,
+  .bg-gradient-to-r,
+  .from-slate-50,
+  .bg-amber-50,
+  .bg-emerald-50,
+  .bg-slate-50,
+  .bg-slate-100,
+  .bg-brand-50,
+  .bg-white/20,
+  .bg-white,
+  .bg-gradient-to-r.from-brand-600.to-brand-700 {
+    background: transparent !important;
+  }
+
+  /* KECUALI header utama invoice biar background biru dan teks putih tetap muncul */
+
+
+
+
+  .bg-amber-50,
+  .bg-emerald-50,
+  .bg-slate-50,
+  .bg-brand-50,
+  .bg-sky-50 {
+    border: 1px solid #bdbdbd !important;
+  }
+
+  /* Batas & padding lebih hemat tinta */
+  .p-8,
+  .p-6,
+  .p-5,
+  .p-4,
+  .p-3,
+  .px-4,
+  .px-8,
+  .py-6,
+  .py-5,
+  .py-4,
+  .py-3 {
+    padding: 8px !important;
+  }
+
+  .mb-6,
+  .mb-8,
+  .mb-4,
+  .mb-2,
+  .mt-1,
+  .mt-2,
+  .mt-3,
+  .mt-4 {
+    margin: 6px !important;
+  }
+
+  /* Teks jadi hitam/abu-abu gelap */
+  .text-slate-900,
+  .text-slate-800,
+  .text-slate-700,
+  .text-slate-600,
+  .text-gray-900,
+  .text-gray-700,
+  .text-brand-700,
+  .text-amber-800,
+  .text-emerald-900,
+  .text-brand-900 {
+    color: #111 !important;
+  }
+
+  .text-slate-500,
+  .text-slate-400,
+  .text-gray-500,
+  .text-brand-500,
+  .text-amber-900,
+  .text-emerald-800 {
+    color: #444 !important;
+  }
+
+  /* Judul invoice */
+  h1, h2, h3 {
+    color: #111 !important;
+  }
+
+  /* Header bar (gradient) jadi border header (kecuali header utama invoice biru)
+     Header utama invoice punya class: bg-gradient-to-r from-brand-600 to-brand-700
+  */
+  .bg-gradient-to-r {
+    background: transparent !important;
+    color: #111 !important;
+    border: 1px solid #bdbdbd !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
+
+  .bg-gradient-to-r.from-brand-600.to-brand-700 {
+    background: #0b5aa8 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: none !important;
+  }
+
+  /* Paksa teks header utama tetap putih (supaya tidak ketimpa aturan warna teks global) */
+  .bg-gradient-to-r.from-brand-600.to-brand-700 * {
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+
+
+  /* Table styling */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    color: #111 !important;
+  }
+
+  th,
+  td {
+    border: 1px solid #d0d0d0 !important;
+    padding: 6px 8px !important;
+    vertical-align: top;
+    color: #111 !important;
+  }
+
+  thead th {
+    background: transparent !important;
+    font-weight: 700 !important;
+  }
+
+  tbody tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* =====================================================
+     3) Page-break untuk Total Tagihan & Sisa
+     ===================================================== */
+  /* Ringkasan pembayaran adalah div .bg-gradient-to-br ... mb-6 */
+  /* dan nested .bg-amber-50 block untuk sisa (sudah terpisah dari tabel) */
+  .bg-gradient-to-br,
+  .bg-amber-50,
+  .bg-emerald-50 {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Selain itu: judul besar jangan terpisah dari isi */
+  h3, .font-bold {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* =====================================================
+     4) Footer khusus invoice (auto print)
+     ===================================================== */
+  /* Kita jadikan pseudo-element di bawah container invoice agar tidak perlu ubah banyak markup */
+  .max-w-3xl::after {
+    content: "\A Dokumen ini dibuat otomatis oleh sistem Hastaka Holiday";
+    white-space: pre;
+    display: block;
+    margin-top: 10mm;
+    padding-top: 6mm;
+    border-top: 1px solid #bdbdbd;
+    color: #111 !important;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+}
+
+

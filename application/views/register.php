@@ -57,7 +57,7 @@
                         <div style="position: relative;">
                             <span class="material-symbols-rounded" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 20px;">person</span>
                             <input type="text" name="nama_lengkap" value="<?= set_value('nama_lengkap'); ?>"
-                                style="width: 100%; padding: 12px 12px 12px 44px; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
+                                style="width: 100%; padding: 12px 12px 12px 44px; background: white; border: 1.5px solid <?= form_error('nama_lengkap') ? '#ef4444' : '#e2e8f0' ?>; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
                                 placeholder="Nama lengkap Anda" required>
                         </div>
                         <?= form_error('nama_lengkap', '<p style="color: #ef4444; font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 14px;">error</span>', '</p>'); ?>
@@ -68,7 +68,7 @@
                         <div style="position: relative;">
                             <span class="material-symbols-rounded" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 20px;">mail</span>
                             <input type="email" name="email" value="<?= set_value('email'); ?>"
-                                style="width: 100%; padding: 12px 12px 12px 44px; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
+                                style="width: 100%; padding: 12px 12px 12px 44px; background: white; border: 1.5px solid <?= form_error('email') ? '#ef4444' : '#e2e8f0' ?>; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
                                 placeholder="nama@email.com" required>
                         </div>
                         <?= form_error('email', '<p style="color: #ef4444; font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 14px;">error</span>', '</p>'); ?>
@@ -79,7 +79,7 @@
                         <div style="position: relative;">
                             <span class="material-symbols-rounded" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 20px;">lock</span>
                             <input type="password" name="password" id="reg-pwd"
-                                style="width: 100%; padding: 12px 44px 12px 44px; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
+                                style="width: 100%; padding: 12px 44px 12px 44px; background: white; border: 1.5px solid <?= form_error('password') ? '#ef4444' : '#e2e8f0' ?>; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
                                 placeholder="Minimal 6 karakter" required>
                             <button type="button" onclick="toggleRegPwd('reg-pwd','reg-pwd-icon')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; background: none; border: none; cursor: pointer; padding: 0;">
                                 <span class="material-symbols-rounded" style="font-size: 20px;" id="reg-pwd-icon">visibility_off</span>
@@ -93,7 +93,7 @@
                         <div style="position: relative;">
                             <span class="material-symbols-rounded" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 20px;">lock</span>
                             <input type="password" name="konfirmasi_password" id="reg-pwd2"
-                                style="width: 100%; padding: 12px 44px 12px 44px; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
+                                style="width: 100%; padding: 12px 44px 12px 44px; background: white; border: 1.5px solid <?= form_error('konfirmasi_password') ? '#ef4444' : '#e2e8f0' ?>; border-radius: 10px; font-size: 14px; color: #1e293b; transition: all 0.2s;"
                                 placeholder="Ulangi password" required>
                             <button type="button" onclick="toggleRegPwd('reg-pwd2','reg-pwd2-icon')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; background: none; border: none; cursor: pointer; padding: 0;">
                                 <span class="material-symbols-rounded" style="font-size: 20px;" id="reg-pwd2-icon">visibility_off</span>
@@ -102,26 +102,7 @@
                         <?= form_error('konfirmasi_password', '<p style="color: #ef4444; font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 14px;">error</span>', '</p>'); ?>
                     </div>
 
-                    <?php 
-                    $reg_errors = $this->session->flashdata('errors'); 
-                    ?>
-                    <?php if (!empty($reg_errors)): ?>
-                    <div style="background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
-                        <p style="font-size: 13px; font-weight: 500; color: #b91c1c; margin: 0 0 6px 0;">⚠ Mohon perbaiki kesalahan berikut:</p>
-                        <ul style="font-size: 12px; color: #b91c1c; margin: 0; padding-left: 16px;">
-                            <?php foreach($reg_errors as $err): ?>
-                            <li><?= htmlspecialchars($err) ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                    <?php endif; ?>
-
-                    <div id="error-box-register" style="display: none; background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
-                        <p style="font-size: 13px; font-weight: 500; color: #b91c1c; margin: 0 0 6px 0;">⚠ Mohon perbaiki kesalahan berikut:</p>
-                        <ul id="error-list-register" style="font-size: 12px; color: #b91c1c; margin: 0; padding-left: 16px;"></ul>
-                    </div>
-
-                    <button type="submit" style="width: 100%; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 14px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(14,165,233,0.3); transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(14,165,233,0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(14,165,233,0.3)';">
+                    <button type="submit" class="group w-full gradient-bg text-white py-3.5 rounded-xl font-bold text-sm hover:shadow-xl hover:shadow-brand-500/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 mt-4">
                         <span class="material-symbols-rounded" style="font-size: 20px;">person_add</span> Daftar Sekarang
                     </button>
 
@@ -130,75 +111,23 @@
 
             <p style="text-align: center; color: #6b7280; font-size: 14px; margin-top: 32px;">
                 Sudah punya akun?
-                <a href="<?= base_url('auth/login'); ?>" style="color: #0ea5e9; font-weight: 600; text-decoration: none;">Masuk di sini</a>
+                <a href="<?= base_url('auth/login'); ?>" class="text-brand-600 font-semibold hover:underline">Masuk di sini</a>
             </p>
         </div>
     </div>
 </div>
 
 <script>
-(function(){
-  var form = document.getElementById('form-register');
-  if (!form) return;
-
-  form.addEventListener('submit', function(e) {
-    var errors = [];
-    
-    var namaEl = form.querySelector('input[name="nama_lengkap"]');
-    var emailEl = form.querySelector('input[name="email"]');
-    var passEl = form.querySelector('input[name="password"]');
-    var konfEl = form.querySelector('input[name="konfirmasi_password"]');
-    
-    var nama = namaEl ? namaEl.value.trim() : '';
-    var email = emailEl ? emailEl.value.trim() : '';
-    var pass = passEl ? passEl.value : '';
-    var konf = konfEl ? konfEl.value : '';
-    
-    if (!nama) {
-      errors.push('Nama lengkap wajib diisi.');
-    } else if (nama.length < 3) {
-      errors.push('Nama minimal 3 karakter.');
-    } else if (/[^a-zA-Z\s]/.test(nama)) {
-      errors.push('Nama hanya boleh berisi huruf dan spasi.');
+function toggleRegPwd(inputId, iconId) {
+    var inp = document.getElementById(inputId);
+    var icon = document.getElementById(iconId);
+    if (!inp || !icon) return;
+    if (inp.type === 'password') {
+        inp.type = 'text';
+        icon.textContent = 'visibility';
+    } else {
+        inp.type = 'password';
+        icon.textContent = 'visibility_off';
     }
-    
-    if (!email) {
-      errors.push('Email wajib diisi.');
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errors.push('Format email tidak valid.');
-    }
-    
-    if (!pass) {
-      errors.push('Password wajib diisi.');
-    } else if (pass.length < 6) {
-      errors.push('Password minimal 6 karakter.');
-    }
-    
-    if (!konf) {
-      errors.push('Konfirmasi password wajib diisi.');
-    } else if (pass !== konf) {
-      errors.push('Konfirmasi password tidak cocok.');
-    }
-    
-    if (errors.length > 0) {
-      e.preventDefault();
-      var box = document.getElementById('error-box-register');
-      var list = document.getElementById('error-list-register');
-      if (!box || !list) {
-        alert(errors.join('\n'));
-        return;
-      }
-      list.innerHTML = errors.map(function(e){ return '<li>' + e + '</li>'; }).join('');
-      box.style.display = 'block';
-      box.scrollIntoView({ behavior:'smooth', block:'center' });
-    }
-  });
-
-  form.querySelectorAll('input').forEach(function(input) {
-    input.addEventListener('input', function() {
-      var box = document.getElementById('error-box-register');
-      if (box) box.style.display = 'none';
-    });
-  });
-})();
+}
 </script>

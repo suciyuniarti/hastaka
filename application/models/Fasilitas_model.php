@@ -33,8 +33,18 @@ class Fasilitas_model extends CI_Model {
         return $this->db->update('fasilitas', $data, ['id_fasilitas' => $id]);
     }
 
+    public function is_used_in_paket($id_fasilitas)
+    {
+        $this->db->where('id_fasilitas', $id_fasilitas);
+        $this->db->from('paket_fasilitas');
+        return $this->db->count_all_results() > 0;
+    }
+
     public function hapus_fasilitas($id)
     {
+        if ($this->is_used_in_paket($id)) {
+            return FALSE;
+        }
         return $this->db->delete('fasilitas', ['id_fasilitas' => $id]);
     }
 

@@ -46,16 +46,6 @@
                         <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Paket Wisata</p>
                         <p class="font-bold text-slate-900"><?= $pemesanan->nama_paket; ?></p>
                     </div>
-                    <?php if (!empty($pemesanan->nama_kategori)): ?>
-                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Kategori Program</p>
-                        <p class="font-bold text-slate-900 flex items-center gap-1.5">
-                            <span class="material-symbols-rounded text-brand-500 text-[16px]"><?= $pemesanan->kategori_icon; ?></span>
-                            <?= $pemesanan->nama_kategori; ?>
-                            <span class="text-[10px] text-slate-400 font-normal">(<?= $pemesanan->sasaran; ?>)</span>
-                        </p>
-                    </div>
-                    <?php endif; ?>
                     <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
                         <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Pemesan</p>
                         <p class="font-bold text-slate-900"><?= $pemesanan->nama_lengkap; ?></p>
@@ -103,16 +93,6 @@
                         <p class="font-bold text-slate-900"><?= date('d F Y H:i', strtotime($pemesanan->tgl_transaksi)); ?> WIB</p>
                     </div>
                 </div>
-                    <?php if (!empty($pemesanan->nama_kategori)): ?>
-                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Kategori Program</p>
-                        <p class="font-bold text-slate-900 flex items-center gap-1.5">
-                            <span class="material-symbols-rounded text-brand-500 text-[16px]"><?= $pemesanan->kategori_icon; ?></span>
-                            <?= $pemesanan->nama_kategori; ?>
-                            <span class="text-[10px] text-slate-400 font-normal">(<?= $pemesanan->sasaran; ?>)</span>
-                        </p>
-                    </div>
-                    <?php endif; ?>
                     <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
                         <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Pemesan</p>
                         <p class="font-bold text-slate-900"><?= $pemesanan->nama_lengkap; ?></p>

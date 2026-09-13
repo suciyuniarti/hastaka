@@ -18,7 +18,7 @@
             <select name="kota" onchange="this.form.submit()" class="form-input" style="flex:1;">
                 <option value="">Semua Kota</option>
                 <?php foreach ($kota_list as $kota): ?>
-                <option value="<?= urlencode($kota); ?>" <?= $filter_kota == $kota ? 'selected' : ''; ?>><?= $kota; ?></option>
+                <option value="<?= htmlspecialchars($kota, ENT_QUOTES); ?>" <?= $filter_kota == $kota ? 'selected' : ''; ?>><?= $kota; ?></option>
                 <?php endforeach; ?>
             </select>
             <?php if ($filter_kota): ?>
@@ -141,7 +141,7 @@ $kota_indonesia = [
     <div class="modal-box modal-md">
         <div class="modal-header">
             <span class="modal-title">Tambah Destinasi</span>
-            <button class="modal-close" onclick="closeModal('modal-tambah-destinasi')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modal-tambah-destinasi')"><span class="material-symbols-rounded">close</span></button>
         </div>
         <div class="modal-body">
             <form id="form-tambah-destinasi" action="<?= base_url('admin/destinasi/tambah'); ?>" method="post" class="space-y-5">
@@ -165,7 +165,7 @@ $kota_indonesia = [
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('modal-tambah-destinasi')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="submit" form="form-tambah-destinasi" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg">save</span> Simpan
             </button>
@@ -178,7 +178,7 @@ $kota_indonesia = [
     <div class="modal-box modal-md">
         <div class="modal-header">
             <span class="modal-title">Edit Destinasi</span>
-            <button class="modal-close" onclick="closeModal('modal-edit-destinasi')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modal-edit-destinasi')"><span class="material-symbols-rounded">close</span></button>
         </div>
         <div class="modal-body">
             <div id="edit-loading" class="text-center py-8">
@@ -207,7 +207,7 @@ $kota_indonesia = [
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('modal-edit-destinasi')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="submit" form="form-edit-destinasi" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg">update</span> Simpan Perubahan
             </button>
@@ -226,7 +226,7 @@ $kota_indonesia = [
             <p class="text-sm text-gray-500">Destinasi <strong id="hapus-nama-destinasi"></strong> akan dihapus permanen. Tindakan ini tidak bisa dibatalkan.</p>
         </div>
         <div class="modal-footer" style="justify-content: center;">
-            <button class="btn btn-secondary" onclick="closeModal('modal-hapus-destinasi')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <form id="form-hapus-destinasi" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">
                     <span class="material-symbols-rounded text-sm">delete</span> Ya, Hapus

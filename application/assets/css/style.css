@@ -1,7 +1,29 @@
+/* ============================================
+   TYPOGRAPHY — Standardized Fonts
+   Headings: Poppins | Body/Text: Inter
+   ============================================ */
+
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: #f8f9fa;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+}
+
+p,
+label,
+input,
+select,
+textarea,
+table {
+  font-family: 'Inter', sans-serif;
+}
+
+/* ============================================
+   LEGACY / BOOTSTRAP-STYLE HELPERS
+   ============================================ */
 
 .navbar {
   background-color: #0d6efd; /* biru Bootstrap */

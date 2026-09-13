@@ -57,5 +57,7 @@
     </div>
     </div>
 </footer>
+
+<?php $this->load->view('templates/logout_modal'); ?>
 </body>
 </html>

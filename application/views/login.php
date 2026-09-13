@@ -1,3 +1,7 @@
+<?php
+$login_error = $this->session->flashdata('login_error');
+?>
+
 <div class="min-h-screen flex">
     <!-- Left: Illustration -->
     <div class="hidden lg:flex lg:w-1/2 gradient-bg relative overflow-hidden">
@@ -53,7 +57,8 @@
                     <div class="relative">
                         <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">mail</span>
                         <input type="email" name="email" id="email" value="<?= set_value('email'); ?>"
-                            class="w-full pl-12 pr-4 py-3 bg-white border-2 border-slate-200 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300 hover:border-slate-300"
+                            class="w-full pl-12 pr-4 py-3 bg-white border-2 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300"
+                            style="border-color: <?= (form_error('email') || $login_error) ? '#ef4444' : '#e2e8f0' ?>"
                             placeholder="nama@email.com" required>
                     </div>
                     <?= form_error('email', '<p class="text-red-500 text-xs mt-1 flex items-center gap-1"><span class="material-symbols-rounded text-[14px]">error</span>', '</p>'); ?>
@@ -64,35 +69,22 @@
                     <div class="relative">
                         <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">lock</span>
                         <input type="password" name="password" id="password"
-                            class="w-full pl-12 pr-12 py-3 bg-white border-2 border-slate-200 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300 hover:border-slate-300"
+                            class="w-full pl-12 pr-12 py-3 bg-white border-2 rounded-xl text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300"
+                            style="border-color: <?= (form_error('password') || $login_error) ? '#ef4444' : '#e2e8f0' ?>"
                             placeholder="Masukkan password" required>
                         <button type="button" onclick="togglePwd()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-600 transition">
                             <span class="material-symbols-rounded text-[20px]" id="pwd-icon">visibility_off</span>
                         </button>
                     </div>
                     <?= form_error('password', '<p class="text-red-500 text-xs mt-1 flex items-center gap-1"><span class="material-symbols-rounded text-[14px]">error</span>', '</p>'); ?>
-                </div>
-
-                <?php 
-                $login_errors = $this->session->flashdata('login_errors'); 
-                ?>
-                <?php if (!empty($login_errors)): ?>
-                <div style="background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
-                    <p style="font-size: 13px; font-weight: 500; color: #b91c1c; margin: 0 0 6px 0;">⚠ Terjadi kesalahan:</p>
-                    <ul style="font-size: 12px; color: #b91c1c; margin: 0; padding-left: 16px;">
-                        <?php foreach($login_errors as $err): ?>
-                        <li><?= htmlspecialchars($err) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+                <?php if ($login_error): ?>
+                <p class="text-red-500 text-xs mt-1 flex items-center gap-1">
+                    <span class="material-symbols-rounded text-[14px]">error</span>
+                    <?= htmlspecialchars($login_error); ?>
+                </p>
                 <?php endif; ?>
 
-                <div id="error-box-login" style="display: none; background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
-                    <p style="font-size: 13px; font-weight: 500; color: #b91c1c; margin: 0 0 6px 0;">⚠ Terjadi kesalahan:</p>
-                    <ul id="error-list-login" style="font-size: 12px; color: #b91c1c; margin: 0; padding-left: 16px;"></ul>
-                </div>
-
-                <button type="submit" class="group w-full gradient-bg text-white py-3.5 rounded-xl font-bold text-sm hover:shadow-xl hover:shadow-brand-500/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+                <button type="submit" class="group w-full gradient-bg text-white py-3.5 rounded-xl font-bold text-sm hover:shadow-xl hover:shadow-brand-500/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 mt-4">
                     <span class="material-symbols-rounded text-[20px]">login</span> Masuk
                 </button>
 
@@ -112,52 +104,16 @@
 </div>
 
 <script>
-(function(){
-  var form = document.getElementById('form-login');
-  if (!form) return;
-
-  form.addEventListener('submit', function(e) {
-    var errors = [];
-    
-    var emailEl = form.querySelector('input[name="email"]');
-    var passEl = form.querySelector('input[name="password"]');
-    
-    if (!emailEl || !passEl) return;
-    
-    var email = emailEl.value.trim();
-    var pass = passEl.value;
-    
-    if (!email) {
-      errors.push('Email wajib diisi.');
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errors.push('Format email tidak valid.');
+function togglePwd() {
+    var inp = document.getElementById('password');
+    var icon = document.getElementById('pwd-icon');
+    if (!inp || !icon) return;
+    if (inp.type === 'password') {
+        inp.type = 'text';
+        icon.textContent = 'visibility';
+    } else {
+        inp.type = 'password';
+        icon.textContent = 'visibility_off';
     }
-    
-    if (!pass) {
-      errors.push('Password wajib diisi.');
-    } else if (pass.length < 6) {
-      errors.push('Password minimal 6 karakter.');
-    }
-    
-    if (errors.length > 0) {
-      e.preventDefault();
-      var box = document.getElementById('error-box-login');
-      var list = document.getElementById('error-list-login');
-      if (!box || !list) {
-        alert(errors.join('\n'));
-        return;
-      }
-      list.innerHTML = errors.map(function(e){ return '<li>' + e + '</li>'; }).join('');
-      box.style.display = 'block';
-      box.scrollIntoView({ behavior:'smooth', block:'center' });
-    }
-  });
-
-  form.querySelectorAll('input').forEach(function(input) {
-    input.addEventListener('input', function() {
-      var box = document.getElementById('error-box-login');
-      if (box) box.style.display = 'none';
-    });
-  });
-})();
+}
 </script>

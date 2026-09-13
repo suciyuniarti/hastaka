@@ -27,6 +27,7 @@
                     <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider w-20">Icon</th>
                     <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider">Nama Akomodasi</th>
                     <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider">Wilayah</th>
+                    <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider">Deskripsi</th>
                     <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider">Harga/Orang</th>
                     <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider w-24 text-center">Paket</th>
                     <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider w-28 text-center">Status</th>
@@ -35,27 +36,37 @@
             </thead>
             <tbody>
                 <?php if (!empty($akomodasi)): ?>
-                <?php foreach ($akomodasi as $i => $a): 
-                    $deskripsi = !empty($a->deskripsi) ? $a->deskripsi : '-';
-                    if (strlen($deskripsi) > 50) {
-                        $deskripsi = substr($deskripsi, 0, 50) . '...';
-                    }
+<?php foreach ($akomodasi as $i => $a): 
                     $wilayah = !empty($a->wilayah) ? $a->wilayah : '-';
                     if (strlen($wilayah) > 40) {
                         $wilayah = substr($wilayah, 0, 40) . '...';
                     }
                     $jumlah_paket = count($a->paket_list ?? []);
                 ?>
-                <tr class="border-b border-slate-100 hover:bg-sky-50/60 transition whitespace-nowrap <?= ($i % 2 == 0) ? '' : 'bg-slate-50/50'; ?>">
+                <tr class="border-b border-slate-100 hover:bg-sky-50/60 transition whitespace-nowrap <?= ($i % 2 == 0) ? '' : 'bg-slate-50/50'; ?> <?= ($a->is_active != 'y' && $a->is_active != 1) ? 'opacity-60' : ''; ?>">
                     <td class="py-4 px-5 text-slate-400 text-sm font-mono td-no"><?= $i + 1; ?></td>
                     <td class="py-4 px-5">
                         <div class="w-10 h-10 bg-sky-50 border border-sky-100 rounded-xl flex items-center justify-center text-sky-600">
                             <span class="material-symbols-rounded text-xl"><?= $a->icon; ?></span>
                         </div>
                     </td>
-                    <td class="py-4 px-5 font-semibold text-slate-800 text-sm"><?= $a->nama_akomodasi; ?></td>
+                    <td class="py-4 px-5 font-semibold text-slate-800 text-sm">
+                        <?= $a->nama_akomodasi; ?>
+                        <?php if ($a->is_active != 'y' && $a->is_active != 1): ?>
+                            <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">
+                                Nonaktif
+                            </span>
+                        <?php endif; ?>
+                    </td>
                     <td class="py-4 px-5 text-slate-600 text-sm">
                         <div class="truncate max-w-xs" title="<?= htmlspecialchars($a->wilayah ?? '', ENT_QUOTES); ?>"><?= $wilayah; ?></div>
+                    </td>
+                    <td class="py-4 px-5 text-slate-600 text-sm">
+                        <?php if (!empty($a->deskripsi)): ?>
+                        <span class="truncate max-w-xs inline-block align-middle" style="max-width:160px;" title="<?= htmlspecialchars($a->deskripsi, ENT_QUOTES); ?>"><?= character_limiter($a->deskripsi, 50); ?></span>
+                        <?php else: ?>
+                        <span class="text-slate-400">-</span>
+                        <?php endif; ?>
                     </td>
                     <td class="py-4 px-5 text-slate-600 text-sm whitespace-nowrap">
                         <?php if ($a->harga_tambahan > 0): ?>
@@ -76,11 +87,11 @@
                     </td>
                     <td class="py-4 px-5 text-center">
                         <?php if ($a->is_active == 'y' || $a->is_active == 1): ?>
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-bold text-emerald-700 cursor-pointer hover:bg-emerald-100 transition" onclick="toggleStatus(<?= $a->id_akomodasi; ?>, 'nonaktif')" title="Klik untuk menonaktifkan">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-bold text-emerald-700 cursor-pointer hover:bg-emerald-100 transition" onclick="toggleStatus(<?= $a->id_akomodasi; ?>, 'nonaktif', '<?= htmlspecialchars($a->nama_akomodasi, ENT_QUOTES); ?>')" title="Klik untuk menonaktifkan">
                                 <span class="material-symbols-rounded text-[14px]">check_circle</span> Aktif
                             </span>
                         <?php else: ?>
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 border border-red-200 rounded-lg text-xs font-bold text-red-700 cursor-pointer hover:bg-red-100 transition" onclick="toggleStatus(<?= $a->id_akomodasi; ?>, 'aktif')" title="Klik untuk mengaktifkan">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 border border-red-200 rounded-lg text-xs font-bold text-red-700 cursor-pointer hover:bg-red-100 transition" onclick="toggleStatus(<?= $a->id_akomodasi; ?>, 'aktif', '<?= htmlspecialchars($a->nama_akomodasi, ENT_QUOTES); ?>')" title="Klik untuk mengaktifkan">
                                 <span class="material-symbols-rounded text-[14px]">cancel</span> Nonaktif
                             </span>
                         <?php endif; ?>
@@ -98,7 +109,7 @@
                 </tr>
                 <?php endforeach; ?>
                 <?php else: ?>
-                <tr><td colspan="8" class="py-16 text-center">
+<tr><td colspan="9" class="py-16 text-center">
                     <div class="empty-state">
                         <div class="empty-state-icon">
                             <span class="material-symbols-rounded">hotel</span>
@@ -118,7 +129,7 @@
     <div class="modal-box modal-md">
         <div class="modal-header">
             <span class="modal-title">Tambah Akomodasi</span>
-            <button class="modal-close" onclick="closeModal('modal-tambah-akomodasi')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modal-tambah-akomodasi')"><span class="material-symbols-rounded">close</span></button>
         </div>
         <div class="modal-body">
             <form id="form-tambah-akomodasi" action="<?= base_url('admin/akomodasi/tambah'); ?>" method="post" enctype="multipart/form-data" class="space-y-5">
@@ -180,7 +191,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('modal-tambah-akomodasi')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="submit" form="form-tambah-akomodasi" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg">save</span> Simpan
             </button>
@@ -193,7 +204,7 @@
     <div class="modal-box modal-md">
         <div class="modal-header">
             <span class="modal-title">Edit Akomodasi</span>
-            <button class="modal-close" onclick="closeModal('modal-edit-akomodasi')">&times;</button>
+            <button class="modal-close" onclick="closeModal('modal-edit-akomodasi')"><span class="material-symbols-rounded">close</span></button>
         </div>
         <div class="modal-body">
             <div id="edit-loading" class="text-center py-8">
@@ -260,7 +271,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('modal-edit-akomodasi')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <button type="submit" form="form-edit-akomodasi" class="btn btn-primary">
                 <span class="material-symbols-rounded text-lg">update</span> Simpan Perubahan
             </button>
@@ -279,12 +290,31 @@
             <p class="text-sm text-gray-500">Akomodasi <strong id="hapus-nama-akomodasi"></strong> akan dihapus permanen. Tindakan ini tidak bisa dibatalkan.</p>
         </div>
         <div class="modal-footer" style="justify-content: center;">
-            <button class="btn btn-secondary" onclick="closeModal('modal-hapus-akomodasi')">Batal</button>
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
             <form id="form-hapus-akomodasi" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">
                     <span class="material-symbols-rounded text-sm">delete</span> Ya, Hapus
                 </button>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Toggle Status -->
+<div id="modal-toggle-status" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-toggle-status')">
+    <div class="modal-box modal-sm">
+        <div class="modal-body text-center">
+            <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-rounded text-[40px] text-blue-500">toggle_on</span>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">Ubah Status Akomodasi?</h3>
+            <p class="text-sm text-gray-500">Yakin ingin mengubah status <strong id="toggle-status-nama"></strong> menjadi <strong id="toggle-status-action" class="font-bold"></strong>?</p>
+        </div>
+        <div class="modal-footer" style="justify-content: center;">
+            <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
+            <button type="button" class="btn btn-primary" onclick="confirmToggleStatus()">
+                <span class="material-symbols-rounded text-sm">check</span> Ya, Ubah
+            </button>
         </div>
     </div>
 </div>
@@ -412,29 +442,66 @@ function openDeleteModal(id, nama) {
     openModal('modal-hapus-akomodasi');
 }
 
-function toggleStatus(id, newStatus) {
-    if (!confirm('Ubah status akomodasi menjadi ' + newStatus + '?')) {
+var pendingToggleId = null;
+var pendingToggleStatus = null;
+var pendingToggleNama = null;
+
+function toggleStatus(id, newStatus, nama) {
+    pendingToggleId = id;
+    pendingToggleStatus = newStatus;
+    pendingToggleNama = nama || '';
+    
+    var namaEl = document.getElementById('toggle-status-nama');
+    var actionEl = document.getElementById('toggle-status-action');
+    if (namaEl && actionEl) {
+        namaEl.textContent = pendingToggleNama;
+        actionEl.textContent = newStatus === 'aktif' ? 'Aktif' : 'Nonaktif';
+    }
+    
+    openModal('modal-toggle-status');
+}
+
+function confirmToggleStatus() {
+    if (!pendingToggleId || !pendingToggleStatus) {
+        tutupModal();
         return;
     }
     
-    fetch(baseUrl + 'admin/akomodasi/toggle_status/' + id, {
+    fetch(baseUrl + 'admin/akomodasi/toggle_status/' + pendingToggleId, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-        }
+        },
+        body: JSON.stringify({})
     })
-    .then(function(response) { return response.json(); })
+    .then(function(response) { 
+        return response.json().then(function(data) {
+            if (!response.ok) {
+                throw new Error(data.message || 'HTTP error ' + response.status);
+            }
+            return data;
+        });
+    })
     .then(function(data) {
+        tutupModal();
         if (data.success) {
-            location.reload();
+            showToast && showToast('success', 'Status berhasil diubah menjadi ' + (pendingToggleStatus === 'aktif' ? 'Aktif' : 'Nonaktif'));
+            setTimeout(function() {
+                location.reload();
+            }, 1000);
         } else {
-            alert('Gagal mengubah status: ' + data.message);
+            showToast && showToast('error', 'Gagal mengubah status: ' + data.message);
         }
     })
     .catch(function(error) {
         console.error('Error:', error);
-        alert('Terjadi kesalahan saat mengubah status.');
+        tutupModal();
+        showToast && showToast('error', 'Terjadi kesalahan: ' + error.message);
     });
+    
+    pendingToggleId = null;
+    pendingToggleStatus = null;
+    pendingToggleNama = null;
 }
 
 document.addEventListener('DOMContentLoaded', function() {

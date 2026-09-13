@@ -8,6 +8,11 @@ class Akomodasi_model extends CI_Model {
         return $this->db->where('is_active', 'y')->order_by('id_akomodasi', 'ASC')->get('akomodasi')->result();
     }
 
+    public function get_all()
+    {
+        return $this->db->order_by('is_active', 'DESC')->order_by('id_akomodasi', 'ASC')->get('akomodasi')->result();
+    }
+
     public function get_by_ids($ids)
     {
         if (empty($ids)) {
@@ -37,6 +42,9 @@ class Akomodasi_model extends CI_Model {
 
     public function hapus_akomodasi($id)
     {
+        if ($this->is_used_in_paket($id)) {
+            return FALSE;
+        }
         $this->db->where('id_akomodasi', $id);
         return $this->db->delete('akomodasi');
     }
@@ -76,9 +84,16 @@ class Akomodasi_model extends CI_Model {
 
     public function set_paket_for_akomodasi($id_akomodasi, $id_paket_arr)
     {
+        // Mulai transaksi database agar DELETE + INSERT bersifat atomik.
+        // Jika salah satu gagal, seluruh perubahan di-rollback.
+        $this->db->trans_start();
+
+        // 1. Hapus SEMUA relasi lama untuk akomodasi ini (wajib, termasuk
+        //    saat array kosong / tidak ada paket yang dicentang).
         $this->db->where('id_akomodasi', $id_akomodasi);
         $this->db->delete('paket_akomodasi');
 
+        // 2. Insert ulang seluruh paket yang dipilih
         if (!empty($id_paket_arr)) {
             foreach ($id_paket_arr as $id_paket) {
                 $this->db->insert('paket_akomodasi', [
@@ -87,6 +102,18 @@ class Akomodasi_model extends CI_Model {
                 ]);
             }
         }
+
+        $this->db->trans_complete();
+
+        // Return status transaksi: TRUE jika sukses, FALSE jika gagal
+        return $this->db->trans_status();
+    }
+
+    public function is_used_in_paket($id_akomodasi)
+    {
+        $this->db->where('id_akomodasi', $id_akomodasi);
+        $this->db->from('paket_akomodasi');
+        return $this->db->count_all_results() > 0;
     }
 
     public function is_used_in_pemesanan($id_akomodasi)

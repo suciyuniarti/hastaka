@@ -15,101 +15,6 @@
             </div>
         </div>
 
-        <!-- Penjelasan Cara Kerja (4 langkah) -->
-        <div class="bg-[#EFF8FF] border border-[#bae6fd] rounded-xl p-4 sm:p-6 mb-8 animate-fade-in-up" style="animation-delay: 0.1s;">
-            <h3 class="font-semibold text-base text-gray-900 mb-5 text-center">Bagaimana cara kerjanya?</h3>
-            
-            <!-- Desktop: flex row dengan panah -->
-            <div class="hidden lg:flex items-center justify-center gap-4 lg:gap-6">
-                <div class="flex flex-col items-center text-center w-40">
-                    <span class="text-[11px] font-bold text-sky-500 mb-1">1</span>
-                    <div class="w-10 h-10 rounded-full bg-[#EFF8FF] flex items-center justify-center mb-2">
-                        <span class="material-symbols-rounded text-sky-500 text-[22px]">checklist</span>
-                    </div>
-                    <h4 class="text-[13px] font-medium text-[#0369a1] mb-1">Pilih preferensi</h4>
-                    <p class="text-[12px] text-[#0369a1] leading-relaxed">Tentukan seberapa penting harga, durasi, destinasi, dan aktivitas.</p>
-                </div>
-                
-                <div class="flex-shrink-0">
-                    <span class="material-symbols-rounded text-sky-300 text-[22px]">arrow_forward</span>
-                </div>
-                
-                <div class="flex flex-col items-center text-center w-40">
-                    <span class="text-[11px] font-bold text-sky-500 mb-1">2</span>
-                    <div class="w-10 h-10 rounded-full bg-[#EFF8FF] flex items-center justify-center mb-2">
-                        <span class="material-symbols-rounded text-sky-500 text-[22px]">balance</span>
-                    </div>
-                    <h4 class="text-[13px] font-medium text-[#0369a1] mb-1">Bobot dinormalisasi</h4>
-                    <p class="text-[12px] text-[#0369a1] leading-relaxed">Pilihanmu diubah ke bobot proporsional menggunakan metode SAW.</p>
-                </div>
-                
-                <div class="flex-shrink-0">
-                    <span class="material-symbols-rounded text-sky-300 text-[22px]">arrow_forward</span>
-                </div>
-                
-                <div class="flex flex-col items-center text-center w-40">
-                    <span class="text-[11px] font-bold text-sky-500 mb-1">3</span>
-                    <div class="w-10 h-10 rounded-full bg-[#EFF8FF] flex items-center justify-center mb-2">
-                        <span class="material-symbols-rounded text-sky-500 text-[22px]">grid_view</span>
-                    </div>
-                    <h4 class="text-[13px] font-medium text-[#0369a1] mb-1">Paket dinilai</h4>
-                    <p class="text-[12px] text-[#0369a1] leading-relaxed">Setiap paket dinormalisasi dan dihitung nilai kecocokannya.</p>
-                </div>
-                
-                <div class="flex-shrink-0">
-                    <span class="material-symbols-rounded text-sky-300 text-[22px]">arrow_forward</span>
-                </div>
-                
-                <div class="flex flex-col items-center text-center w-40">
-                    <span class="text-[11px] font-bold text-sky-500 mb-1">4</span>
-                    <div class="w-10 h-10 rounded-full bg-[#EFF8FF] flex items-center justify-center mb-2">
-                        <span class="material-symbols-rounded text-sky-500 text-[22px]">emoji_events</span>
-                    </div>
-                    <h4 class="text-[13px] font-medium text-[#0369a1] mb-1">Hasil rekomendasi</h4>
-                    <p class="text-[12px] text-[#0369a1] leading-relaxed">Paket diurutkan dari yang paling cocok dengan preferensimu.</p>
-                </div>
-            </div>
-            
-            <!-- Mobile: grid 2 kolom -->
-            <div class="lg:hidden grid grid-cols-2 gap-4">
-                <div class="flex flex-col items-center text-center">
-                    <span class="text-[11px] font-bold text-sky-500 mb-1">1</span>
-                    <div class="w-10 h-10 rounded-full bg-[#EFF8FF] flex items-center justify-center mb-2">
-                        <span class="material-symbols-rounded text-sky-500 text-[22px]">checklist</span>
-                    </div>
-                    <h4 class="text-[13px] font-medium text-[#0369a1] mb-1">Pilih preferensi</h4>
-                    <p class="text-[12px] text-[#0369a1] leading-relaxed">Tentukan seberapa penting harga, durasi, destinasi, dan aktivitas.</p>
-                </div>
-                
-                <div class="flex flex-col items-center text-center">
-                    <span class="text-[11px] font-bold text-sky-500 mb-1">2</span>
-                    <div class="w-10 h-10 rounded-full bg-[#EFF8FF] flex items-center justify-center mb-2">
-                        <span class="material-symbols-rounded text-sky-500 text-[22px]">balance</span>
-                    </div>
-                    <h4 class="text-[13px] font-medium text-[#0369a1] mb-1">Bobot dinormalisasi</h4>
-                    <p class="text-[12px] text-[#0369a1] leading-relaxed">Pilihanmu diubah ke bobot proporsional menggunakan metode SAW.</p>
-                </div>
-                
-                <div class="flex flex-col items-center text-center">
-                    <span class="text-[11px] font-bold text-sky-500 mb-1">3</span>
-                    <div class="w-10 h-10 rounded-full bg-[#EFF8FF] flex items-center justify-center mb-2">
-                        <span class="material-symbols-rounded text-sky-500 text-[22px]">grid_view</span>
-                    </div>
-                    <h4 class="text-[13px] font-medium text-[#0369a1] mb-1">Paket dinilai</h4>
-                    <p class="text-[12px] text-[#0369a1] leading-relaxed">Setiap paket dinormalisasi dan dihitung nilai kecocokannya.</p>
-                </div>
-                
-                <div class="flex flex-col items-center text-center">
-                    <span class="text-[11px] font-bold text-sky-500 mb-1">4</span>
-                    <div class="w-10 h-10 rounded-full bg-[#EFF8FF] flex items-center justify-center mb-2">
-                        <span class="material-symbols-rounded text-sky-500 text-[22px]">emoji_events</span>
-                    </div>
-                    <h4 class="text-[13px] font-medium text-[#0369a1] mb-1">Hasil rekomendasi</h4>
-                    <p class="text-[12px] text-[#0369a1] leading-relaxed">Paket diurutkan dari yang paling cocok dengan preferensimu.</p>
-                </div>
-            </div>
-        </div>
-
         <!-- Form Preferensi -->
         <form action="<?= base_url('rekomendasi/hasil'); ?>" method="post" id="form-preferensi" class="animate-fade-in-up stagger-1">
 
@@ -161,7 +66,7 @@
                     <div class="grid grid-cols-5 gap-2 sm:gap-3">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
                             <button type="button" 
-                                    class="btn-nilai bg-slate-50 rounded-lg p-2 sm:p-3 text-center border-2 border-slate-200 transition-all duration-200"
+                                    class="btn-nilai rounded-lg p-2 sm:p-3 text-center transition-all duration-200"
                                     data-nilai="<?= $i; ?>"
                                     onclick="pilihNilai('<?= strtolower($kr->kode_kriteria); ?>', <?= $i; ?>, this)">
                                 <span class="angka font-extrabold text-lg sm:text-xl text-gray-800 mb-1 block"><?= $i; ?></span>
@@ -195,7 +100,7 @@
         </div>
 
         <!-- Tombol Submit -->
-        <button type="submit" id="btn-submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white py-4 rounded-full font-bold text-base sm:text-lg transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 opacity-85">
+<button type="submit" id="btn-submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white py-4 rounded-full font-bold text-base sm:text-lg hover:shadow-xl hover:shadow-sky-500/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 opacity-85">
             <span class="material-symbols-rounded text-[22px]">search</span>
             Cari rekomendasi terbaik
         </button>

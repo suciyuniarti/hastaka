@@ -97,8 +97,9 @@ $route['admin/fasilitas/get_data/(:num)'] = 'admin/fasilitas/get_data/$1';
 
 // Admin > Klien
 $route['admin/klien/edit/(:num)']        = 'admin/klien_edit/$1';
-$route['admin/klien/hapus/(:num)']       = 'admin/klien_hapus/$1';
+$route['admin/klien/hapus/(:num)']        = 'admin/klien_hapus/$1';
 $route['admin/klien/tambah']             = 'admin/klien_tambah';
+$route['admin/klien/get_klien/(:num)']   = 'admin/get_klien/$1';
 
 // Admin > Aktivitas
 $route['admin/aktivitas/edit/(:num)']    = 'admin/aktivitas_edit/$1';
@@ -107,6 +108,7 @@ $route['admin/aktivitas/tambah']         = 'admin/aktivitas_tambah';
 $route['admin/aktivitas/get_data/(:num)'] = 'admin/aktivitas/get_data/$1';
 
 // Admin > Akomodasi
+$route['admin/akomodasi/toggle_status/(:num)'] = 'admin/akomodasi_toggle_status/$1';
 $route['admin/akomodasi/edit/(:num)']    = 'admin/akomodasi_edit/$1';
 $route['admin/akomodasi/hapus/(:num)']   = 'admin/akomodasi_hapus/$1';
 $route['admin/akomodasi/tambah']         = 'admin/akomodasi_tambah';

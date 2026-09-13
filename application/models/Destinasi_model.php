@@ -5,13 +5,13 @@ class Destinasi_model extends CI_Model {
 
     public function get_all_destinasi()
     {
-        return $this->db->order_by('kota', 'ASC')->order_by('jenis', 'ASC')->order_by('nama_destinasi', 'ASC')
+        return $this->db->order_by('kota', 'ASC')->order_by('nama_destinasi', 'ASC')
                         ->get('destinasi')->result();
     }
 
     public function get_destinasi_paginated($limit, $offset)
     {
-        return $this->db->order_by('kota', 'ASC')->order_by('jenis', 'ASC')->order_by('nama_destinasi', 'ASC')
+        return $this->db->order_by('kota', 'ASC')->order_by('nama_destinasi', 'ASC')
                         ->limit($limit)->offset($offset)->get('destinasi')->result();
     }
 
@@ -32,7 +32,7 @@ class Destinasi_model extends CI_Model {
 
     public function get_destinasi_by_kota_paginated($kota, $limit, $offset)
     {
-        return $this->db->order_by('kota', 'ASC')->order_by('jenis', 'ASC')->order_by('nama_destinasi', 'ASC')
+        return $this->db->order_by('kota', 'ASC')->order_by('nama_destinasi', 'ASC')
                         ->where('kota', $kota)
                         ->limit($limit)->offset($offset)
                         ->get('destinasi')->result();
@@ -62,8 +62,18 @@ class Destinasi_model extends CI_Model {
         return $this->db->update('destinasi', $data, ['id_destinasi' => $id]);
     }
 
+    public function is_used_in_paket($id_destinasi)
+    {
+        $this->db->where('id_destinasi', $id_destinasi);
+        $this->db->from('paket_destinasi');
+        return $this->db->count_all_results() > 0;
+    }
+
     public function hapus_destinasi($id)
     {
+        if ($this->is_used_in_paket($id)) {
+            return FALSE;
+        }
         return $this->db->delete('destinasi', ['id_destinasi' => $id]);
     }
 

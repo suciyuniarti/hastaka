@@ -11,16 +11,10 @@ class SAW_model extends CI_Model {
      */
     public function get_matriks_keputusan($filter = [])
     {
-        $this->db->select('nilai_alternatif.*, paket_wisata.nama_paket, paket_wisata.harga, paket_wisata.foto, kriteria.kode_kriteria, kriteria.sifat');
+        $this->db->select('nilai_alternatif.*, paket_wisata.nama_paket, paket_wisata.harga, paket_wisata.foto, paket_wisata.jumlah_destinasi, kriteria.kode_kriteria, kriteria.sifat');
         $this->db->join('paket_wisata', 'paket_wisata.id_paket = nilai_alternatif.id_paket');
         $this->db->join('kriteria', 'kriteria.id_kriteria = nilai_alternatif.id_kriteria');
         $this->db->where('paket_wisata.status', 'tersedia');
-
-        // Filter by kota (paket must have at least one destinasi in that kota)
-        if (!empty($filter['kota'])) {
-            $this->db->where('paket_wisata.id_paket IN (SELECT DISTINCT pd.id_paket FROM paket_destinasi pd JOIN destinasi d ON d.id_destinasi = pd.id_destinasi WHERE d.kota = ' . $this->db->escape($filter['kota']) . ')', NULL, FALSE);
-        }
-
         $this->db->order_by('nilai_alternatif.id_paket', 'ASC');
         return $this->db->get('nilai_alternatif')->result();
     }
@@ -53,8 +47,6 @@ class SAW_model extends CI_Model {
         if ($sifat == 'benefit') {
             return ($max > 0) ? $nilai / $max : 0;
         } else {
-            // FIX: Untuk kriteria cost, nilai == 0 dimasukkan sebagai kondisi ideal (rij tertinggi = 1)
-            // karena secara konsep cost lebih kecil lebih baik, sehingga tidak boleh menghasilkan 0 akibat guard ($nilai > 0).
             if ((float) $nilai == 0.0) {
                 return 1;
             }
@@ -69,10 +61,6 @@ class SAW_model extends CI_Model {
      */
     public function hitung_saw($bobot = [], $filter = [])
     {
-        // LOG 2: Log bobot yang diterima dari controller
-        log_message('debug', '=== MODEL: Bobot yang diterima dari controller ===');
-        log_message('debug', 'Parameter $bobot: ' . json_encode($bobot));
-
         // Ambil daftar kriteria dari database SEKALI saja
         $kriteria_list = $this->db->order_by('id_kriteria', 'ASC')->get('kriteria')->result();
 
@@ -101,14 +89,14 @@ class SAW_model extends CI_Model {
             $bobot_valid[$kode] = isset($bobot[$kode]) ? (float) $bobot[$kode] : 0;
         }
 
-        // FIX: Guard jika total bobot = 0 walaupun array tidak kosong (misal input semua 0)
+        // FIX: Guard jika total bobot 
         $total_bobot = array_sum($bobot_valid);
         if ($total_bobot <= 0) {
             $bobot_valid = $default_bobot;
             $total_bobot = array_sum($bobot_valid);
         }
 
-        // Normalisasi bobot dilakukan paling terakhir (setelah validasi key)
+        // Normalisasi bobot
         if ($total_bobot > 0) {
             foreach ($bobot_valid as $k => $v) {
                 $bobot_valid[$k] = $v / $total_bobot;
@@ -116,13 +104,6 @@ class SAW_model extends CI_Model {
         }
 
         $bobot = $bobot_valid;
-
-        // LOG 3: Log bobot final setelah normalisasi
-        log_message('debug', '=== MODEL: Bobot final setelah normalisasi ===');
-        log_message('debug', 'Total bobot sebelum normalisasi: ' . $total_bobot);
-        log_message('debug', 'Bobot yang dipakai untuk hitung V: ' . json_encode($bobot));
-
-
 
         // Ambil data matriks keputusan (dengan filter)
         $data_nilai = $this->get_matriks_keputusan($filter);
@@ -144,17 +125,16 @@ class SAW_model extends CI_Model {
             $paket_data[$dn->id_paket]['nama_paket'] = $dn->nama_paket;
             $paket_data[$dn->id_paket]['harga'] = $dn->harga;
             $paket_data[$dn->id_paket]['foto'] = $dn->foto;
+            $paket_data[$dn->id_paket]['jumlah_destinasi'] = $dn->jumlah_destinasi;
             $paket_data[$dn->id_paket]['id_paket'] = $dn->id_paket;
             $paket_data[$dn->id_paket]['nilai'][$dn->kode_kriteria] = $dn->nilai;
         }
 
         // Hitung normalisasi dan nilai V
         $hasil = [];
-        $log_detail = [];
         foreach ($paket_data as $id_paket => $data) {
             $nilai_v = 0;
             $detail_normalisasi = [];
-            $log_perhitungan = "Paket: {$data['nama_paket']} (ID: {$id_paket})\n";
 
             foreach ($kriteria_list as $kr) {
                 $nilai_xij = isset($data['nilai'][$kr->kode_kriteria]) ? $data['nilai'][$kr->kode_kriteria] : 0;
@@ -177,8 +157,6 @@ class SAW_model extends CI_Model {
                 $kontribusi = $r * $w;
                 $nilai_v += $kontribusi;
 
-                $log_perhitungan .= "  {$kr->kode_kriteria}: R={$r}, W={$w}, R×W={$kontribusi}\n";
-
                 $detail_normalisasi[] = [
                     'kode' => $kr->kode_kriteria,
                     'nama' => $kr->nama_kriteria,
@@ -189,29 +167,15 @@ class SAW_model extends CI_Model {
                 ];
             }
 
-            $log_perhitungan .= "  TOTAL V = {$nilai_v}\n";
-            $log_detail[] = $log_perhitungan;
-
-            // Ambil jumlah destinasi untuk paket ini (label diperjelas)
-            $pkt = $this->db->select('jumlah_destinasi')->get_where('paket_wisata', ['id_paket' => $id_paket])->row();
-            $jumlah_destinasi_paket = $pkt ? (int) $pkt->jumlah_destinasi : 0;
-
-            // FIX: Rename key output dari jumlah_aktivitas -> jumlah_destinasi_paket (sesuai sumber data)
             $hasil[] = [
                 'id_paket' => $id_paket,
                 'nama_paket' => $data['nama_paket'],
                 'harga' => $data['harga'],
                 'foto' => $data['foto'],
-                'jumlah_destinasi_paket' => $jumlah_destinasi_paket,
+                'jumlah_destinasi_paket' => (int) ($data['jumlah_destinasi'] ?? 0),
                 'nilai_v' => round($nilai_v, 4),
                 'detail' => $detail_normalisasi
             ];
-        }
-
-        // LOG 4: Log detail perhitungan setiap paket
-        log_message('debug', '=== MODEL: Detail perhitungan nilai V ===');
-        foreach ($log_detail as $log) {
-            log_message('debug', $log);
         }
 
         // Sorting: Nilai V terbesar ke terkecil

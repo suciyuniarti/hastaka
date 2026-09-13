@@ -51,12 +51,12 @@
                         <p class="text-slate-400 text-xs">Peserta</p>
                         <p class="font-semibold text-slate-800"><?= $p->jumlah_peserta; ?> orang</p>
                     </div>
-                    <?php if (!empty($p->nama_akomodasi)): ?>
+                    <?php if (!empty($p->akomodasi_list)): ?>
                     <div>
                         <p class="text-slate-400 text-xs">Akomodasi</p>
-                        <p class="font-semibold text-brand-700 flex items-center gap-1">
-                            <span class="material-symbols-rounded text-[12px]"><?= $p->akomodasi_icon ?? 'directions_bus'; ?></span>
-                            <?= $p->nama_akomodasi; ?>
+                        <p class="font-semibold text-brand-700 text-xs">
+                            <?php $ak_names = array_map(function($a) { return htmlspecialchars($a->nama_akomodasi, ENT_QUOTES, 'UTF-8'); }, $p->akomodasi_list); ?>
+                            <?= implode(', ', $ak_names); ?>
                         </p>
                     </div>
                     <?php endif; ?>
@@ -68,7 +68,7 @@
 
                 <div class="mt-4 flex items-center gap-3">
                     <a href="<?= base_url('pemesanan/invoice/' . $p->id_pemesanan); ?>"
-                        class="inline-flex items-center gap-2 gradient-bg text-white px-5 py-2.5 rounded-full font-semibold text-sm hover:opacity-90 transition shadow-lg shadow-brand-500/25">
+class="inline-flex items-center gap-2 gradient-bg text-white px-5 py-2.5 rounded-full font-semibold text-sm hover:shadow-xl hover:shadow-brand-500/40 hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-brand-500/25">
                         <span class="material-symbols-rounded text-[18px]">receipt_long</span> Lihat Invoice
                     </a>
                 </div>
@@ -82,7 +82,7 @@
             <span class="material-symbols-rounded text-white text-4xl">receipt_long</span>
         </div>
         <p class="text-slate-500 text-lg mb-6">Belum ada riwayat pemesanan.</p>
-        <a href="<?= base_url('paket'); ?>" class="inline-flex items-center gap-2 gradient-bg text-white px-8 py-3 rounded-full font-semibold text-sm hover:opacity-90 transition shadow-lg shadow-brand-500/25">
+<a href="<?= base_url('paket'); ?>" class="inline-flex items-center gap-2 gradient-bg text-white px-8 py-3 rounded-full font-semibold text-sm hover:shadow-xl hover:shadow-brand-500/40 hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-brand-500/25">
             <span class="material-symbols-rounded text-[20px]">luggage</span> Jelajahi Paket Wisata
         </a>
     </div>

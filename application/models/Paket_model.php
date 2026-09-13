@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Paket_model extends CI_Model {
 
-    public function get_all_paket()
+public function get_all_paket()
     {
         return $this->db->order_by('created_at', 'DESC')->get('paket_wisata')->result();
     }
@@ -15,6 +15,16 @@ class Paket_model extends CI_Model {
     {
         $this->db->like('nama_paket', $keyword);
         return $this->db->order_by('created_at', 'DESC')->get('paket_wisata')->result();
+    }
+
+    /**
+     * Ambil SEMUA paket (semua status) untuk halaman publik,
+     * diurutkan berdasarkan nama_paket ASC.
+     * Berbeda dari get_all_paket() yang order by created_at DESC (dipakai admin).
+     */
+    public function get_all_paket_untuk_publik()
+    {
+        return $this->db->order_by('nama_paket', 'ASC')->get('paket_wisata')->result();
     }
 
     public function get_paket_tersedia()
@@ -27,10 +37,10 @@ class Paket_model extends CI_Model {
         return $this->db->get_where('paket_wisata', ['id_paket' => $id])->row();
     }
 
-    public function get_paket_populer($limit = 3)
+    public function get_paket_terbaru($limit = 3)
     {
         return $this->db->where('status', 'tersedia')
-                        ->order_by('rating', 'DESC')
+                        ->order_by('created_at', 'DESC')
                         ->limit($limit)
                         ->get('paket_wisata')
                         ->result();

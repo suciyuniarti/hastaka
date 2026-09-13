@@ -3,6 +3,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Transaksi_model extends CI_Model {
 
+    public function get_pemesanan_akomodasi_by_id_pemesanan($id_pemesanan)
+    {
+        $this->db->select('id_akomodasi, nama_akomodasi, harga_per_orang, jumlah_peserta, subtotal');
+        $this->db->from('pemesanan_akomodasi');
+        $this->db->where('id_pemesanan', $id_pemesanan);
+        $this->db->order_by('id_akomodasi', 'ASC');
+        return $this->db->get()->result();
+    }
+
+    public function get_pemesanan_akomodasi_by_ids(array $id_pemesanan_list)
+    {
+        if (empty($id_pemesanan_list)) {
+            return [];
+        }
+        $this->db->select('id_pemesanan, id_akomodasi, nama_akomodasi, harga_per_orang, jumlah_peserta, subtotal');
+        $this->db->from('pemesanan_akomodasi');
+        $this->db->where_in('id_pemesanan', $id_pemesanan_list);
+        $this->db->order_by('id_pemesanan, id_akomodasi', 'ASC');
+        return $this->db->get()->result();
+    }
+
     public function get_all_pemesanan()
     {
         $this->db->select('pemesanan.*, users.nama_lengkap, users.email, paket_wisata.nama_paket, paket_wisata.harga');
@@ -99,6 +120,64 @@ class Transaksi_model extends CI_Model {
         $this->db->where('pemesanan.tgl_transaksi <=', $tgl_selesai . ' 23:59:59');
         $this->db->order_by('pemesanan.tgl_transaksi', 'DESC');
         return $this->db->get('pemesanan')->result();
+    }
+
+    /**
+     * Get detailed transaction data for modal display
+     * Includes akomodasi details and payment breakdown
+     */
+    public function get_detail_transaksi($id_pemesanan)
+    {
+        // Get main transaction data
+        // Note: no_telepon is NOT in users table, it's in pemesanan table (based on booking form)
+        $pemesanan = $this->db->select('pemesanan.*, users.nama_lengkap, users.email, paket_wisata.nama_paket, paket_wisata.harga as harga_paket')
+            ->join('users', 'users.id_user = pemesanan.id_user')
+            ->join('paket_wisata', 'paket_wisata.id_paket = pemesanan.id_paket')
+            ->where('pemesanan.id_pemesanan', $id_pemesanan)
+            ->get('pemesanan')
+            ->row();
+
+        if (!$pemesanan) {
+            return null;
+        }
+
+        // Get akomodasi details
+        $akomodasi_list = $this->get_pemesanan_akomodasi_by_id_pemesanan($id_pemesanan);
+
+        // Calculate payment breakdown
+        $total_tagihan = (float) $pemesanan->harga_paket * (int) $pemesanan->jumlah_peserta;
+        $total_akomodasi = 0;
+        foreach ($akomodasi_list as $ak) {
+            $total_akomodasi += (float) $ak->subtotal;
+        }
+        $total_harga_sebenarnya = $total_tagihan + $total_akomodasi;
+        $total_dp_dibayar = (float) $pemesanan->total_bayar;
+        $sisa_lunasi = $total_harga_sebenarnya - $total_dp_dibayar;
+
+        return [
+            'id_pemesanan' => $pemesanan->id_pemesanan,
+            'kode_booking' => $pemesanan->kode_booking,
+            'nama_lengkap' => $pemesanan->nama_lengkap,
+            'email' => $pemesanan->email,
+            'no_telepon' => isset($pemesanan->no_telepon) ? $pemesanan->no_telepon : null, // From pemesanan table
+            'nama_paket' => $pemesanan->nama_paket,
+            'tgl_keberangkatan' => $pemesanan->tgl_keberangkatan,
+            'jam_keberangkatan' => isset($pemesanan->jam_keberangkatan) ? $pemesanan->jam_keberangkatan : null,
+            'jumlah_peserta' => (int) $pemesanan->jumlah_peserta,
+            'titik_kumpul' => isset($pemesanan->titik_kumpul) ? $pemesanan->titik_kumpul : null,
+            'tipe_pembayaran' => isset($pemesanan->tipe_pembayaran) ? $pemesanan->tipe_pembayaran : 'full',
+            'status_pemesanan' => $pemesanan->status_pemesanan,
+            'bukti_transfer' => isset($pemesanan->bukti_transfer) ? $pemesanan->bukti_transfer : null,
+            'harga_paket' => (float) $pemesanan->harga_paket,
+            'akomodasi_list' => $akomodasi_list,
+            'payment_breakdown' => [
+                'total_tagihan' => $total_tagihan,
+                'total_akomodasi' => $total_akomodasi,
+                'total_harga_sebenarnya' => $total_harga_sebenarnya,
+                'total_dp_dibayar' => $total_dp_dibayar,
+                'sisa_lunasi' => $sisa_lunasi
+            ]
+        ];
     }
 
     private function generate_kode_booking()

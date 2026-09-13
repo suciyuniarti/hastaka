@@ -244,13 +244,13 @@
                             
                             <!-- Tombol Aksi -->
                             <div class="flex flex-wrap items-center gap-2">
-                                <a href="<?= base_url('pemesanan/form/' . $h['id_paket']); ?>" 
-                                   class="inline-flex items-center gap-1.5 bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 hover:shadow-md">
+<a href="<?= base_url('pemesanan/booking/' . $h['id_paket']); ?>" 
+class="inline-flex items-center gap-1.5 bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:shadow-xl hover:shadow-sky-500/40 hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-md">
                                     <span class="material-symbols-rounded text-[16px]">shopping_cart</span>
                                     Pesan sekarang
                                 </a>
                                 <a href="<?= base_url('paket/detail/' . $h['id_paket']); ?>" 
-                                   class="inline-flex items-center gap-1.5 border-2 border-sky-500 text-sky-600 hover:bg-sky-50 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300">
+class="inline-flex items-center gap-1.5 border-2 border-sky-500 text-sky-600 hover:bg-sky-50 px-4 py-2 rounded-lg text-sm font-bold hover:shadow-xl hover:shadow-sky-500/40 hover:scale-105 active:scale-95 transition-all duration-300">
                                     <span class="material-symbols-rounded text-[16px]">info</span>
                                     Lihat detail paket
                                 </a>
@@ -272,19 +272,5 @@
             </p>
         </div>
     <?php endif; ?>
-
-    <!-- Catatan di Bawah Hasil -->
-    <div class="mt-8 bg-sky-50 border-2 border-sky-200 rounded-xl p-5 sm:p-6 animate-fade-in-up" style="animation-delay: 0.3s;">
-        <div class="flex items-start gap-3">
-            <span class="material-symbols-rounded text-sky-600 text-[20px] mt-0.5">info</span>
-            <div class="text-sm text-sky-900 leading-relaxed">
-                <p class="font-semibold mb-1">Cara kerja perangkingan ini:</p>
-                <p>
-                    Urutan ini dihitung otomatis berdasarkan preferensimu menggunakan metode SAW (Simple Additive Weighting). 
-                    Semakin penuh bar-nya, semakin baik paket itu di kriteria tersebut.
-                </p>
-            </div>
-        </div>
-    </div>
 
 </main>
