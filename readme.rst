@@ -1,71 +1,114 @@
-###################
-What is CodeIgniter
-###################
+# Hastaka Holiday
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
+Sistem informasi berbasis web untuk **Hastaka Holiday Tour & Travel** (Bandung Raya) yang mengintegrasikan **rekomendasi paket wisata** menggunakan algoritma **Simple Additive Weighting (SAW)** dengan **pemesanan dan pengelolaan transaksi secara online**.
 
-*******************
-Release Information
-*******************
+Proyek ini dikembangkan sebagai bagian dari penelitian skripsi **"Penerapan Algoritma Simple Additive Weighting pada Sistem Informasi Rekomendasi Paket Wisata"**.
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+---
 
-**************************
-Changelog and New Features
-**************************
+## Latar Belakang
 
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
+Sebelumnya, pengelolaan data pemesanan dan transaksi dilakukan di Microsoft Excel yang terpisah dari website, sementara fitur website terbatas sehingga calon pelanggan lebih memilih memesan lewat WhatsApp. Website juga hanya menampilkan daftar paket tanpa fitur untuk membandingkan harga, durasi, destinasi, dan aktivitas.
 
-*******************
-Server Requirements
-*******************
+Sistem ini dibuat untuk:
+1. Membantu calon pelanggan menentukan paket wisata yang paling sesuai preferensinya secara objektif.
+2. Mengintegrasikan pemesanan, pembayaran, dan pengelolaan data dalam satu sistem.
 
-PHP version 5.6 or newer is recommended.
+---
 
-It should work on 5.3.7 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
+## Fitur Utama
 
-************
-Installation
-************
+### Pengunjung (Guest) dan Pelanggan
+- **Katalog Paket Wisata**: daftar paket beserta detail destinasi, fasilitas, aktivitas, dan harga (tanpa login).
+- **Rekomendasi Paket (SAW)**: pengguna mengisi tingkat kepentingan (skala 1-5) pada setiap kriteria, lalu sistem menampilkan paket yang diurutkan berdasarkan nilai preferensi tertinggi beserta persentase kecocokan. **Tidak perlu login.**
+- **Kategori Program dan Data Klien**: informasi layanan dan klien yang pernah bekerja sama.
+- **Registrasi dan Login**: wajib untuk melakukan pemesanan.
+- **Pemesanan Online**: tanggal dan jam keberangkatan, jumlah peserta, titik kumpul, layanan akomodasi tambahan (opsional), dan perhitungan total tagihan otomatis.
+- **Pilihan Pembayaran**: lunas atau DP, dengan unggah bukti transfer.
+- **Invoice dan Riwayat Transaksi**: kode booking unik dan pemantauan status (*pending*, *dikonfirmasi*, *dibatalkan*).
 
-Please see the `installation section <https://codeigniter.com/userguide3/installation/index.html>`_
-of the CodeIgniter User Guide.
+### Admin
+- **Dashboard** ringkasan transaksi, paket, dan pendapatan.
+- **Kelola Data Master**: Paket Wisata, Kategori Program, Destinasi, Fasilitas, Aktivitas, Akomodasi, dan Klien.
+- **Kelola Atribut Kriteria SAW**: mengatur sifat kriteria (*cost*/*benefit*) yang langsung berlaku pada perhitungan berikutnya.
+- **Kelola Transaksi**: memeriksa bukti transfer, mengonfirmasi atau membatalkan pesanan, serta menghubungi pelanggan via WhatsApp dengan pesan otomatis berisi kode booking.
+- **Kelola Pelanggan**: melihat dan menonaktifkan akun.
+- **Laporan Transaksi**: filter berdasarkan periode dan cetak ke PDF.
 
-*******
-License
-*******
+---
 
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
+## Algoritma SAW
 
-*********
-Resources
-*********
+### Kriteria
 
--  `User Guide <https://codeigniter.com/docs>`_
--  `Contributing Guide <https://github.com/bcit-ci/CodeIgniter/blob/develop/contributing.md>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community Slack Channel <https://codeigniterchat.slack.com>`_
+| Kode | Kriteria | Atribut |
+|------|----------|---------|
+| C1 | Harga Paket | Cost |
+| C2 | Durasi Perjalanan | Benefit |
+| C3 | Jumlah Destinasi | Benefit |
+| C4 | Jumlah Aktivitas | Benefit |
 
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_
-or via our `page on HackerOne <https://hackerone.com/codeigniter>`_, thank you.
+Nilai C1-C4 diambil otomatis dari data paket. Jumlah destinasi dan aktivitas dihitung dari item yang dicentang admin, sehingga tidak diinput manual.
 
-***************
-Acknowledgement
-***************
+### Tahapan Perhitungan
 
-The CodeIgniter team would like to thank EllisLab, all the
-contributors to the CodeIgniter project and you, the CodeIgniter user.
+1. **Input bobot**: pengguna memberi nilai 1-5 untuk tiap kriteria (bobot dinamis).
+2. **Normalisasi bobot**: `Wj = wj / Σwj`
+3. **Matriks keputusan (X)**: nilai tiap paket yang berstatus tersedia terhadap C1-C4.
+4. **Normalisasi matriks**:
+   - Benefit: `rij = Xij / Max(Xij)`
+   - Cost: `rij = Min(Xij) / Xij`
+5. **Nilai preferensi**: `Vi = Σ (Wj × rij)`
+6. **Perangkingan**: paket diurutkan dari `Vi` terbesar ke terkecil. Paket teratas diberi label "Paling cocok".
+
+---
+
+## Teknologi
+
+| Komponen | Teknologi |
+|----------|-----------|
+| Backend | PHP, CodeIgniter 3 (arsitektur MVC) |
+| Frontend | HTML, Tailwind CSS, JavaScript |
+| Database | MySQL (`db_wisata_saw`) |
+| Metode Pengembangan | Prototype |
+| Pemodelan | UML (Use Case, Activity, Sequence, Class) dan ERD |
+
+---
+
+## Kebutuhan Sistem
+
+- PHP 5.6 atau lebih baru 
+- MySQL
+- Web server Apache XAMPP
+- Browser modern
+
+---
+
+## Struktur Folder
+
+```
+application/
+├── controllers/   # Logika aplikasi (halaman pelanggan dan admin)
+├── models/        # Interaksi dengan database
+├── views/         # Tampilan (HTML + Tailwind CSS)
+└── config/        # Konfigurasi aplikasi dan database
+assets/            # CSS, JavaScript, dan gambar
+system/            # Inti framework CodeIgniter
+```
+
+---
+
+## Alur Pemesanan
+
+1. Pelanggan memilih paket sendiri atau melalui rekomendasi SAW.
+2. Login, lalu mengisi form pemesanan dan memilih tipe pembayaran (lunas/DP).
+3. Sistem menghitung total tagihan dan menyimpan pesanan dengan status *pending*.
+4. Pelanggan mengunggah bukti transfer dan mendapat invoice dengan kode booking.
+5. Admin memverifikasi pembayaran lalu mengonfirmasi atau membatalkan pesanan.
+6. Admin dapat menghubungi pelanggan via WhatsApp bila diperlukan.
+
+---
+
+## Lisensi
+
+Proyek ini dikembangkan untuk keperluan akademik dan operasional **Hastaka Holiday Tour & Travel**.
