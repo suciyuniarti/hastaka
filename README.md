@@ -4,14 +4,6 @@ Sistem informasi berbasis web untuk **Hastaka Holiday Tour & Travel** (Bandung R
 
 ---
 
-## Tentang Proyek (Tugas Akhir)
-
-Proyek ini merupakan **tugas akhir (skripsi)** yang dikembangkan untuk memenuhi syarat kelulusan program studi **[nama program studi]**, **[nama kampus]**.
-
-**Pembuat:** **[nama lengkap]**
-
-**Dosen Pembimbing:** **[nama dosen pembimbing]**
-
 **Catatan:** seluruh data dalam repositori ini (pengguna, pelanggan, transaksi) adalah **data dummy** untuk keperluan demonstrasi dan akademik.
 
 ---
@@ -109,60 +101,6 @@ system/            # Inti framework CodeIgniter
 4. Pelanggan mengunggah bukti transfer dan mendapat invoice dengan kode booking.
 5. Admin memverifikasi pembayaran lalu mengonfirmasi atau membatalkan pesanan.
 6. Admin dapat menghubungi pelanggan via WhatsApp bila diperlukan.
-
----
-
-## Instalasi
-
-1. **Clone repositori**
-   ```bash
-   git clone <url-repositori>
-   cd hastaka
-   ```
-
-2. **Install dependency Composer**
-   ```bash
-   composer install
-   ```
-
-3. **Konfigurasi database**
-   Salin file contoh konfigurasi database:
-   ```bash
-   cp application/config/database.example.php application/config/database.php
-   ```
-   Buka `application/config/database.php` dan sesuaikan dengan kredensial database Anda:
-   ```php
-   'username' => 'your_db_username',
-   'password' => 'your_db_password',
-   'database' => 'your_db_name',
-   ```
-
-4. **Konfigurasi email (opsional)**
-   Salin file contoh konfigurasi email:
-   ```bash
-   cp application/config/email.example.php application/config/email.php
-   ```
-   Isi dengan kredensial SMTP Anda.
-
-5. **Import database**
-   Buat database baru lalu impor file dump:
-   ```bash
-   mysql -u username -p nama_database < database/hastaka_holiday.sql
-   ```
-
-6. **Jalankan aplikasi**
-   Buka `http://localhost/hastaka/` di browser Anda.
-
-## Akun Admin Contoh
-
-Setelah import database, Anda dapat login dengan akun admin contoh (hanya akun dummy untuk pengujian):
-
-| Field | Nilai |
-|-------|-------|
-| Email | admin@example.com |
-| Password | admin123 |
-
-> ⚠️ **Penting:** Segera ganti password admin setelah login pertama kali untuk keamanan.
 
 ---
 
