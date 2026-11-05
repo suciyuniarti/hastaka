@@ -11,11 +11,22 @@ class SAW_model extends CI_Model {
      */
     public function get_matriks_keputusan($filter = [])
     {
+        // Mengambil nilai setiap kriteria dari tabel nilai_alternatif
+        // sekaligus data paket wisata dan sifat masing-masing kriteria
         $this->db->select('nilai_alternatif.*, paket_wisata.nama_paket, paket_wisata.harga, paket_wisata.foto, paket_wisata.jumlah_destinasi, kriteria.kode_kriteria, kriteria.sifat');
+
+        // Menghubungkan nilai kriteria dengan data paket wisata
         $this->db->join('paket_wisata', 'paket_wisata.id_paket = nilai_alternatif.id_paket');
+
+        // Menghubungkan nilai alternatif dengan data kriteria
         $this->db->join('kriteria', 'kriteria.id_kriteria = nilai_alternatif.id_kriteria');
+
+        // Hanya menggunakan paket wisata yang berstatus tersedia
         $this->db->where('paket_wisata.status', 'tersedia');
+
+        // Mengurutkan data berdasarkan ID paket
         $this->db->order_by('nilai_alternatif.id_paket', 'ASC');
+
         return $this->db->get('nilai_alternatif')->result();
     }
 
@@ -38,15 +49,20 @@ class SAW_model extends CI_Model {
     }
 
     /**
-     * Tahap C: Normalisasi Matriks (R)
+     * Tahap: Normalisasi Matriks (R)
      * Benefit: R = Nilai / Max
      * Cost:    R = Min / Nilai
      */
     public function normalisasi($nilai, $max, $min, $sifat)
     {
+        // Normalisasi kriteria benefit menggunakan nilai alternatif
+        // dibagi dengan nilai maksimum
         if ($sifat == 'benefit') {
             return ($max > 0) ? $nilai / $max : 0;
         } else {
+
+            // Normalisasi kriteria cost menggunakan nilai minimum
+            // dibagi dengan nilai alternatif
             if ((float) $nilai == 0.0) {
                 return 1;
             }
@@ -55,9 +71,8 @@ class SAW_model extends CI_Model {
     }
 
     /**
-     * Tahap D & E: Hitung Nilai V dan Ranking
+     * Tahap : Hitung Nilai V dan Ranking
      * V[i] = sum(R[i][j] * W[j])
-     * Optional filter: ['kategori' => id, 'kota' => nama_kota]
      */
     public function hitung_saw($bobot = [], $filter = [])
     {
@@ -75,7 +90,6 @@ class SAW_model extends CI_Model {
             $bobot = $default_bobot;
         }
 
-        // FIX: urutan validasi key dipindah sebelum normalisasi bobot
         // - Bentuk whitelist dari kode_kriteria pada tabel kriteria
         // - Buat $bobot_valid hanya berisi key yang ada di whitelist
         // - Abaikan key lain pada $bobot asli (mis. C5) supaya tidak memengaruhi total_bobot
@@ -89,14 +103,14 @@ class SAW_model extends CI_Model {
             $bobot_valid[$kode] = isset($bobot[$kode]) ? (float) $bobot[$kode] : 0;
         }
 
-        // FIX: Guard jika total bobot 
+        // Menghitung total seluruh nilai preferensi pengguna
         $total_bobot = array_sum($bobot_valid);
         if ($total_bobot <= 0) {
             $bobot_valid = $default_bobot;
             $total_bobot = array_sum($bobot_valid);
         }
 
-        // Normalisasi bobot
+        // Normalisasi bobot agar jumlah seluruh bobot = 1
         if ($total_bobot > 0) {
             foreach ($bobot_valid as $k => $v) {
                 $bobot_valid[$k] = $v / $total_bobot;
@@ -130,31 +144,31 @@ class SAW_model extends CI_Model {
             $paket_data[$dn->id_paket]['nilai'][$dn->kode_kriteria] = $dn->nilai;
         }
 
-        // Hitung normalisasi dan nilai V
+        // Menghitung nilai preferensi (Vi) untuk setiap paket wisata
         $hasil = [];
         foreach ($paket_data as $id_paket => $data) {
             $nilai_v = 0;
             $detail_normalisasi = [];
 
             foreach ($kriteria_list as $kr) {
+                // Mengambil nilai alternatif (Xij) berdasarkan kriteria
                 $nilai_xij = isset($data['nilai'][$kr->kode_kriteria]) ? $data['nilai'][$kr->kode_kriteria] : 0;
 
-                // FIX: Guard max/min tidak ditemukan
+                // Mengambil nilai maksimum/minimum untuk proses normalisasi
                 if (!isset($max_min_arr[$kr->kode_kriteria])) {
-                    // Data kriteria tidak lengkap untuk paket/filter ini -> kontribusi = 0
-                    // (skip kontribusi terhadap nilai_v)
                     continue;
                 }
                 $mm = $max_min_arr[$kr->kode_kriteria];
 
-                // Normalisasi
+                // Mengubah nilai Xij menjadi nilai ternormalisasi (Rij)
                 $r = $this->normalisasi($nilai_xij, $mm['max'], $mm['min'], $mm['sifat']);
 
-                // Bobot untuk kriteria ini
+                // Mengambil bobot (Wj) untuk kriteria yang sedang diproses
                 $w = isset($bobot[$kr->kode_kriteria]) ? $bobot[$kr->kode_kriteria] : 0;
 
-                // Nilai V
+                // Menghitung kontribusi setiap kriteria terhadap nilai Vi
                 $kontribusi = $r * $w;
+                // Menjumlahkan seluruh kontribusi kriteria untuk memperoleh Vi
                 $nilai_v += $kontribusi;
 
                 $detail_normalisasi[] = [
@@ -178,7 +192,8 @@ class SAW_model extends CI_Model {
             ];
         }
 
-        // Sorting: Nilai V terbesar ke terkecil
+        // Mengurutkan paket berdasarkan nilai Vi dari terbesar ke terkecil
+        // sehingga paket dengan nilai Vi tertinggi berada pada peringkat pertama
         usort($hasil, function($a, $b) {
             return $b['nilai_v'] <=> $a['nilai_v'];
         });

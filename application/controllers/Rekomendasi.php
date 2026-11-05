@@ -26,12 +26,12 @@ class Rekomendasi extends CI_Controller {
     {
         $data['title'] = 'Hasil Rekomendasi - Hastaka Holiday';
 
-        // Ambil bobot dari form
+        // Mengambil nilai preferensi pengguna untuk setiap kriteria
         $bobot = [
-            'C1' => $this->input->get_post('bobot_C1') ?: 1,
-            'C2' => $this->input->get_post('bobot_C2') ?: 1,
-            'C3' => $this->input->get_post('bobot_C3') ?: 1,
-            'C4' => $this->input->get_post('bobot_C4') ?: 1,
+            'C1' => $this->input->get_post('bobot_C1'),
+            'C2' => $this->input->get_post('bobot_C2'),
+            'C3' => $this->input->get_post('bobot_C3'),
+            'C4' => $this->input->get_post('bobot_C4'),
         ];
 
         // Simpan bobot ke session untuk halaman perhitungan
